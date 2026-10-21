@@ -8,7 +8,7 @@ export function QuoteCta() {
     <section id="orcamento" aria-labelledby="orcamento-titulo" className="surface-ink py-section">
       <div className="container-page">
         <div className={`${pageGrid} gap-y-8`}>
-          <h2 id="orcamento-titulo" className="col-span-4 text-display-lg md:col-span-7 lg:col-span-7">
+          <h2 id="orcamento-titulo" className="col-span-4 text-display-xl md:col-span-7 lg:col-span-7">
             Vamos criar algo com a sua marca?
           </h2>
           <div className="col-span-4 md:col-span-6 lg:col-span-5 lg:col-start-8 lg:self-end">

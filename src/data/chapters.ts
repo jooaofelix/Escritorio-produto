@@ -64,7 +64,9 @@ export const chapters: readonly Chapter[] = [
     id: 'convite',
     title: 'Sua ideia. Nossa criatividade.',
     body: 'Produtos personalizados para valorizar a sua marca.',
-    start: 180,
+    // Entra só quando a câmera abre a composição (antes disso a agenda ocupa o topo do quadro);
+    // o intervalo 179–205 fica sem texto, como respiro entre os capítulos 3 e 4.
+    start: 206,
     end: 240,
     focalX: 0.5,
     still: 240,

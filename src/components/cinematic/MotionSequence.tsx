@@ -251,7 +251,7 @@ export function MotionSequence({ onFail }: MotionSequenceProps) {
             </div>
 
             {/* Capítulo final: centralizado no alto, abaixo do header. */}
-            <div className="container-page absolute inset-x-0 top-0 pt-[calc(var(--spacing-header)+8vh)]">
+            <div className="container-page absolute inset-x-0 top-0 pt-[calc(var(--spacing-header)+3vh)]">
               <div ref={setText(lastIndex)} className="mx-auto max-w-[72rem] text-center opacity-0">
                 <ChapterCopy chapter={finalChapter} index={lastIndex} align="center" ctaRef={ctaRef} onCtaFocus={revealCta} />
               </div>

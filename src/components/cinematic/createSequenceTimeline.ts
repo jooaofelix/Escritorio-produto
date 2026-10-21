@@ -104,7 +104,8 @@ export function createSequenceTimeline(targets: SequenceTargets, options: Sequen
   if (targets.veilTop) {
     timeline.fromTo(targets.veilTop, { opacity: 0 }, { opacity: 1, duration: veilInFade }, veilIn);
   }
-  if (targets.veilBoost) {
+  // Só é necessário se o texto final entrar antes de o quadro abrir.
+  if (targets.veilBoost && VEIL_BOOST_OUT > veilIn + veilInFade) {
     timeline.fromTo(targets.veilBoost, { opacity: 0 }, { opacity: 1, duration: veilInFade }, veilIn);
     timeline.fromTo(
       targets.veilBoost,
