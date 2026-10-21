@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 /**
  * Metadados que dependem da URL pública (canonical, og:url, og:image absoluta,
- * sitemap) e trava de segurança do CTA: na Cloudflare Pages (CF_PAGES=1) o build
+ * sitemap) e trava de segurança do CTA: no build da Cloudflare (Workers Builds ou Pages) o build
  * falha se o número do WhatsApp não estiver configurado, para nunca publicar
  * um CTA sem destino.
  */
@@ -18,7 +18,7 @@ function siteMeta(env: Record<string, string>): Plugin {
     buildStart() {
       if (whatsapp.length < 10) {
         const msg = 'VITE_WHATSAPP_NUMBER não configurado: os CTAs abrirão o WhatsApp sem destinatário.';
-        if (process.env.CF_PAGES) this.error(`${msg} Defina a variável no projeto da Cloudflare Pages.`);
+        if (process.env.WORKERS_CI || process.env.CF_PAGES) this.error(`${msg} Defina a variável no projeto da Cloudflare.`);
         this.warn(msg);
       }
     },

@@ -18,7 +18,7 @@ npm run build && npm run preview
 
 | Variável | Obrigatória | Uso |
 | --- | --- | --- |
-| `VITE_WHATSAPP_NUMBER` | Sim, no build da Cloudflare | Número comercial com DDI e DDD, só dígitos. O padrão atual está em `.env` (versionado). Uma variável com o mesmo nome no painel da Cloudflare tem prioridade. Se ficar vazio, o build na Cloudflare Pages falha de propósito, para nunca publicar CTAs sem destino. |
+| `VITE_WHATSAPP_NUMBER` | Sim, no build da Cloudflare | Número comercial com DDI e DDD, só dígitos. O padrão atual está em `.env` (versionado). Uma variável com o mesmo nome no painel da Cloudflare tem prioridade. Se ficar vazio, o build na Cloudflare falha de propósito, para nunca publicar CTAs sem destino. |
 | `VITE_SITE_URL` | Não | URL pública final (sem `/` no fim). Gera `canonical`, `og:url`, `og:image` absoluta e `sitemap.xml`. |
 
 A mensagem padrão do WhatsApp e a navegação ficam em `src/config/site.ts`.
@@ -45,13 +45,18 @@ imutável) e rode `npm run assets -- frames`. Os intervalos de cada capítulo fi
 Ferramentas necessárias só para regenerar assets: ffmpeg (libwebp, libaom-av1), ImageMagick,
 poppler-utils, Python 3 e Chromium do Playwright (ícones). O build da Cloudflare não precisa delas.
 
-## Deploy na Cloudflare Pages
+## Deploy na Cloudflare (Workers com assets estáticos)
 
-Pelo painel (Git integrado):
+O projeto é publicado como um Worker só de assets (`wrangler.toml` → `[assets] directory = "./dist"`).
+No painel, em **Workers & Pages → projeto → Settings → Build**:
 
-- Build command: `npm run build`
-- Build output directory: `dist`
-- Variáveis: `VITE_WHATSAPP_NUMBER` (e opcionalmente `VITE_SITE_URL`), `NODE_VERSION=22`
+- Build command: `npm run build` (obrigatório: o Workers Builds não executa build sozinho)
+- Deploy command: `npx wrangler deploy`
+- Root directory: vazio
+- Branch de produção: `main`
+
+O número do WhatsApp vem do `.env`; uma variável `VITE_WHATSAPP_NUMBER` em **Build variables**
+tem prioridade. Node 22 é detectado pelo `.nvmrc`.
 
 Pela linha de comando:
 
@@ -60,7 +65,8 @@ npx wrangler login
 npm run deploy
 ```
 
-`public/_headers` define cache imutável para `/frames/*` e `/assets/*` e cabeçalhos de segurança.
+`public/_headers` define cache imutável para `/frames/*` e `/assets/*` e cabeçalhos de segurança;
+URLs inexistentes servem `404.html`.
 
 ## Testes
 
