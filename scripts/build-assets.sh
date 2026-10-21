@@ -13,7 +13,12 @@ SRC="$ROOT/assets-src"
 PUB="$ROOT/public"
 DATA="$ROOT/src/data"
 VIDEO="$SRC/video-coloridamente.mp4"
-FRAMES_VERSION="v1"
+FRAMES_VERSION="v2"
+
+# Recorte 16:9 que exclui a marca d'água do gerador de vídeo (canto inferior direito,
+# y >= 656 no quadro 1280x720): mantém o topo e corta só a faixa inferior.
+# Decisão do cliente; para um vídeo sem marca d'água, use CROP="" e aumente FRAMES_VERSION.
+CROP="${CROP-crop=1160:652:60:0,}"
 ONLY="${1:-all}"
 
 # Sequência: desktop usa todos os frames do vídeo; mobile usa 1 a cada 2, menores.
@@ -26,9 +31,9 @@ build_frames() {
   local out="$PUB/frames/$FRAMES_VERSION"
   rm -rf "$out" && mkdir -p "$out/d" "$out/m" "$out/stills"
 
-  ff -i "$VIDEO" -an -vf "scale=${D_W}:-2:flags=lanczos" \
+  ff -i "$VIDEO" -an -vf "${CROP}scale=${D_W}:-2:flags=lanczos" \
     -c:v libwebp -quality "$D_Q" -compression_level 6 -preset photo "$out/d/%04d.webp"
-  ff -i "$VIDEO" -an -vf "select='not(mod(n\,${M_STEP}))',scale=${M_W}:-2:flags=lanczos" -fps_mode vfr \
+  ff -i "$VIDEO" -an -vf "select='not(mod(n\,${M_STEP}))',${CROP}scale=${M_W}:-2:flags=lanczos" -fps_mode vfr \
     -c:v libwebp -quality "$M_Q" -compression_level 6 -preset photo "$out/m/%04d.webp"
 
   # Quadros representativos de cada capítulo (fallback e prefers-reduced-motion).
@@ -37,9 +42,9 @@ build_frames() {
   for n in "${stills[@]}"; do
     local name; name=$(printf '%04d' "$n")
     for w in 768 1280; do
-      ff -i "$VIDEO" -an -vf "select='eq(n\,$n)',scale=${w}:-2:flags=lanczos" -frames:v 1 \
+      ff -i "$VIDEO" -an -vf "select='eq(n\,$n)',${CROP}scale=${w}:-2:flags=lanczos" -frames:v 1 \
         -c:v libwebp -quality 78 "$out/stills/$name-$w.webp"
-      ff -i "$VIDEO" -an -vf "select='eq(n\,$n)',scale=${w}:-2:flags=lanczos,format=yuv420p" -frames:v 1 \
+      ff -i "$VIDEO" -an -vf "select='eq(n\,$n)',${CROP}scale=${w}:-2:flags=lanczos,format=yuv420p" -frames:v 1 \
         -c:v libaom-av1 -still-picture 1 -crf 30 -b:v 0 -cpu-used 4 "$out/stills/$name-$w.avif"
     done
   done

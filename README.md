@@ -36,7 +36,7 @@ Os produtos da galeria ficam em `src/data/products.ts`. Para incluir um item:
 Os frames são extraídos do vídeo `assets-src/video-coloridamente.mp4` por
 `scripts/build-assets.sh` (ffmpeg): 241 frames 1280 px para desktop e 121 frames 960 px
 para mobile, em WebP, mais quadros estáticos AVIF/WebP usados no modo de movimento reduzido.
-O resultado é versionado em `public/frames/v1/` e descrito em `src/data/frames-manifest.json`.
+O resultado é versionado em `public/frames/v2/` e descrito em `src/data/frames-manifest.json`.
 
 Para trocar o vídeo: substitua o arquivo, aumente `FRAMES_VERSION` no script (invalida o cache
 imutável) e rode `npm run assets -- frames`. Os intervalos de cada capítulo ficam em
