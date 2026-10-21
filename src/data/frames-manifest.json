@@ -1,0 +1,10 @@
+{
+  "version": "v1",
+  "sourceFps": 24,
+  "sourceFrameCount": 241,
+  "desktop": { "path": "/frames/v1/d/", "count": 241, "step": 1, "width": 1280, "height": 720, "totalKB": 5900 },
+  "mobile": { "path": "/frames/v1/m/", "count": 121, "step": 2, "width": 960, "height": 540, "totalKB": 2016 },
+  "pad": 4,
+  "ext": "webp",
+  "stills": { "path": "/frames/v1/stills/", "frames": [0,52,100,160,240], "widths": [768, 1280] }
+}

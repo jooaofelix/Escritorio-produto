@@ -1,0 +1,8 @@
+{
+  "name": "Coloridamente",
+  "short_name": "Coloridamente",
+  "icons": [{ "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }],
+  "theme_color": "#FAF9F6",
+  "background_color": "#FAF9F6",
+  "display": "browser"
+}
