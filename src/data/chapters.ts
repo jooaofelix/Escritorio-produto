@@ -4,8 +4,6 @@
  * `start`/`end` são frames do vídeo-fonte (0..240, 24 fps) e prendem as entradas/saídas
  * dos textos aos momentos da animação. A copy é literal do briefing.
  */
-export type ChapterTone = 'coral' | 'olive' | 'mint' | 'sun';
-
 export interface Chapter {
   readonly id: string;
   readonly title: string;
@@ -14,8 +12,6 @@ export interface Chapter {
   readonly start: number;
   /** Último frame do vídeo em que o capítulo está em cena (inclusivo). */
   readonly end: number;
-  /** Cor do segmento no indicador de progresso. */
-  readonly tone: ChapterTone;
   /**
    * Ponto focal horizontal (0–1) do canvas no layout empilhado (retrato), onde o `cover`
    * mostra só uma faixa do quadro 16:9. É o ponto do frame que fica no centro do canvas;
@@ -29,6 +25,10 @@ export interface Chapter {
   readonly cta?: string;
 }
 
+/** Descrição do filme para leitores de tela (docs/design-system.md §6). */
+export const sequenceLabel =
+  'Caderno de espiral com capa personalizada se abre e dá lugar a uma agenda e a objetos de mesa pretos.';
+
 export const chapters: readonly Chapter[] = [
   {
     id: 'revelacao',
@@ -36,10 +36,9 @@ export const chapters: readonly Chapter[] = [
     body: 'Criamos produtos personalizados que transformam ideias em algo único.',
     start: 0,
     end: 58,
-    tone: 'coral',
     focalX: 0.55,
     still: 52,
-    stillAlt: 'Agenda personalizada com capa branca e arte em tons de azul, sobre uma mesa clara.',
+    stillAlt: 'Caderno de espiral fechado com capa branca e ondas em tons de azul.',
   },
   {
     id: 'identidade',
@@ -47,10 +46,9 @@ export const chapters: readonly Chapter[] = [
     body: 'Agendas, cadernos e materiais feitos para representar sua empresa.',
     start: 60,
     end: 125,
-    tone: 'olive',
     focalX: 0.55,
     still: 100,
-    stillAlt: 'Agenda aberta com páginas personalizadas e a logo da empresa cliente no miolo.',
+    stillAlt: 'Agenda de espiral aberta com páginas de horários e a marca AEA, com uma folha sendo virada.',
   },
   {
     id: 'forma',
@@ -58,10 +56,9 @@ export const chapters: readonly Chapter[] = [
     body: 'Design, funcionalidade e personalidade em cada criação.',
     start: 127,
     end: 178,
-    tone: 'mint',
     focalX: 0.58,
     still: 160,
-    stillAlt: 'Porta-canetas, suporte de celular e organizador de mesa em impressão 3D ao lado da agenda.',
+    stillAlt: 'Porta-canetas canelado com duas canetas, suporte de celular e bandeja pretos ao lado de um caderno aberto.',
   },
   {
     id: 'convite',
@@ -69,10 +66,9 @@ export const chapters: readonly Chapter[] = [
     body: 'Produtos personalizados para valorizar a sua marca.',
     start: 180,
     end: 240,
-    tone: 'sun',
     focalX: 0.5,
     still: 240,
-    stillAlt: 'Kit completo: agenda personalizada e acessórios de mesa em impressão 3D.',
+    stillAlt: 'Agenda aberta com a marca AEA ao lado de porta-canetas, suporte de celular, organizador e bandeja pretos.',
     cta: 'Quero personalizar meus produtos',
   },
 ];
