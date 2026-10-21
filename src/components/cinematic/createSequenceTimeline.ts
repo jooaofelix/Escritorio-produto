@@ -11,6 +11,7 @@ import {
   TIMELINE_LENGTH,
   VEIL_BOOST_FADE,
   VEIL_BOOST_OUT,
+  VEIL_BOOST_REST,
 } from './sequence';
 
 export interface SequenceTargets {
@@ -91,11 +92,13 @@ export function createSequenceTimeline(targets: SequenceTargets, options: Sequen
   const beforeFinal = chapters[last - 1];
   const finalChapter = chapters[last]!;
   if (targets.veilSide && beforeFinal) {
+    // Começa junto com a saída do texto do capítulo 3 (não antes) e com a mesma curva: enquanto o
+    // texto está opaco, o véu está inteiro (antes, 2 frames de véu já esmaecendo derrubavam o contraste).
     timeline.fromTo(
       targets.veilSide,
       { opacity: 1 },
-      { opacity: 0, duration: veilFade, immediateRender: false },
-      beforeFinal.end + TEXT_OVERLAP - veilFade,
+      { opacity: 0, duration: veilFade, ease: 'power2.in', immediateRender: false },
+      beforeFinal.end + TEXT_OVERLAP - TEXT_FADE,
     );
   }
   // Véus do capítulo final completos antes de o texto ficar opaco (o fade do texto é ease-out).
@@ -104,15 +107,20 @@ export function createSequenceTimeline(targets: SequenceTargets, options: Sequen
   if (targets.veilTop) {
     timeline.fromTo(targets.veilTop, { opacity: 0 }, { opacity: 1, duration: veilInFade }, veilIn);
   }
-  // Só é necessário se o texto final entrar antes de o quadro abrir.
-  if (targets.veilBoost && VEIL_BOOST_OUT > veilIn + veilInFade) {
-    timeline.fromTo(targets.veilBoost, { opacity: 0 }, { opacity: 1, duration: veilInFade }, veilIn);
-    timeline.fromTo(
-      targets.veilBoost,
-      { opacity: 1 },
-      { opacity: 0, duration: VEIL_BOOST_FADE, immediateRender: false },
-      VEIL_BOOST_OUT - VEIL_BOOST_FADE,
-    );
+  if (targets.veilBoost) {
+    if (VEIL_BOOST_OUT > veilIn + veilInFade) {
+      // Texto final entra antes de o quadro abrir: reforço inteiro, depois repousa em VEIL_BOOST_REST.
+      timeline.fromTo(targets.veilBoost, { opacity: 0 }, { opacity: 1, duration: veilInFade }, veilIn);
+      timeline.fromTo(
+        targets.veilBoost,
+        { opacity: 1 },
+        { opacity: VEIL_BOOST_REST, duration: VEIL_BOOST_FADE, immediateRender: false },
+        VEIL_BOOST_OUT - VEIL_BOOST_FADE,
+      );
+    } else if (VEIL_BOOST_REST > 0) {
+      // Quadro já aberto na entrada: só o reforço parcial, junto com o véu superior.
+      timeline.fromTo(targets.veilBoost, { opacity: 0 }, { opacity: VEIL_BOOST_REST, duration: veilInFade }, veilIn);
+    }
   }
 
   // O CTA só aceita ponteiro quando está de fato visível (evita clique em link invisível).

@@ -28,8 +28,12 @@ function siteMeta(env: Record<string, string>): Plugin {
         { tag: 'link', attrs: { rel: 'canonical', href: `${siteUrl}/` }, injectTo: 'head' },
         { tag: 'meta', attrs: { property: 'og:url', content: `${siteUrl}/` }, injectTo: 'head' },
       ];
-      // og:image e twitter:image precisam de URL absoluta para a maioria dos scrapers.
-      return { html: html.replaceAll('content="/og-image.jpg"', `content="${siteUrl}/og-image.jpg"`), tags };
+      // og:image e twitter:image precisam de URL absoluta para a maioria dos scrapers;
+      // no JSON-LD, `logo` também deve ser absoluto e `url` identifica o site da Organization.
+      const absolute = html
+        .replaceAll('content="/og-image.jpg"', `content="${siteUrl}/og-image.jpg"`)
+        .replace(/"logo": "\//, `"url": "${siteUrl}/",\n        "logo": "${siteUrl}/`);
+      return { html: absolute, tags };
     },
     generateBundle() {
       this.emitFile({
