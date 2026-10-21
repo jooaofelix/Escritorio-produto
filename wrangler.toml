@@ -1,9 +1,12 @@
 # Worker só de assets estáticos (sem script): serve o build do Vite em ./dist.
-# No Workers Builds, o "Build command" do painel deve ser `npm run build` e o
-# "Deploy command" `npx wrangler deploy`. O nome é sobrescrito pelo do painel.
+# `wrangler deploy` executa o [build] abaixo antes de publicar, então o deploy funciona
+# mesmo com o "Build command" do painel vazio. O nome é sobrescrito pelo do painel.
 name = "coloridamente"
 compatibility_date = "2026-10-01"
 
 [assets]
 directory = "./dist"
 not_found_handling = "404-page"
+
+[build]
+command = "npm run build"

@@ -25,7 +25,7 @@ export const VEIL_BOOST_OUT = 204;
 export const VEIL_BOOST_FADE = 12;
 /**
  * Opacidade em que o reforço repousa depois de VEIL_BOOST_OUT (não some de todo): em viewports 16:10
- * (1440×900, 1680×1050) a borda azul da agenda passa atrás do texto de apoio do capítulo final, que caía
+ * (ex.: 1440×900, 1680×925) a borda azul da agenda passa atrás do texto de apoio do capítulo final, que caía
  * para ~3,7:1 (p5). Com 0,4 fica ≥ 5:1 em todos os tamanhos medidos, sem apagar a composição.
  */
 export const VEIL_BOOST_REST = 0.4;
