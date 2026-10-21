@@ -20,6 +20,9 @@ export const TEXT_OVERLAP = 3;
 export const SCROLL_FACTOR = { wide: 3, stacked: 2.4 } as const;
 /** Limite de devicePixelRatio do canvas. */
 export const MAX_DPR = { wide: 2, stacked: 1.5 } as const;
+/** Reforço do véu do capítulo final: termina de sumir neste frame (quadro já aberto), em VEIL_BOOST_FADE frames. */
+export const VEIL_BOOST_OUT = 204;
+export const VEIL_BOOST_FADE = 12;
 /** Suavização do scrub (s). */
 export const SCRUB = 0.5;
 

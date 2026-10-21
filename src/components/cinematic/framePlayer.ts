@@ -34,7 +34,6 @@ export class FramePlayer {
   private readonly loader: FrameLoader;
   private readonly renderer: CanvasRenderer;
   private layout: PlayerLayout = { maxDpr: 1, focalAt: () => 0.5 };
-  private frame = 0;
   private want = 0;
   private drawn = -1;
   private dirty = true;
@@ -83,7 +82,6 @@ export class FramePlayer {
 
   /** Chamado a cada atualização da timeline (já dentro do rAF do ticker do GSAP). */
   setFrame(frame: number): void {
-    this.frame = frame;
     const index = Math.min(this.set.urls.length - 1, Math.max(0, Math.round(frame / this.set.step)));
     if (index === this.want) return;
     this.want = index;
@@ -118,7 +116,8 @@ export class FramePlayer {
     if (index < 0 || (index === this.drawn && !this.dirty)) return;
     const image = this.loader.get(index);
     if (!image) return;
-    this.renderer.draw(image, this.layout.focalAt(this.frame));
+    // Enquadramento derivado do frame desenhado (não do float da rolagem): mesmo frame, mesmo pixel, nos dois sentidos.
+    this.renderer.draw(image, this.layout.focalAt(index * this.set.step));
     this.drawn = index;
     this.dirty = false;
   }
@@ -139,7 +138,7 @@ export class FramePlayer {
     if (!poster || this.ready) return;
     const { cssWidth, cssHeight } = this.renderer;
     if (!cssWidth || !cssHeight) return;
-    const box = coverBox(cssWidth, cssHeight, this.set.width, this.set.height, this.layout.focalAt(this.frame));
+    const box = coverBox(cssWidth, cssHeight, this.set.width, this.set.height, this.layout.focalAt(this.want * this.set.step));
     poster.style.objectPosition = `${box.x}px ${box.y}px`;
   }
 }

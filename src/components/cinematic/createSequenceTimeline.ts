@@ -1,7 +1,17 @@
 import { chapters } from '@/data/chapters';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { LAST_VIDEO_FRAME } from './frames';
-import { CTA_ACTIVE_TIME, END_HOLD, SCRUB, TEXT_FADE, TEXT_OVERLAP, TEXT_SHIFT, TIMELINE_LENGTH } from './sequence';
+import {
+  CTA_ACTIVE_TIME,
+  END_HOLD,
+  SCRUB,
+  TEXT_FADE,
+  TEXT_OVERLAP,
+  TEXT_SHIFT,
+  TIMELINE_LENGTH,
+  VEIL_BOOST_FADE,
+  VEIL_BOOST_OUT,
+} from './sequence';
 
 export interface SequenceTargets {
   /** Elemento fixado (pin) durante a sequência. */
@@ -15,6 +25,11 @@ export interface SequenceTargets {
   readonly veilSide: HTMLElement | null;
   /** Véu superior atrás do capítulo final (só no layout largo). */
   readonly veilTop: HTMLElement | null;
+  /**
+   * Reforço temporário do véu superior: na entrada do capítulo final a câmera ainda está fechada
+   * e os objetos pretos ficam atrás do texto; some quando o quadro abre (contraste AA medido).
+   */
+  readonly veilBoost: HTMLElement | null;
   readonly cta: HTMLElement | null;
 }
 
@@ -22,7 +37,6 @@ export interface SequenceOptions {
   /** Distância de rolagem do pin, em px (reavaliada a cada refresh do ScrollTrigger). */
   readonly scrollLength: () => number;
   readonly onFrame: (frame: number) => void;
-  readonly onProgress: (progress: number) => void;
 }
 
 export interface SequenceTimeline {
@@ -84,8 +98,20 @@ export function createSequenceTimeline(targets: SequenceTargets, options: Sequen
       beforeFinal.end + TEXT_OVERLAP - veilFade,
     );
   }
+  // Véus do capítulo final completos antes de o texto ficar opaco (o fade do texto é ease-out).
+  const veilInFade = TEXT_FADE;
+  const veilIn = finalChapter.start - TEXT_OVERLAP - veilInFade / 2;
   if (targets.veilTop) {
-    timeline.fromTo(targets.veilTop, { opacity: 0 }, { opacity: 1, duration: veilFade }, finalChapter.start - TEXT_OVERLAP - 2);
+    timeline.fromTo(targets.veilTop, { opacity: 0 }, { opacity: 1, duration: veilInFade }, veilIn);
+  }
+  if (targets.veilBoost) {
+    timeline.fromTo(targets.veilBoost, { opacity: 0 }, { opacity: 1, duration: veilInFade }, veilIn);
+    timeline.fromTo(
+      targets.veilBoost,
+      { opacity: 1 },
+      { opacity: 0, duration: VEIL_BOOST_FADE, immediateRender: false },
+      VEIL_BOOST_OUT - VEIL_BOOST_FADE,
+    );
   }
 
   // O CTA só aceita ponteiro quando está de fato visível (evita clique em link invisível).
@@ -107,7 +133,6 @@ export function createSequenceTimeline(targets: SequenceTargets, options: Sequen
     end: () => `+=${Math.round(options.scrollLength())}`,
     scrub: SCRUB,
     refreshPriority: 10,
-    onUpdate: (self) => options.onProgress(self.progress),
   });
 
   return { timeline, trigger };

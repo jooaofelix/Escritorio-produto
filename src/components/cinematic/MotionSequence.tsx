@@ -46,13 +46,15 @@ export function MotionSequence({ onFail }: MotionSequenceProps) {
   const hintRef = useRef<HTMLParagraphElement>(null);
   const veilSideRef = useRef<HTMLDivElement>(null);
   const veilTopRef = useRef<HTMLDivElement>(null);
+  const veilBoostRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
   const textRefs = useRef<(HTMLDivElement | null)[]>([]);
   const fillRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   const playerRef = useRef<FramePlayer | null>(null);
   const sequenceRef = useRef<ReturnType<typeof createSequenceTimeline> | null>(null);
-  const progressRef = useRef(0);
+  /** Progresso no momento em que a timeline foi desfeita (troca de layout): retomado na próxima. */
+  const resumeProgressRef = useRef(0);
   const onFailRef = useRef(onFail);
   useLayoutEffect(() => {
     onFailRef.current = onFail;
@@ -111,26 +113,29 @@ export function MotionSequence({ onFail }: MotionSequenceProps) {
           hint: hintRef.current,
           veilSide: veilSideRef.current,
           veilTop: veilTopRef.current,
+          veilBoost: veilBoostRef.current,
           cta,
         },
         {
           scrollLength: () => window.innerHeight * factor,
           onFrame: (frame) => player.setFrame(frame),
-          onProgress: (progress) => {
-            progressRef.current = progress;
-          },
         },
       );
     }, stage);
 
     // Troca de layout no meio da sequência: mantém o mesmo ponto da história.
-    const previous = progressRef.current;
+    const previous = resumeProgressRef.current;
+    resumeProgressRef.current = 0;
     const trigger = sequenceRef.current?.trigger;
     if (trigger && previous > 0 && previous < 1) {
+      // Criado durante o refresh do resize, o trigger ainda não mediu start/end: mede antes de rolar.
+      if (!(trigger.end > trigger.start)) trigger.refresh();
       window.scrollTo({ top: trigger.start + (trigger.end - trigger.start) * previous, behavior: 'instant' });
     }
 
     return () => {
+      // Lido antes do revert: ao desfazer o pin o ScrollTrigger volta o progresso a 0.
+      resumeProgressRef.current = sequenceRef.current?.trigger.progress ?? 0;
       ctx.revert();
       sequenceRef.current = null;
       if (cta) cta.style.pointerEvents = '';
@@ -225,6 +230,11 @@ export function MotionSequence({ onFail }: MotionSequenceProps) {
               aria-hidden="true"
               className="absolute inset-0 bg-linear-to-b from-studio/90 from-0% to-transparent to-45% opacity-0"
             />
+            <div
+              ref={veilBoostRef}
+              aria-hidden="true"
+              className="absolute inset-0 bg-linear-to-b from-studio/70 from-20% via-studio/60 via-38% to-transparent to-52% opacity-0"
+            />
 
             {/* Capítulos 1–3: colunas 1–5, centrados na vertical; progresso logo abaixo. */}
             <div className="container-page absolute inset-x-0 top-0 bottom-0 grid grid-cols-12 items-center gap-x-6 pt-header lg:gap-x-8">
@@ -242,7 +252,7 @@ export function MotionSequence({ onFail }: MotionSequenceProps) {
 
             {/* Capítulo final: centralizado no alto, abaixo do header. */}
             <div className="container-page absolute inset-x-0 top-0 pt-[calc(var(--spacing-header)+8vh)]">
-              <div ref={setText(lastIndex)} className="mx-auto max-w-[48rem] text-center opacity-0">
+              <div ref={setText(lastIndex)} className="mx-auto max-w-[72rem] text-center opacity-0">
                 <ChapterCopy chapter={finalChapter} index={lastIndex} align="center" ctaRef={ctaRef} onCtaFocus={revealCta} />
               </div>
             </div>

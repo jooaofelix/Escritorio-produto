@@ -18,7 +18,7 @@ export function ChapterCopy({ chapter, index, align = 'start', ctaRef, onCtaFocu
   return (
     <>
       <Heading className="text-display-xl text-ink">{chapter.title}</Heading>
-      <p className={`mt-4 max-w-[34ch] text-lead text-ink ${centered ? 'mx-auto' : ''}`}>{chapter.body}</p>
+      <p className={`mt-4 text-lead text-ink ${centered ? 'mx-auto max-w-[52ch]' : 'max-w-[34ch]'}`}>{chapter.body}</p>
       {chapter.cta ? (
         <a
           ref={ctaRef}
