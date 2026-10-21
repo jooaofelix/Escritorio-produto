@@ -10,7 +10,6 @@ Stack: React 19 + TypeScript + Vite 8 + Tailwind CSS v4 + GSAP/ScrollTrigger + C
 
 ```bash
 npm install
-cp .env.example .env.local   # preencha VITE_WHATSAPP_NUMBER
 npm run dev                  # http://localhost:5173
 npm run build && npm run preview
 ```
@@ -19,7 +18,7 @@ npm run build && npm run preview
 
 | Variável | Obrigatória | Uso |
 | --- | --- | --- |
-| `VITE_WHATSAPP_NUMBER` | Sim, no build da Cloudflare | Número comercial com DDI e DDD, só dígitos. Sem ele o build na Cloudflare Pages falha de propósito, para nunca publicar CTAs sem destino. |
+| `VITE_WHATSAPP_NUMBER` | Sim, no build da Cloudflare | Número comercial com DDI e DDD, só dígitos. O padrão atual está em `.env` (versionado). Uma variável com o mesmo nome no painel da Cloudflare tem prioridade. Se ficar vazio, o build na Cloudflare Pages falha de propósito, para nunca publicar CTAs sem destino. |
 | `VITE_SITE_URL` | Não | URL pública final (sem `/` no fim). Gera `canonical`, `og:url`, `og:image` absoluta e `sitemap.xml`. |
 
 A mensagem padrão do WhatsApp e a navegação ficam em `src/config/site.ts`.

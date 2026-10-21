@@ -20,6 +20,13 @@ export const site = {
 
 export const hasWhatsAppNumber = whatsappNumber.length >= 10;
 
+/** Número para exibição: 5512991338866 → (12) 99133-8866. */
+export function formatWhatsAppDisplay(number: string = whatsappNumber): string {
+  const local = number.startsWith('55') && number.length >= 12 ? number.slice(2) : number;
+  const match = /^(\d{2})(\d{4,5})(\d{4})$/.exec(local);
+  return match ? `(${match[1]}) ${match[2]}-${match[3]}` : number;
+}
+
 /** Link do WhatsApp com mensagem pré-preenchida. Sem número configurado, abre o WhatsApp para o visitante escolher o contato. */
 export function whatsappUrl(message: string = site.whatsapp.defaultMessage): string {
   const text = encodeURIComponent(message);
