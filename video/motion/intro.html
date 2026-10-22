@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Coloridamente — abertura</title>
+<style>
+  :root {
+    --offwhite: #FAF9F6;
+    --coral: #E98071; --olive: #A7B571; --sun: #F9C848; --mint: #A8DEC9; --blush: #F6AAA7;
+  }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1080px; height: 1920px; overflow: hidden;
+    background: var(--offwhite);
+  }
+  .stage { position: absolute; inset: 0; }
+
+  /* Grupo logo + barra: a saída age sobre o conjunto. Centro ótico do grupo ≈ 46 % da altura. */
+  .group {
+    position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+    transform-origin: 540px 920px;
+  }
+  .logo {
+    position: absolute;
+    width: 650px; height: auto;            /* 868:352 → 650 × 263,6 */
+    left: 215px;                           /* (1080 − 650) / 2 */
+    top: 751px;                            /* centro em 883 px = 46 % */
+    transform-origin: 50% 50%;
+    opacity: 0;
+  }
+  /* Barra de cor: 5 patches iguais, cantos vivos, ordem fixa (faixa de controle da gráfica). */
+  .bar {
+    position: absolute; left: 410px; top: 1094px;   /* 5 × 52 = 260 px, centralizada */
+    width: 260px; height: 9px; display: flex;
+  }
+  .bar i { display: block; flex: 1 1 0; height: 100%; opacity: 0; }
+  .bar i:nth-child(1) { background: var(--coral); }
+  .bar i:nth-child(2) { background: var(--olive); }
+  .bar i:nth-child(3) { background: var(--sun); }
+  .bar i:nth-child(4) { background: var(--mint); }
+  .bar i:nth-child(5) { background: var(--blush); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="group" id="group">
+    <img class="logo" id="logo" src="../../public/brand/logo-coloridamente.svg" alt="Coloridamente">
+    <div class="bar" id="bar"><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+</div>
+<script src="timing.js"></script>
+<script>
+(function () {
+  const { prog, mix, ease } = window.Motion;
+  const group = document.getElementById('group');
+  const logo = document.getElementById('logo');
+  const patches = Array.from(document.querySelectorAll('#bar i'));
+
+  window.SCENE = { name: 'intro', frames: 66, fps: 30 };
+
+  window.renderAt = function (t) {
+    // 0–0,6 s · barra de cor entra em cascata (esq. → dir.)
+    patches.forEach((el, i) => {
+      const a = 0.02 + i * 0.055;
+      const p = prog(t, a, a + 0.36, ease.out);
+      el.style.opacity = prog(t, a, a + 0.24, ease.soft).toFixed(4);
+      el.style.transform = `translateY(${mix(14, 0, p).toFixed(3)}px)`;
+    });
+
+    // 0,25–1,1 s · revelação da logo
+    const lp = prog(t, 0.25, 1.1, ease.out);
+    const lo = prog(t, 0.25, 0.85, ease.soft);
+    logo.style.opacity = lo.toFixed(4);
+    logo.style.transform = `translateY(${mix(24, 0, lp).toFixed(3)}px) scale(${mix(0.96, 1, lp).toFixed(5)})`;
+
+    // 1,5–2,08 s · saída do conjunto → placa off-white limpa a partir de 2,1 s
+    const xp = prog(t, 1.5, 2.08, ease.exit);
+    const xo = prog(t, 1.5, 2.0, ease.exit);
+    group.style.opacity = (1 - xo).toFixed(4);
+    group.style.transform = `translateY(${mix(0, -12, xp).toFixed(3)}px) scale(${mix(1, 1.012, xp).toFixed(5)})`;
+    group.style.visibility = xo >= 1 ? 'hidden' : 'visible';
+  };
+
+  window.sceneReady = window.Motion.ready().then(() => { window.renderAt(0); return true; });
+})();
+</script>
+</body>
+</html>
