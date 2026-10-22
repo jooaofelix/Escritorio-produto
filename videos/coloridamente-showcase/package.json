@@ -1,0 +1,20 @@
+{
+  "name": "coloridamente-site-showcase",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "bash scripts/render.sh"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.537",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "remotion": "^4.0.537"
+  },
+  "devDependencies": {
+    "@fontsource/lato": "^5.2.7",
+    "@types/react": "^19.2.2",
+    "typescript": "^5.9.3"
+  }
+}
