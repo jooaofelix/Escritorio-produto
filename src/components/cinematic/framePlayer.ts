@@ -1,11 +1,9 @@
-import { CanvasRenderer, coverBox } from './canvasRenderer';
+import { CanvasRenderer } from './canvasRenderer';
 import { FrameLoader, prefersReducedData } from './frameLoader';
 import type { FrameSet } from './frames';
 
 export interface PlayerLayout {
   readonly maxDpr: number;
-  /** Ponto focal X (0–1) para um frame do vídeo. */
-  readonly focalAt: (frame: number) => number;
 }
 
 export interface PlayerElements {
@@ -27,13 +25,13 @@ function scheduleIdle(callback: () => void): () => void {
 
 /**
  * Liga o carregador ao canvas: recebe o frame (float, em frames do vídeo) vindo da timeline,
- * converte para o índice de arquivo do conjunto e só redesenha quando esse índice muda
+ * arredonda para o índice de arquivo e só redesenha quando esse índice muda
  * (ou quando chega um frame carregado mais próximo do desejado, ou após resize).
  */
 export class FramePlayer {
   private readonly loader: FrameLoader;
   private readonly renderer: CanvasRenderer;
-  private layout: PlayerLayout = { maxDpr: 1, focalAt: () => 0.5 };
+  private layout: PlayerLayout = { maxDpr: 1 };
   private want = 0;
   private drawn = -1;
   private dirty = true;
@@ -82,7 +80,7 @@ export class FramePlayer {
 
   /** Chamado a cada atualização da timeline (já dentro do rAF do ticker do GSAP). */
   setFrame(frame: number): void {
-    const index = Math.min(this.set.urls.length - 1, Math.max(0, Math.round(frame / this.set.step)));
+    const index = Math.min(this.set.urls.length - 1, Math.max(0, Math.round(frame)));
     if (index === this.want) return;
     this.want = index;
     this.loader.setFocus(index);
@@ -94,7 +92,6 @@ export class FramePlayer {
     if (this.disposed) return;
     this.renderer.resize(this.layout.maxDpr);
     this.dirty = true;
-    this.syncPoster();
     this.render();
   }
 
@@ -104,10 +101,7 @@ export class FramePlayer {
     this.cancelIdle?.();
     this.loader.dispose();
     this.elements.canvas.style.opacity = '';
-    if (this.elements.poster) {
-      this.elements.poster.style.visibility = '';
-      this.elements.poster.style.objectPosition = '';
-    }
+    if (this.elements.poster) this.elements.poster.style.visibility = '';
   }
 
   private render(): void {
@@ -116,8 +110,8 @@ export class FramePlayer {
     if (index < 0 || (index === this.drawn && !this.dirty)) return;
     const image = this.loader.get(index);
     if (!image) return;
-    // Enquadramento derivado do frame desenhado (não do float da rolagem): mesmo frame, mesmo pixel, nos dois sentidos.
-    this.renderer.draw(image, this.layout.focalAt(index * this.set.step));
+    // Enquadramento fixo (cover centrado, igual ao pôster): mesmo frame, mesmo pixel, nos dois sentidos.
+    this.renderer.draw(image);
     this.drawn = index;
     this.dirty = false;
   }
@@ -130,15 +124,5 @@ export class FramePlayer {
       this.raf = 0;
       this.render();
     });
-  }
-
-  /** Mantém o pôster alinhado ao mesmo enquadramento do canvas (sem salto no primeiro desenho). */
-  private syncPoster(): void {
-    const poster = this.elements.poster;
-    if (!poster || this.ready) return;
-    const { cssWidth, cssHeight } = this.renderer;
-    if (!cssWidth || !cssHeight) return;
-    const box = coverBox(cssWidth, cssHeight, this.set.width, this.set.height, this.layout.focalAt(this.want * this.set.step));
-    poster.style.objectPosition = `${box.x}px ${box.y}px`;
   }
 }

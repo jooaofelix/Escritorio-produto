@@ -1,25 +1,25 @@
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { chapters, sequenceLabel } from '@/data/chapters';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
-import { ChapterCopy } from './ChapterCopy';
+import { ChapterCopy, ChapterCta } from './ChapterCopy';
 import { createSequenceTimeline, scrollForTime } from './createSequenceTimeline';
 import { FramePlayer, type PlayerLayout } from './framePlayer';
-import { DESKTOP_FRAMES_QUERY, getFrameSet, type FrameSetKey } from './frames';
+import { DESKTOP_FRAMES_QUERY, FRAME_ASPECT, getFrameSet, type FrameSetKey } from './frames';
 import { ProgressIndicator } from './ProgressIndicator';
-import {
-  CTA_ACTIVE_TIME,
-  CTA_REVEAL_TIME,
-  MAX_DPR,
-  SCROLL_FACTOR,
-  stackedFocalAt,
-  wideFocalAt,
-} from './sequence';
+import { CTA_ACTIVE_TIME, CTA_REVEAL_TIME, MAX_DPR, SCROLL_FACTOR } from './sequence';
 import { STACKED_LAYOUT_QUERY, useMediaQuery } from './useMediaQuery';
 
-const WIDE_LAYOUT: PlayerLayout = { maxDpr: MAX_DPR.wide, focalAt: wideFocalAt };
-const STACKED_LAYOUT: PlayerLayout = { maxDpr: MAX_DPR.stacked, focalAt: stackedFocalAt };
+const WIDE_LAYOUT: PlayerLayout = { maxDpr: MAX_DPR.wide };
+const STACKED_LAYOUT: PlayerLayout = { maxDpr: MAX_DPR.stacked };
 
-const lastIndex = chapters.length - 1;
+/**
+ * Painel 9:16 do layout largo: altura = viewport − header − respiro (em cima e embaixo), sem cortar o
+ * quadro; se a coluna for estreita demais, a largura manda e a altura acompanha (aspect-ratio).
+ */
+const PANEL_STYLE: CSSProperties = {
+  aspectRatio: String(FRAME_ASPECT),
+  width: `min(100%, calc((100svh - var(--spacing-header) - 2 * var(--panel-gap)) * ${FRAME_ASPECT}))`,
+};
 
 interface MotionSequenceProps {
   /** O primeiro frame (ou o canvas) falhou: o pai troca para a versão estática. */
@@ -27,7 +27,11 @@ interface MotionSequenceProps {
 }
 
 /**
- * Sequência frame-by-frame em canvas, fixada (pin) e controlada pela rolagem.
+ * Sequência frame-by-frame em canvas (vídeo vertical 9:16), fixada (pin) e controlada pela rolagem.
+ *
+ * - Largo (desktop/paisagem): coluna de texto à esquerda e o canvas como painel 9:16 à direita, inteiro.
+ * - Tela cheia (mobile/retrato): canvas em `cover` no viewport; texto no alto, sobre um véu studio
+ *   que acompanha cada capítulo; o CTA do capítulo final fica na base.
  *
  * Estrutura estável entre layouts: o canvas e o pôster ficam sempre na mesma posição da árvore,
  * para o FramePlayer (efeito 1) sobreviver a uma troca de layout; só a timeline (efeito 2) é refeita.
@@ -44,9 +48,6 @@ export function MotionSequence({ onFail }: MotionSequenceProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const posterRef = useRef<HTMLImageElement>(null);
   const hintRef = useRef<HTMLParagraphElement>(null);
-  const veilSideRef = useRef<HTMLDivElement>(null);
-  const veilTopRef = useRef<HTMLDivElement>(null);
-  const veilBoostRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
   const textRefs = useRef<(HTMLDivElement | null)[]>([]);
   const fillRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -111,9 +112,6 @@ export function MotionSequence({ onFail }: MotionSequenceProps) {
           texts: textRefs.current.slice(0, chapters.length),
           fills: fillRefs.current.slice(0, chapters.length),
           hint: hintRef.current,
-          veilSide: veilSideRef.current,
-          veilTop: veilTopRef.current,
-          veilBoost: veilBoostRef.current,
           cta,
         },
         {
@@ -153,111 +151,95 @@ export function MotionSequence({ onFail }: MotionSequenceProps) {
     sequence.trigger.getTween()?.progress(1);
   }, []);
 
-  const finalChapter = chapters[lastIndex]!;
-
   return (
     // Wrapper próprio: o pin-spacer do GSAP fica dentro dele, e o React só remove este nó.
     <div className="relative">
-      <div ref={stageRef} className="relative isolate flex h-svh flex-col overflow-hidden bg-studio">
-        {/* Faixa do header fixo (layout empilhado). */}
-        <div aria-hidden="true" className={stacked ? 'h-header shrink-0' : 'hidden'} />
-
-        {/* Mídia: pôster (primeiro frame, LCP) até o primeiro desenho; depois o canvas. */}
+      <div ref={stageRef} className="relative isolate h-svh overflow-hidden bg-studio [--panel-gap:clamp(1rem,4svh,2.5rem)]">
         <div
-          role="img"
-          aria-label={sequenceLabel}
           className={
             stacked
-              ? 'relative h-[min(58svh,calc(100svh_-_var(--spacing-header)_-_17rem))] shrink-0'
-              : 'absolute inset-0'
+              ? 'absolute inset-0'
+              : 'container-page grid h-full grid-cols-12 items-center gap-x-6 pt-[calc(var(--spacing-header)_+_var(--panel-gap))] pb-(--panel-gap) lg:gap-x-8'
           }
         >
-          <img
-            ref={posterRef}
-            src={frameSet.urls[0]}
-            alt=""
-            aria-hidden="true"
-            width={frameSet.width}
-            height={frameSet.height}
-            fetchPriority="high"
-            onError={() => onFailRef.current()}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-          <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 h-full w-full opacity-0" />
+          {/* Mídia: pôster (primeiro frame, LCP) até o primeiro desenho; depois o canvas. Sempre o 1º filho. */}
           <div
-            aria-hidden="true"
+            role="img"
+            aria-label={sequenceLabel}
+            style={stacked ? undefined : PANEL_STYLE}
             className={
-              stacked ? 'pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-linear-to-b from-transparent to-studio' : 'hidden'
+              stacked
+                ? 'absolute inset-0'
+                : 'relative col-span-6 col-start-7 row-start-1 justify-self-end overflow-hidden rounded-xs'
             }
-          />
-          <p
-            ref={hintRef}
-            aria-hidden="true"
-            className={`pointer-events-none absolute left-1/2 -translate-x-1/2 rounded-xs bg-studio/85 px-3 py-1 text-small whitespace-nowrap text-ink ${
-              stacked ? 'bottom-3' : 'bottom-7'
-            }`}
           >
-            Role para ver <span className="ml-1">↓</span>
-          </p>
-        </div>
-
-        {stacked ? (
-          <div className="container-page relative flex min-h-0 flex-1 flex-col pt-3 pb-[max(1rem,env(safe-area-inset-bottom))]">
-            <ProgressIndicator fillRef={setFill} />
-            <div className="pointer-events-none mt-5 grid">
-              {chapters.map((chapter, i) => (
-                <div key={chapter.id} ref={setText(i)} className={`col-start-1 row-start-1 ${i ? 'opacity-0' : ''}`}>
-                  <ChapterCopy
-                    chapter={chapter}
-                    index={i}
-                    ctaRef={chapter.cta ? ctaRef : undefined}
-                    onCtaFocus={chapter.cta ? revealCta : undefined}
-                  />
-                </div>
-              ))}
-            </div>
+            <img
+              ref={posterRef}
+              src={frameSet.urls[0]}
+              alt=""
+              aria-hidden="true"
+              width={frameSet.width}
+              height={frameSet.height}
+              fetchPriority="high"
+              onError={() => onFailRef.current()}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 h-full w-full opacity-0" />
+            <p
+              ref={hintRef}
+              aria-hidden="true"
+              className={`pointer-events-none absolute left-1/2 -translate-x-1/2 rounded-xs bg-studio/85 px-3 py-1 text-small whitespace-nowrap text-ink ${
+                stacked ? 'bottom-[max(1.25rem,env(safe-area-inset-bottom))]' : 'bottom-5'
+              }`}
+            >
+              Role para ver <span className="ml-1">↓</span>
+            </p>
           </div>
-        ) : (
-          <div className="pointer-events-none absolute inset-0">
-            {/* Véus funcionais (contraste AA do texto ink sobre o frame). */}
-            <div
-              ref={veilSideRef}
-              aria-hidden="true"
-              className="absolute inset-0 bg-linear-to-r from-studio/90 from-0% via-studio/65 via-38% to-transparent to-62%"
-            />
-            <div
-              ref={veilTopRef}
-              aria-hidden="true"
-              className="absolute inset-0 bg-linear-to-b from-studio/90 from-0% to-transparent to-45% opacity-0"
-            />
-            <div
-              ref={veilBoostRef}
-              aria-hidden="true"
-              className="absolute inset-0 bg-linear-to-b from-studio/70 from-20% via-studio/60 via-38% to-transparent to-52% opacity-0"
-            />
 
-            {/* Capítulos 1–3: colunas 1–5, centrados na vertical; progresso logo abaixo. */}
-            <div className="container-page absolute inset-x-0 top-0 bottom-0 grid grid-cols-12 items-center gap-x-6 pt-header lg:gap-x-8">
-              <div className="col-span-5">
-                <div className="grid">
-                  {chapters.slice(0, lastIndex).map((chapter, i) => (
-                    <div key={chapter.id} ref={setText(i)} className={`col-start-1 row-start-1 self-end ${i ? 'opacity-0' : ''}`}>
-                      <ChapterCopy chapter={chapter} index={i} />
+          {stacked ? (
+            <div className="container-page pointer-events-none absolute inset-0 flex flex-col pt-[calc(var(--spacing-header)_+_0.75rem)] pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+              <ProgressIndicator fillRef={setFill} className="relative z-10" />
+              <div className="mt-4 grid min-h-0 flex-1">
+                {chapters.map((chapter, i) => (
+                  <div
+                    key={chapter.id}
+                    ref={setText(i)}
+                    className={`col-start-1 row-start-1 flex flex-col ${i ? 'opacity-0' : ''}`}
+                  >
+                    <div className="relative">
+                      {/* Véu funcional (contraste AA do ink sobre o frame): do topo até o fim do texto, depois some. */}
+                      <div aria-hidden="true" className="absolute -inset-x-gutter -top-[50svh] bottom-0 bg-studio/70" />
+                      <div
+                        aria-hidden="true"
+                        className="absolute -inset-x-gutter top-full h-16 bg-linear-to-b from-studio/70 to-transparent"
+                      />
+                      <div className="relative">
+                        <ChapterCopy chapter={chapter} index={i} withCta={false} />
+                      </div>
                     </div>
-                  ))}
-                </div>
-                <ProgressIndicator fillRef={setFill} className="mt-10" />
+                    {chapter.cta ? (
+                      <div className="mt-auto pt-6">
+                        <ChapterCta label={chapter.cta} ctaRef={ctaRef} onFocus={revealCta} />
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
               </div>
             </div>
-
-            {/* Capítulo final: centralizado no alto, abaixo do header. */}
-            <div className="container-page absolute inset-x-0 top-0 pt-[calc(var(--spacing-header)+3vh)]">
-              <div ref={setText(lastIndex)} className="mx-auto max-w-[72rem] text-center opacity-0">
-                <ChapterCopy chapter={finalChapter} index={lastIndex} align="center" ctaRef={ctaRef} onCtaFocus={revealCta} />
+          ) : (
+            // Coluna de texto (cols 1–6), centrada na vertical; progresso logo abaixo.
+            <div className="pointer-events-none col-span-6 col-start-1 row-start-1">
+              <div className="grid">
+                {chapters.map((chapter, i) => (
+                  <div key={chapter.id} ref={setText(i)} className={`col-start-1 row-start-1 self-end ${i ? 'opacity-0' : ''}`}>
+                    <ChapterCopy chapter={chapter} index={i} ctaRef={ctaRef} onCtaFocus={revealCta} />
+                  </div>
+                ))}
               </div>
+              <ProgressIndicator fillRef={setFill} className="mt-10" />
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

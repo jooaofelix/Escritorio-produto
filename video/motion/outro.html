@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Coloridamente — encerramento</title>
+<style>
+  @font-face {
+    font-family: 'Fraunces Variable';
+    src: url('../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2') format('woff2');
+    font-weight: 100 900; font-style: normal; font-display: block;
+  }
+  :root {
+    --offwhite: #FAF9F6; --ink: #242424;
+    --coral: #E98071; --olive: #A7B571; --sun: #F9C848; --mint: #A8DEC9; --blush: #F6AAA7;
+  }
+  html, body { margin: 0; padding: 0; }
+  body { width: 1080px; height: 1920px; overflow: hidden; background: var(--offwhite); }
+  .layer { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+  canvas.layer { display: block; }
+
+  /* Véus off-white em curva suave (várias paradas → sem linha de corte visível).
+     Topo: limpa o fundo taupe atrás da logo e some antes dos produtos (≈ 40 %).
+     Base: só ilumina o campo da frase; morre em ≈ 67 %, abaixo da bandeja. */
+  .veil-top {
+    background: linear-gradient(180deg,
+      rgba(250,249,246,.97) 0%,
+      rgba(250,249,246,.96) 20%,
+      rgba(250,249,246,.92) 27%,
+      rgba(250,249,246,.78) 31.5%,
+      rgba(250,249,246,.52) 35.5%,
+      rgba(250,249,246,.24) 39.5%,
+      rgba(250,249,246,.08) 43%,
+      rgba(250,249,246,0) 46%);
+    opacity: 0;
+  }
+  .veil-bottom {
+    background: linear-gradient(0deg,
+      rgba(250,249,246,.80) 0%,
+      rgba(250,249,246,.74) 14%,
+      rgba(250,249,246,.58) 22%,
+      rgba(250,249,246,.32) 27.5%,
+      rgba(250,249,246,.12) 31%,
+      rgba(250,249,246,0) 34%);
+    opacity: 0;
+  }
+
+  .logo {
+    position: absolute;
+    width: 600px; height: auto;            /* 868:352 → 600 × 243,3 */
+    left: 240px; top: 282px;               /* centro ≈ y 404 (21 %) */
+    transform-origin: 50% 50%;
+    opacity: 0;
+  }
+  .tagline {
+    position: absolute; left: 0; width: 1080px; top: 1447px;
+    margin: 0; text-align: center; color: var(--ink);
+    font-family: 'Fraunces Variable', serif;
+    font-size: 68px; line-height: 1.1; font-weight: 460;
+    font-variation-settings: 'SOFT' 100, 'WONK' 0;
+    font-optical-sizing: auto;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    font-kerning: normal;
+    opacity: 0;
+  }
+  .bar {
+    position: absolute; left: 440px; top: 1576px;   /* 5 × 40 = 200 px */
+    width: 200px; height: 7px; display: flex;
+  }
+  .bar i { display: block; flex: 1 1 0; height: 100%; opacity: 0; }
+  .bar i:nth-child(1) { background: var(--coral); }
+  .bar i:nth-child(2) { background: var(--olive); }
+  .bar i:nth-child(3) { background: var(--sun); }
+  .bar i:nth-child(4) { background: var(--mint); }
+  .bar i:nth-child(5) { background: var(--blush); }
+</style>
+</head>
+<body>
+<canvas class="layer" id="bg" width="1080" height="1920"></canvas>
+<div class="layer veil-top" id="veilTop"></div>
+<div class="layer veil-bottom" id="veilBottom"></div>
+<img class="logo" id="logo" src="../../public/brand/logo-coloridamente.svg" alt="Coloridamente">
+<p class="tagline" id="tagline">Sua ideia ganha forma aqui.</p>
+<div class="bar" id="bar"><i></i><i></i><i></i><i></i><i></i></div>
+<img id="plate" src="../build/last-frame.png" alt="" style="display:none">
+<script src="timing.js"></script>
+<script>
+(function () {
+  const { prog, mix, ease } = window.Motion;
+  const W = 1080, H = 1920;
+  // Push-in a partir da coleção (bbox escura medida: x 58–1069, y 761–1294).
+  // OY = centro vertical dos produtos. OX deslocado de 563 → 760: com 1,035 a bandeja
+  // organizadora (borda em x 1069) não sai do quadro; o centro dos produtos deriva só ~7 px.
+  const OX = 760, OY = 1028;
+  const S_END = 1.035;
+
+  const canvas = document.getElementById('bg');
+  const ctx = canvas.getContext('2d', { alpha: false });
+  const plate = document.getElementById('plate');
+  const veilTop = document.getElementById('veilTop');
+  const veilBottom = document.getElementById('veilBottom');
+  const logo = document.getElementById('logo');
+  const tagline = document.getElementById('tagline');
+  const patches = Array.from(document.querySelectorAll('#bar i'));
+
+  window.SCENE = { name: 'outro', frames: 105, fps: 30 };
+
+  function drawPlate(s) {
+    if (s === 1) {
+      // Quadro de corte: cópia 1:1, sem reamostragem → idêntico ao last-frame.png.
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(plate, 0, 0, W, H);
+      return;
+    }
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    const w = W * s, h = H * s;
+    ctx.drawImage(plate, OX - OX * s, OY - OY * s, w, h);
+  }
+
+  window.renderAt = function (t) {
+    // 0–3,0 s · push-in lento, parte e chega em repouso
+    const zp = prog(t, 0, 3.0, ease.inOut);
+    drawPlate(zp === 0 ? 1 : mix(1, S_END, zp));
+
+    // 0,15–0,9 s · véus
+    veilTop.style.opacity = prog(t, 0.15, 0.9, ease.soft).toFixed(4);
+    veilBottom.style.opacity = prog(t, 0.3, 1.0, ease.soft).toFixed(4);
+
+    // 0,35–1,2 s · logo
+    const lp = prog(t, 0.35, 1.2, ease.out);
+    logo.style.opacity = prog(t, 0.35, 0.95, ease.soft).toFixed(4);
+    logo.style.transform = `translateY(${mix(22, 0, lp).toFixed(3)}px) scale(${mix(0.965, 1, lp).toFixed(5)})`;
+
+    // 0,8–1,5 s · assinatura
+    const tp = prog(t, 0.8, 1.5, ease.out);
+    tagline.style.opacity = prog(t, 0.8, 1.3, ease.soft).toFixed(4);
+    tagline.style.transform = `translateY(${mix(16, 0, tp).toFixed(3)}px)`;
+
+    // 1,0–1,6 s · acento da barra de cor
+    patches.forEach((el, i) => {
+      const a = 1.0 + i * 0.05;
+      const p = prog(t, a, a + 0.36, ease.out);
+      el.style.opacity = prog(t, a, a + 0.24, ease.soft).toFixed(4);
+      el.style.transform = `translateY(${mix(10, 0, p).toFixed(3)}px)`;
+    });
+  };
+
+  window.sceneReady = window.Motion
+    .ready(() => document.fonts.load("460 68px 'Fraunces Variable'", 'Sua ideia ganha forma aqui.'))
+    .then(() => {
+      if (plate.naturalWidth !== W || plate.naturalHeight !== H) throw new Error('last-frame.png fora de 1080×1920');
+      window.renderAt(0);
+      return true;
+    });
+})();
+</script>
+</body>
+</html>
