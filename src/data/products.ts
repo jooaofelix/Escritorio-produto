@@ -41,10 +41,10 @@ export const products: readonly Product[] = [
     ),
   },
   {
-    id: 'kit-mesa-impressao-3d',
-    name: 'Kit de mesa em impressão 3D',
+    id: 'kit-acessorios-escritorio',
+    name: 'Kit de acessórios para escritório',
     description: 'Suporte de celular, porta-lápis, bandeja oval e porta-clipes em preto, com acabamento canelado.',
-    category: 'impressao-3d',
+    category: 'acessorios-para-escritorio',
     image: productImage(
       'kit-mesa-impressao-3d',
       'Suporte de celular com um telefone, porta-lápis com dois lápis, bandeja oval com óculos e caneta e porta-clipes, todos pretos e canelados.',

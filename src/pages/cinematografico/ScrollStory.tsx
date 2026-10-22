@@ -5,7 +5,7 @@ import { Arrow } from '@/components/shared/Arrow';
 import { ProductPicture, productById } from '@/components/shared/ProductPicture';
 
 /** As 4 etapas da rolagem: a cada uma o contador avança, a foto troca e uma camada de texto entra. */
-const PHOTOS = ['caderno-espiral-capa', 'caderno-aberto-pautado', 'agenda-2027', 'kit-mesa-impressao-3d'];
+const PHOTOS = ['caderno-espiral-capa', 'caderno-aberto-pautado', 'agenda-2027', 'kit-acessorios-escritorio'];
 const TITLE = ['Quando a sua', 'marca ganha', 'forma.'];
 const STEPS = PHOTOS.length;
 

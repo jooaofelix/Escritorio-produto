@@ -4,7 +4,7 @@ import { Pill } from '@/components/shared/Pill';
 import { ProductPicture, productById } from '@/components/shared/ProductPicture';
 
 const TITLE = ['Uma marca forte', 'também se vê', 'nos detalhes.'];
-const TAGS = ['Papelaria', 'Corporativo', 'Impressão 3D'];
+const TAGS = ['Papelaria', 'Corporativo', 'Acessórios para escritório'];
 
 const delay = (s: number) => ({ animationDelay: `${s}s` });
 
@@ -29,7 +29,7 @@ export function Hero() {
             ))}
           </h1>
           <p className="enter-fade mt-6 measure text-lead text-mist" style={delay(0.8)}>
-            Soluções de papelaria e impressão 3D desenvolvidas para dar vida à identidade da sua empresa.
+            Soluções de papelaria e acessórios para escritório desenvolvidas para dar vida à identidade da sua empresa.
           </p>
           <div className="enter-pop mt-10 origin-left" style={delay(0.95)}>
             <Pill href={whatsappUrl()} whatsapp tone="sun" size="lg" arrow="upright">

@@ -13,7 +13,7 @@ export const PAGES = [
 
 export const PRODUCTS = [
   'Agenda 2027',
-  'Kit de mesa em impressão 3D',
+  'Kit de acessórios para escritório',
   'Caderno com capa personalizada',
   'Caderno pautado personalizado',
   'Caderno liso personalizado',

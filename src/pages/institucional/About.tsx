@@ -10,7 +10,7 @@ const PILLARS = [
     color: 'bg-sun',
   },
   {
-    title: 'Acessórios de mesa',
+    title: 'Acessórios para escritório',
     text: 'Porta-canetas, suporte de celular, organizadores e porta-clipes para o escritório.',
     color: 'bg-mint',
   },
@@ -28,7 +28,7 @@ export function About() {
             </h2>
           </div>
           <p className="text-lead text-soft lg:col-span-5 lg:col-start-8 lg:self-end">
-            A Coloridamente cria agendas, cadernos, papelaria corporativa, brindes e acessórios de mesa com a
+            A Coloridamente cria agendas, cadernos, papelaria corporativa, brindes e acessórios para escritório com a
             identidade visual da sua empresa, do primeiro contato ao produto pronto para usar ou presentear.
           </p>
         </div>

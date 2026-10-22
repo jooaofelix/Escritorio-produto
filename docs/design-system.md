@@ -34,9 +34,9 @@ usado como nas propostas: etiqueta do hero, categorias, contadores).
 1. **Hero (forest):** etiqueta "Produtos personalizados para empresas" em pílula translúcida;
    h1 "Uma marca forte / também se vê / nos detalhes." (Lato 900, branco); apoio em `mist`;
    pílula amarela "Solicitar proposta ↗" (WhatsApp); foto da agenda (raio 6px) com fio e
-   "Papelaria / Corporativo / Impressão 3D". Entrada orquestrada uma vez no carregamento
+   "Papelaria / Corporativo / Acessórios para escritório". Entrada orquestrada uma vez no carregamento
    (wipe da etiqueta, linhas do título subindo da máscara, foto assentando, fio desenhando, CTA).
-2. **Sobre (paper):** h2 + texto + 3 pilares (papelaria, brindes, acessórios de mesa).
+2. **Sobre (paper):** h2 + texto + 3 pilares (papelaria, brindes, acessórios para escritório).
 3. **Produtos (paper):** galeria orientada a dados (`src/data/products.ts`), 2 em destaque + 3.
 4. **Como funciona (forest):** 4 etapas numeradas (sequência real).
 5. **Orçamento (sun):** "Vamos criar algo com a sua marca?" + pílula grafite.
