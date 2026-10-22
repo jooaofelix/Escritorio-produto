@@ -36,3 +36,8 @@ export function whatsappUrl(message: string = site.whatsapp.defaultMessage): str
 export function productMessage(productName: string): string {
   return `Olá! Conheci a Coloridamente pelo site e gostaria de solicitar um orçamento de: ${productName}.`;
 }
+
+/** Mensagem para pedir orçamento a partir de uma ocasião (ex.: "boas-vindas à equipe"). */
+export function occasionMessage(occasion: string): string {
+  return `Olá! Conheci a Coloridamente pelo site e gostaria de solicitar um orçamento para: ${occasion}.`;
+}

@@ -63,21 +63,11 @@ export const products: readonly Product[] = [
   {
     id: 'caderno-aberto-pautado',
     name: 'Caderno pautado personalizado',
-    description: 'Folhas pautadas com a marca no topo e o grafismo da capa nos cantos.',
+    description: 'Folhas pautadas com a marca no topo e o grafismo da capa nos cantos. Também disponível com folhas sem pauta.',
     category: 'agendas-e-cadernos',
     image: productImage(
       'caderno-aberto-pautado',
       'Caderno de espiral aberto com folhas pautadas, a marca AEA no alto de cada página e ondas azuis nos cantos inferiores.',
-    ),
-  },
-  {
-    id: 'caderno-aberto-liso',
-    name: 'Caderno liso personalizado',
-    description: 'Folhas sem pauta com a marca no topo e o grafismo da capa nos cantos.',
-    category: 'agendas-e-cadernos',
-    image: productImage(
-      'caderno-aberto-liso',
-      'Caderno de espiral aberto com folhas lisas, a marca AEA no alto de cada página e ondas azuis nos cantos inferiores.',
     ),
   },
 ];

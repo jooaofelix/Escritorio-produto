@@ -1,6 +1,6 @@
 /*
  * Coloridamente — tokens das propostas 04 (Institucional premium) e 05 (Scroll cinematográfico).
- * Cores e tipografia (Lato) iguais às do showcase das propostas de site.
+ * Layout e tipografia (Lato) das propostas; paleta off-white/grafite com o coral da logo como ação.
  */
 
 @theme {
@@ -9,30 +9,27 @@
 }
 
 @theme static {
-  /* Base clara */
+  /* Base: off-white e grafite; as cores da logo entram como acento e ação. */
   --color-paper: #faf9f5;
-  --color-ink: #262924;
-  --color-soft: #575b53; /* texto secundário sobre paper: 6.9:1 */
-  --color-line: #e4e4dd;
-  --color-card: #e9e8e2; /* moldura das fotos */
+  --color-ink: #262624;
+  --color-soft: #5c5b57; /* texto secundário sobre paper: 6.6:1 */
+  --color-line: #e6e3dc;
+  --color-card: #eeebe4; /* moldura das fotos */
+  --color-blush-soft: #fbe6e2; /* faixa de orçamento */
 
-  /* 04 — Institucional premium */
-  --color-forest: #30443b;
-  --color-forest-deep: #263730;
-  --color-mist: #e1e9e1; /* texto de apoio sobre forest: 8.4:1 */
-
-  /* 05 — Scroll cinematográfico */
-  --color-night: #202622;
-  --color-night-box: #252d29;
-  --color-haze: #d2ddd4; /* texto de apoio sobre night: 11.6:1 */
+  /* Seções escuras (proposta 04) e palco da proposta 05 */
+  --color-graphite: #2a2927;
+  --color-graphite-deep: #1f1e1c;
+  --color-night: #1f1e1c;
+  --color-night-box: #2b2a27;
+  --color-on-dark: #e6e3dc; /* texto de apoio sobre grafite/night: 11:1 */
   --color-mint-ink: #abdad0; /* contador sobre night */
 
-  /* Marca */
-  --color-coral: #e98071;
-  --color-coral-btn: #e89481;
+  /* Marca (cores da logo) */
+  --color-coral: #e98071; /* ação principal: texto ink sobre coral 5.7:1 */
+  --color-coral-deep: #e06a58; /* hover da ação: 4.6:1 */
   --color-olive: #a7b571;
   --color-sun: #f9c848;
-  --color-sun-soft: #f4cf6e;
   --color-mint: #a8dec9;
   --color-blush: #f6aaa7;
 
@@ -195,7 +192,10 @@
 /* ——— Base ——— */
 @layer base {
   :root {
-    --focus-ring: var(--color-sun);
+    --focus-ring: var(--color-ink);
+  }
+  .on-dark {
+    --focus-ring: var(--color-coral);
   }
   @media (width >= 64rem) {
     :root {
@@ -232,11 +232,8 @@
     outline: 2px solid var(--focus-ring);
     outline-offset: 3px;
   }
-  .on-light {
-    --focus-ring: var(--color-ink);
-  }
   ::selection {
-    background-color: var(--color-sun);
+    background-color: var(--color-blush);
     color: var(--color-ink);
   }
   @media (prefers-reduced-motion: reduce) {

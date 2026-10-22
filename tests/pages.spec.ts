@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import {
   DEFAULT_MESSAGE,
+  MESSAGE_PREFIX,
   PAGES,
   PRODUCTS,
   WHATSAPP_NUMBER,
@@ -42,16 +43,49 @@ for (const pageDef of PAGES) {
       const links = page.locator('a[href^="https://wa.me/"]');
       const count = await links.count();
       expect(count).toBeGreaterThanOrEqual(PRODUCTS.length + 3);
-      const expected = new Set([DEFAULT_MESSAGE, ...PRODUCTS.map(productMessage)]);
+      const texts: string[] = [];
       for (let i = 0; i < count; i++) {
         const link = links.nth(i);
         const url = new URL((await link.getAttribute('href'))!);
         expect(url.pathname).toBe(`/${WHATSAPP_NUMBER}`);
-        expect(expected.has(url.searchParams.get('text') ?? '')).toBe(true);
+        const text = url.searchParams.get('text') ?? '';
+        expect(text.startsWith(MESSAGE_PREFIX)).toBe(true);
+        texts.push(text);
         await expect(link).toHaveAttribute('target', '_blank');
         expect(await link.getAttribute('rel')).toContain('noopener');
         await expect(link).toContainText('abre o WhatsApp');
       }
+      // CTA geral e um CTA por produto, com o nome do item na mensagem
+      expect(texts).toContain(DEFAULT_MESSAGE);
+      for (const name of PRODUCTS) expect(texts).toContain(productMessage(name));
+    });
+
+    test('dúvidas frequentes abrem e fecham', async ({ page }) => {
+      await page.goto(pageDef.path);
+      const first = page.locator('#duvidas details').first();
+      await expect(page.locator('#duvidas details')).toHaveCount(4);
+      await first.locator('summary').click();
+      await expect(first).toHaveAttribute('open', '');
+      await expect(first.locator('p')).toBeVisible();
+      await first.locator('summary').click();
+      await expect(first).not.toHaveAttribute('open', '');
+    });
+
+    test('barra fixa de orçamento só no celular, fora do hero e do fechamento', async ({ page, isMobile }) => {
+      await page.goto(pageDef.path);
+      const bar = page.locator('[data-sticky-cta]');
+      if (!isMobile) {
+        await expect(bar).toBeHidden();
+        return;
+      }
+      await expect(bar).not.toBeInViewport();
+      await page.locator('#produtos').scrollIntoViewIfNeeded();
+      await page.waitForTimeout(600);
+      await expect(bar).toBeInViewport();
+      await expect(bar.getByRole('link')).toHaveAttribute('href', new RegExp(`wa\\.me/${WHATSAPP_NUMBER}`));
+      await page.locator('#orcamento').scrollIntoViewIfNeeded();
+      await page.waitForTimeout(600);
+      await expect(bar).not.toBeInViewport();
     });
 
     test('imagens com alt e dimensões', async ({ page }) => {

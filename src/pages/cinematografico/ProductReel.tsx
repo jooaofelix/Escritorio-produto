@@ -3,9 +3,8 @@ import { productMessage, whatsappUrl } from '@/config/site';
 import { getCategory } from '@/data/categories';
 import { products } from '@/data/products';
 import { gsap } from '@/lib/gsap';
-import { Arrow } from '@/components/shared/Arrow';
+import { Pill } from '@/components/shared/Pill';
 import { ProductPicture } from '@/components/shared/ProductPicture';
-import { OpensWhatsApp, whatsappLinkProps } from '@/components/shared/whatsapp';
 
 /** Produtos em sequência: cada um entra com a câmera "se aproximando" do cartão. */
 export function ProductReel() {
@@ -27,7 +26,7 @@ export function ProductReel() {
   }, []);
 
   return (
-    <section id="produtos" aria-labelledby="produtos-titulo" className="bg-night py-section text-paper">
+    <section id="produtos" aria-labelledby="produtos-titulo" className="on-dark bg-night py-section text-paper">
       <div className="container-page">
         <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
@@ -36,7 +35,7 @@ export function ProductReel() {
               Cada produto, um detalhe da sua marca.
             </h2>
           </div>
-          <p className="text-lead text-haze lg:col-span-4 lg:col-start-9">
+          <p className="text-lead text-on-dark lg:col-span-4 lg:col-start-9">
             Exemplos de produtos personalizados com a identidade visual de uma empresa.
           </p>
         </div>
@@ -66,18 +65,17 @@ export function ProductReel() {
                     {`${String(i + 1).padStart(2, '0')} / ${String(products.length).padStart(2, '0')}`}
                   </p>
                   <h3 className="mt-4 text-display-2">{product.name}</h3>
-                  <p className="mt-2 text-label text-haze/80">{getCategory(product.category).name}</p>
-                  <p className="mt-4 max-w-[40ch] text-body text-haze">{product.description}</p>
-                  <a
+                  <p className="mt-2 text-label text-on-dark/80">{getCategory(product.category).name}</p>
+                  <p className="mt-4 max-w-[40ch] text-body text-on-dark">{product.description}</p>
+                  <Pill
                     href={whatsappUrl(productMessage(product.name))}
-                    {...whatsappLinkProps}
-                    className="mt-6 inline-flex items-center gap-2 font-bold text-sun underline decoration-sun/40 underline-offset-[6px] transition-colors hover:decoration-sun"
+                    whatsapp
+                    arrow="upright"
+                    className="mt-7"
                   >
-                    Solicitar orçamento
-                    <Arrow direction="upright" />
-                    <span className="sr-only">{` de ${product.name}`}</span>
-                    <OpensWhatsApp />
-                  </a>
+                    Quero orçamento deste
+                    <span className="sr-only">{`: ${product.name}`}</span>
+                  </Pill>
                 </div>
               </li>
             );

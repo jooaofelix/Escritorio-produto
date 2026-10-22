@@ -1,7 +1,9 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { products } from '@/data/products';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { whatsappUrl } from '@/config/site';
 import { Arrow } from '@/components/shared/Arrow';
+import { Pill } from '@/components/shared/Pill';
 import { ProductPicture, productById } from '@/components/shared/ProductPicture';
 
 /** As 4 etapas da rolagem: a cada uma o contador avança, a foto troca e uma camada de texto entra. */
@@ -73,7 +75,7 @@ export function ScrollStory() {
   }, [reduced]);
 
   return (
-    <section id="inicio" aria-labelledby="historia-titulo" className="bg-night text-paper">
+    <section id="inicio" aria-labelledby="historia-titulo" className="on-dark bg-night text-paper">
       <div
         ref={stage}
         data-stage
@@ -154,13 +156,14 @@ export function ScrollStory() {
                   </span>
                 ))}
               </h1>
-              <p
-                data-support
-                className="mt-5 max-w-[38ch] text-body text-haze"
-                style={reduced ? undefined : { opacity: 0, visibility: 'hidden' }}
-              >
-                Uma experiência para descobrir cada detalhe enquanto você navega.
-              </p>
+              <div data-support className="mt-5" style={reduced ? undefined : { opacity: 0, visibility: 'hidden' }}>
+                <p className="max-w-[38ch] text-body text-on-dark">
+                  Uma experiência para descobrir cada detalhe enquanto você navega.
+                </p>
+                <Pill href={whatsappUrl()} whatsapp arrow="upright" className="mt-6">
+                  Solicitar orçamento
+                </Pill>
+              </div>
               </div>
             </div>
           </div>
@@ -176,7 +179,7 @@ export function ScrollStory() {
                 <span key={i} className="h-[3px] w-8 overflow-hidden rounded-full bg-[#5E625D] lg:w-10">
                   <span
                     data-dash={i}
-                    className="block h-full origin-left bg-coral-btn"
+                    className="block h-full origin-left bg-coral"
                     style={reduced || i === 0 ? undefined : { transform: 'scaleX(0)' }}
                   />
                 </span>

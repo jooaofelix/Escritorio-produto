@@ -16,8 +16,12 @@ export const PRODUCTS = [
   'Kit de acessórios para escritório',
   'Caderno com capa personalizada',
   'Caderno pautado personalizado',
-  'Caderno liso personalizado',
 ];
+
+export const OCCASIONS = ['Boas-vindas à equipe', 'Presentes para clientes', 'Eventos e feiras', 'Dia a dia do escritório'];
+
+/** Toda mensagem de WhatsApp começa assim (padrão, por produto ou por ocasião). */
+export const MESSAGE_PREFIX = 'Olá! Conheci a Coloridamente pelo site e gostaria de solicitar um orçamento';
 
 /** Coleta erros de console, exceções e respostas com falha durante o teste. */
 export function trackProblems(page: Page) {

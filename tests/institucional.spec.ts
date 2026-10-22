@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { PRODUCTS, WHATSAPP_NUMBER } from './support';
+import { OCCASIONS, PRODUCTS, WHATSAPP_NUMBER } from './support';
 
 test.describe('proposta 04 — institucional premium', () => {
   test('hero com etiqueta, título, texto, CTA e categorias', async ({ page }) => {
@@ -7,19 +7,24 @@ test.describe('proposta 04 — institucional premium', () => {
     const hero = page.locator('section').first();
     await expect(hero.getByText('Produtos personalizados para empresas')).toBeVisible();
     await expect(hero.locator('h1')).toBeVisible();
-    await expect(hero.getByText('Soluções de papelaria e acessórios para escritório')).toBeVisible();
-    const cta = hero.getByRole('link', { name: /Solicitar proposta/ });
+    await expect(hero.getByText(/receba o seu orçamento pelo WhatsApp/)).toBeVisible();
+    const cta = hero.getByRole('link', { name: /Solicitar orçamento/ });
     await expect(cta).toBeVisible();
     expect(await cta.getAttribute('href')).toContain(`wa.me/${WHATSAPP_NUMBER}`);
     for (const tag of ['Papelaria', 'Corporativo', 'Acessórios para escritório']) await expect(hero.getByText(tag, { exact: true })).toBeVisible();
     const bg = await hero.evaluate((el) => getComputedStyle(el).backgroundColor);
-    expect(bg).toBe('rgb(48, 68, 59)'); // #30443B
+    expect(bg).toBe('rgb(250, 249, 245)'); // paper #FAF9F5
+    await expect(hero.getByRole('link', { name: /Ver produtos/ })).toHaveAttribute('href', '#produtos');
+    await expect(page.locator('header img[alt="Coloridamente"]')).toBeVisible();
   });
 
-  test('galeria com os 5 produtos e as 4 etapas', async ({ page }) => {
+  test('ocasiões, produtos (um caderno só, com opção sem pauta) e etapas', async ({ page }) => {
     await page.goto('/');
+    expect(await page.locator('#ocasioes h3').allTextContents()).toEqual(OCCASIONS);
     const names = await page.locator('#produtos h3').allTextContents();
     expect(names).toEqual(PRODUCTS);
+    await expect(page.locator('#produtos')).toContainText('Também disponível com folhas sem pauta.');
+    await expect(page.locator('#produtos').getByRole('link', { name: /Quero orçamento deste/ })).toHaveCount(PRODUCTS.length);
     await expect(page.locator('#como-funciona li')).toHaveCount(4);
   });
 
@@ -29,7 +34,7 @@ test.describe('proposta 04 — institucional premium', () => {
     await page.locator('header').getByRole('link', { name: 'Produtos' }).click();
     await expect(page).toHaveURL(/#produtos$/);
     await expect(page.locator('#produtos h2')).toBeInViewport();
-    await page.locator('header').getByRole('link', { name: 'Sobre' }).click();
-    await expect(page.locator('#sobre h2')).toBeInViewport();
+    await page.locator('header').getByRole('link', { name: 'Dúvidas' }).click();
+    await expect(page.locator('#duvidas h2')).toBeInViewport();
   });
 });
