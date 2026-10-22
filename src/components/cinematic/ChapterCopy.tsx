@@ -15,7 +15,10 @@ interface ChapterCopyProps {
   readonly onCtaFocus?: () => void;
 }
 
-/** Logo (capítulo final) + título + apoio (+ CTA). No hero todo texto é ink (docs/design-system.md §6). */
+/**
+ * Logo (capítulo final) + título + apoio (+ CTA). No hero todo texto é ink (docs/design-system.md §6).
+ * Telas baixas (≤ 30rem, ex.: celular deitado): escala menor para o capítulo inteiro caber ao lado do painel.
+ */
 export function ChapterCopy({ chapter, index, withCta = true, ctaRef, onCtaFocus }: ChapterCopyProps) {
   const Heading = index === 0 ? 'h1' : 'h2';
   return (
@@ -27,12 +30,18 @@ export function ChapterCopy({ chapter, index, withCta = true, ctaRef, onCtaFocus
           width={LOGO.width}
           height={LOGO.height}
           decoding="async"
-          className="mb-6 block h-12 w-auto md:mb-8 md:h-16 lg:h-20"
+          className="mb-6 block h-12 w-auto md:mb-8 md:h-16 lg:h-20 [@media(max-height:30rem)]:mb-4 [@media(max-height:30rem)]:h-10"
         />
       ) : null}
-      <Heading className="text-display-xl text-ink">{chapter.title}</Heading>
-      {chapter.body ? <p className="mt-4 max-w-[34ch] text-lead text-ink">{chapter.body}</p> : null}
-      {withCta && chapter.cta ? <ChapterCta label={chapter.cta} ctaRef={ctaRef} onFocus={onCtaFocus} className="mt-8" /> : null}
+      <Heading className="text-display-xl text-ink [@media(max-height:30rem)]:text-display-md">{chapter.title}</Heading>
+      {chapter.body ? (
+        <p className="mt-4 max-w-[34ch] text-lead text-ink [@media(max-height:30rem)]:mt-2 [@media(max-height:30rem)]:text-body">
+          {chapter.body}
+        </p>
+      ) : null}
+      {withCta && chapter.cta ? (
+        <ChapterCta label={chapter.cta} ctaRef={ctaRef} onFocus={onCtaFocus} className="mt-8 [@media(max-height:30rem)]:mt-5" />
+      ) : null}
     </>
   );
 }

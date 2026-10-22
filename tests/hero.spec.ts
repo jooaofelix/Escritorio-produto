@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import {
   canvasSignature,
   chapterOpacities,
+  chapterTextContrast,
   chapters,
   DEFAULT_MESSAGE,
   frameSetFor,
@@ -81,6 +82,39 @@ test.describe('hero: sequência cinematográfica', () => {
     for (const gap of gaps) {
       await scrollToTime(page, gap);
       await expect.poll(() => chapterOpacities(page), { message: `frame ${gap}` }).toEqual([0, 0, 0, 0]);
+    }
+  });
+
+  test('layout 9:16: painel inteiro ao lado do texto (largo) ou canvas em tela cheia (retrato)', async ({ page }) => {
+    await openWithSequence(page);
+    const viewport = page.viewportSize()!;
+    const media = (await page.locator('#inicio [role="img"]').boundingBox())!;
+    if (viewport.width >= 768 && viewport.width > viewport.height) {
+      const headerBottom = await page.evaluate(() => document.querySelector('header')!.getBoundingClientRect().bottom);
+      const { width, height } = scrollManifest.desktop;
+      expect(Math.abs(media.width / media.height - width / height)).toBeLessThan(0.01);
+      expect(media.y).toBeGreaterThanOrEqual(headerBottom);
+      expect(media.y + media.height).toBeLessThanOrEqual(viewport.height);
+      // Coluna de texto à esquerda, sem invadir o painel.
+      const heading = (await page.locator('#inicio h1').boundingBox())!;
+      expect(heading.x + heading.width).toBeLessThanOrEqual(media.x);
+    } else {
+      expect(media).toEqual({ x: 0, y: 0, width: viewport.width, height: viewport.height });
+    }
+  });
+
+  test('contraste AA do texto sobre o frame em cada capítulo', async ({ page }) => {
+    await openWithSequence(page);
+    // Pior caso medido em cada capítulo: o fim do trecho com texto opaco (objetos mais altos no quadro).
+    for (const [index, chapter] of chapters.entries()) {
+      const time = index === chapters.length - 1 ? TIMELINE_LENGTH : chapter.end - 5; // fade de saída começa em end - 4
+      await scrollToTime(page, time);
+      await expect.poll(() => chapterOpacities(page).then((o) => o[index])).toBe(1);
+      await page.waitForTimeout(600); // scrub assentado: o frame é o do ponto rolado
+      const contrast = await chapterTextContrast(page);
+      expect(contrast.lines, chapter.id).toBeGreaterThan(0);
+      expect(contrast.title, `${chapter.id}: título (texto grande)`).toBeGreaterThanOrEqual(3);
+      if (chapter.body) expect(contrast.body, `${chapter.id}: apoio`).toBeGreaterThanOrEqual(4.5);
     }
   });
 

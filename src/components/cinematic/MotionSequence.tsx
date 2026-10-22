@@ -236,7 +236,7 @@ export function MotionSequence({ onFail }: MotionSequenceProps) {
                   </div>
                 ))}
               </div>
-              <ProgressIndicator fillRef={setFill} className="mt-10" />
+              <ProgressIndicator fillRef={setFill} className="mt-10 [@media(max-height:30rem)]:mt-6" />
             </div>
           )}
         </div>

@@ -134,3 +134,59 @@ export function parseWhatsAppHref(href: string) {
   const url = new URL(href);
   return { origin: url.origin, path: url.pathname, text: url.searchParams.get('text') };
 }
+
+/**
+ * Contraste WCAG do texto do capítulo visível contra o fundo real (frame + véu): esconde o texto,
+ * captura a tela e mede, sob cada linha (caixas do Range), o pixel de fundo menos contrastante
+ * contra a cor do próprio texto. Retorna o pior valor por tipo (título e apoio).
+ */
+export async function chapterTextContrast(page: Page) {
+  const lines = await page.evaluate(() => {
+    const out: { kind: 'title' | 'body'; color: string; x: number; y: number; w: number; h: number }[] = [];
+    for (const el of document.querySelectorAll<HTMLElement>('#inicio h1, #inicio h2, #inicio h1 ~ p, #inicio h2 ~ p')) {
+      let opacity = 1;
+      for (let node: HTMLElement | null = el; node && node.id !== 'inicio'; node = node.parentElement) {
+        opacity *= Number.parseFloat(getComputedStyle(node).opacity);
+      }
+      if (opacity < 0.99) continue;
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const color = getComputedStyle(el).color;
+      for (const r of range.getClientRects()) {
+        out.push({ kind: el.tagName === 'P' ? 'body' : 'title', color, x: r.left, y: r.top, w: r.width, h: r.height });
+      }
+      el.style.visibility = 'hidden';
+    }
+    return out;
+  });
+  const shot = (await page.screenshot({ scale: 'css' })).toString('base64');
+  return page.evaluate(
+    async ({ lines, shot }) => {
+      document.querySelectorAll<HTMLElement>('#inicio h1, #inicio h2, #inicio p').forEach((el) => (el.style.visibility = ''));
+      const bitmap = await createImageBitmap(await (await fetch(`data:image/png;base64,${shot}`)).blob());
+      const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+      const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
+      ctx.drawImage(bitmap, 0, 0);
+      const channel = (c: number) => ((c /= 255) <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+      const luminance = (r: number, g: number, b: number) => 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+      const worst = { title: Infinity, body: Infinity };
+      for (const line of lines) {
+        const [r, g, b] = line.color.match(/\d+/g)!.map(Number) as [number, number, number];
+        const textL = luminance(r, g, b);
+        const x = Math.max(0, Math.floor(line.x));
+        const y = Math.max(0, Math.floor(line.y));
+        const w = Math.min(bitmap.width - x, Math.ceil(line.w));
+        const h = Math.min(bitmap.height - y, Math.ceil(line.h));
+        if (w <= 0 || h <= 0) continue;
+        const data = ctx.getImageData(x, y, w, h).data;
+        for (let i = 0; i < data.length; i += 4) {
+          const bgL = luminance(data[i]!, data[i + 1]!, data[i + 2]!);
+          const ratio = (Math.max(bgL, textL) + 0.05) / (Math.min(bgL, textL) + 0.05);
+          if (ratio < worst[line.kind]) worst[line.kind] = ratio;
+        }
+      }
+      return { lines: lines.length, title: Math.round(worst.title * 100) / 100, body: Math.round(worst.body * 100) / 100 };
+    },
+    { lines, shot },
+  );
+}
