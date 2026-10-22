@@ -3,8 +3,8 @@ import { chapters } from '@/data/chapters';
 import { ChapterCopy } from './ChapterCopy';
 import { FRAME_ASPECT, STILL_HEIGHT, STILL_WIDTH, stillSrc, stillSrcSet } from './frames';
 
-/** Largura de exibição dos stills 9:16: limitada pela altura da tela (o quadro inteiro cabe sem rolar). */
-const SIZES = '(min-width: 768px) min(36vw, 44svh), min(92vw, 39svh)';
+/** Stills 9:16 exibidos com largura limitada pela altura da tela (o quadro inteiro cabe sem rolar): ~440px / ~340px. */
+const SIZES = '(min-width: 768px) 440px, 340px';
 const STILL_STYLE = { '--still-aspect': FRAME_ASPECT } as CSSProperties;
 
 /**

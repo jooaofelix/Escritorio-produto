@@ -10,23 +10,26 @@ export const DEFAULT_MESSAGE = 'Olá! Conheci a Coloridamente pelo site e gostar
 export const productMessage = (name: string) =>
   `Olá! Conheci a Coloridamente pelo site e gostaria de solicitar um orçamento de: ${name}.`;
 
-interface FramesManifest {
-  sourceFrameCount: number;
-  desktop: { path: string; count: number };
-  mobile: { path: string; count: number };
+interface ScrollManifest {
+  count: number;
+  desktop: { path: string; width: number; height: number };
+  mobile: { path: string; width: number; height: number };
+  transitions: { from: string; to: string; start: number; end: number }[];
+  stills: { path: string; frames: number[] };
 }
-export const framesManifest = JSON.parse(
-  readFileSync(new URL('../src/data/frames-manifest.json', import.meta.url), 'utf8'),
-) as FramesManifest;
+export const scrollManifest = JSON.parse(
+  readFileSync(new URL('../src/data/scroll-manifest.json', import.meta.url), 'utf8'),
+) as ScrollManifest;
 
-/** Espelha src/components/cinematic/sequence.ts: vídeo (0..240) + 24 frames parados no fim. */
-const END_HOLD = 24;
-export const LAST_VIDEO_FRAME = framesManifest.sourceFrameCount - 1;
+/** Espelha src/components/cinematic/sequence.ts: vídeo (0..163) + 16 frames parados no fim. */
+const END_HOLD = 16;
+export const LAST_VIDEO_FRAME = scrollManifest.count - 1;
 export const TIMELINE_LENGTH = LAST_VIDEO_FRAME + END_HOLD;
 
-/** Conjunto de frames que a página escolhe (mesmo breakpoint do preload do index.html). */
+/** Conjunto de frames que a página escolhe (mesmo breakpoint do preload do index.html); os dois têm `count` arquivos. */
 export function frameSetFor(viewportWidth: number) {
-  return viewportWidth >= 768 ? framesManifest.desktop : framesManifest.mobile;
+  const set = viewportWidth >= 768 ? scrollManifest.desktop : scrollManifest.mobile;
+  return { ...set, count: scrollManifest.count };
 }
 
 /** Coleta erros de console, exceções e respostas/requisições com falha durante o teste. */
