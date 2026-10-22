@@ -50,7 +50,7 @@ poppler-utils, Python 3 e Chromium do Playwright (ícones). O build da Cloudflar
 O projeto é publicado como um Worker só de assets (`wrangler.toml` → `[assets] directory = "./dist"`).
 No painel, em **Workers & Pages → projeto → Settings → Build**:
 
-- Build command: `npm run build` (obrigatório: o Workers Builds não executa build sozinho)
+- Build command: pode ficar vazio (o `[build]` do `wrangler.toml` roda `npm run build` dentro do `wrangler deploy`)
 - Deploy command: `npx wrangler deploy`
 - Root directory: vazio
 - Branch de produção: `main`
