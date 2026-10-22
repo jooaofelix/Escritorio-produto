@@ -62,6 +62,9 @@
     white-space: nowrap;
     font-kerning: normal;
     opacity: 0;
+    /* Camada própria: o deslocamento sub-pixel da subida fica contínuo (sem degraus de 1 px
+       do texto alinhado à grade); em repouso a transformação é identidade → nítido. */
+    will-change: transform, opacity;
   }
   .bar {
     position: absolute; left: 440px; top: 1576px;   /* 5 × 40 = 200 px */
