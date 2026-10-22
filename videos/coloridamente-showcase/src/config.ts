@@ -69,7 +69,9 @@ export const VIEW = {x: 55, y: 206, w: 758, h: 394};
 /** Pose de câmera em repouso: maquete à esquerda, coluna de texto à direita. */
 export const REST = {s: 1.615, px: 439, py: 394.5, qx: 710, qy: 540};
 /** Interface em tela cheia (cena 06). */
-export const FULL = {s: 2.72, px: 434, py: 404, qx: 960, qy: 540};
+export const FULL = {s: 2.5, px: 434, py: 403, qx: 960, qy: 540};
+/** Painel da coluna de texto (mesma cor do fundo): entra pela direita e divide a tela. */
+export const PANEL_X = 1350;
 
 export const IMG = {
   caderno: 'img/caderno-espiral-capa.webp',

@@ -4,7 +4,7 @@ import {Key, mix, p} from '../lib/anim';
 import {Browser, Pic, Pill, SiteHeader} from '../components/Browser';
 import {T} from '../components/Text';
 
-/** Rolagem final da vitrine (pt) — a transição para o catálogo parte desta posição. */
+/** Rolagem máxima da vitrine (pt); ela volta ao topo antes do repouso, igual ao PDF. */
 export const VITRINE_SCROLL = 90;
 /** Faixa de produtos logo abaixo da dobra, revelada pela rolagem. */
 export const VITRINE_STRIP = [
@@ -24,21 +24,21 @@ const TITLE = [
 export const Vitrine: React.FC<{t: number; chrome?: boolean}> = ({t, chrome = true}) => {
   const out = 1 - p(t, 4.5, 4.75, EASE.in); // saída dos textos quando o catálogo assume
   const handedOver = t >= 4.5; // imagens passam para a transição do catálogo
-  const scroll = mix(0, VITRINE_SCROLL, p(t, 2.1, 2.95, EASE.inOut));
-  const chip = p(t, 0.75, 1.2);
-  const img = p(t, 1.0, 2.0);
-  const para = p(t, 1.35, 1.9);
-  const btn = p(t, 1.5, 2.0, EASE.back);
-  const dot = p(t, 1.75, 2.2, EASE.back);
+  const scroll = VITRINE_SCROLL * (p(t, 1.25, 1.8, EASE.inOut) - p(t, 2.1, 2.7, EASE.inOut));
+  const chip = p(t, 0.3, 0.7);
+  const img = p(t, 0.55, 1.4);
+  const para = p(t, 0.85, 1.3);
+  const btn = p(t, 1.0, 1.45, EASE.back);
+  const dot = p(t, 1.2, 1.6, EASE.back);
   return (
-    <Browser chrome={chrome} pageBg={C.white} scroll={scroll} thumb={p(t, 2.0, 2.2) * (1 - p(t, 3.2, 3.5))} header={<SiteHeader band={C.white} t={t - 0.3} />}>
+    <Browser chrome={chrome} pageBg={C.white} scroll={scroll} thumb={p(t, 1.15, 1.35) * (1 - p(t, 2.75, 3.0))} header={<SiteHeader band={C.white} t={t} />}>
       <div style={{opacity: out}}>
-        <div style={{position: 'absolute', left: 82, top: 289, width: 182, height: 24, clipPath: `inset(0 ${(1 - chip) * 100}% 0 0 round 12px)`}}>
+        <div style={{position: 'absolute', left: 82, top: 289, width: 204, height: 24, clipPath: `inset(0 ${(1 - chip) * 100}% 0 0 round 12px)`}}>
           <div style={{position: 'absolute', inset: 0, borderRadius: 12, background: '#FBEDEA'}} />
           <T x={12} y={7.2} h={9} w={179.9} weight={700} color={C.coralBtn}>PERSONALIZAÇÃO COM PROPÓSITO</T>
         </div>
         {TITLE.map((l, i) => {
-          const k = p(t, 0.85 + i * 0.1, 1.55 + i * 0.1, EASE.out);
+          const k = p(t, 0.4 + i * 0.1, 1.05 + i * 0.1, EASE.out);
           return (
             <div key={i} style={{position: 'absolute', left: 82, top: l.y - 4, width: 320, height: 48, overflow: 'hidden'}}>
               <T x={0} y={4 + (1 - k) * 50} h={39} w={l.w} weight={900} color={C.ink}>{l.s}</T>
@@ -65,8 +65,8 @@ export const Vitrine: React.FC<{t: number; chrome?: boolean}> = ({t, chrome = tr
 };
 
 export const vitrineCamera: Key[] = [
-  {t: -0.4, s: 2.55, px: 240, py: 330, qx: 960, qy: 540},
-  {t: 1.2, s: 2.35, px: 330, py: 390, qx: 960, qy: 540, e: EASE.inOut},
-  {t: 2.0, s: 2.15, px: 470, py: 420, qx: 960, qy: 540, e: EASE.inOut},
-  {t: 2.65, ...REST, e: EASE.cine},
+  {t: -0.4, s: 2.55, px: 330, py: 360, qx: 700, qy: 540},
+  {t: 1.2, s: 2.4, px: 345, py: 400, qx: 700, qy: 540, e: EASE.inOut},
+  {t: 2.0, s: 2.3, px: 350, py: 430, qx: 700, qy: 560, e: EASE.inOut},
+  {t: 2.7, ...REST, e: EASE.inOut},
 ];

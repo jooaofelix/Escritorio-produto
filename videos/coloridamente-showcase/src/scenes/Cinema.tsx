@@ -5,7 +5,7 @@ import {Browser, Pic, SiteHeader} from '../components/Browser';
 import {Arrow, T} from '../components/Text';
 
 /** Etapas da rolagem: a cada uma o contador avança, a foto troca e uma camada de texto entra. */
-const STEPS = [0.85, 1.35, 1.85, 2.35];
+const STEPS = [0.75, 1.15, 1.55, 1.95];
 const FOTOS = [IMG.caderno, IMG.pautado, IMG.agenda, IMG.kit];
 const TITLE = [
   {y: 367.8, w: 243.7, s: 'Quando a sua'},
@@ -19,13 +19,13 @@ export const Cinema: React.FC<{t: number; chrome?: boolean}> = ({t, chrome = tru
   const enter = p(t, 0.3, 0.95, EASE.out);
   const box = p(t, 0.45, 1.05, EASE.out);
   // profundidade: camadas andam em velocidades diferentes enquanto a página "rola"
-  const sp = p(t, 0.85, 2.5, EASE.inOut) * (1 - p(t, 2.5, 2.95, EASE.inOut));
-  const role = p(t, 0.6, 0.95) * (1 - p(t, 1.35, 1.6)) + p(t, 2.75, 3.1);
+  const sp = p(t, 0.75, 2.05, EASE.inOut) * (1 - p(t, 2.05, 2.7, EASE.inOut));
+  const role = p(t, 0.5, 0.8) * (1 - p(t, 1.15, 1.4)) + p(t, 2.45, 2.8);
   return (
     <Browser chrome={chrome} pageBg={C.cineBg} bgOpacity={p(t, 0, 0.45)} header={<SiteHeader dark divider={false} band={C.cineBg} />}>
       <div style={{position: 'absolute', inset: 0, opacity: p(t, 0, 0.45)}}>
         {/* contador 01 / 04 que avança com a rolagem */}
-        <div style={{position: 'absolute', left: 87, top: 290, width: 70, height: 22, overflow: 'hidden', transform: `translateY(${-40 * sp}px)`, opacity: enter}}>
+        <div style={{position: 'absolute', left: 87, top: 290, width: 70, height: 22, overflow: 'hidden', transform: `translateY(${-10 * sp}px)`, opacity: enter}}>
           {FOTOS.map((_, i) => {
             const a = i === 0 ? 1 : p(t, STEPS[i], STEPS[i] + 0.3, EASE.out);
             const b = i < 3 ? p(t, STEPS[i + 1], STEPS[i + 1] + 0.3, EASE.out) : 0;
@@ -41,12 +41,13 @@ export const Cinema: React.FC<{t: number; chrome?: boolean}> = ({t, chrome = tru
           <div style={{position: 'absolute', inset: 0, borderRadius: 18, background: '#E9E8E2'}} />
           {FOTOS.map((src, i) => {
             const w = i === 0 ? 1 : p(t, STEPS[i], STEPS[i] + 0.42, EASE.cine);
-            const z = i === 0 ? mix(1.0, 1.06, p(t, 0.3, 1.6)) : mix(1.2, 1, p(t, STEPS[i], STEPS[i] + 1.1));
+            // a câmera "se aproxima do produto" dentro do cartão, sem cortar o texto da página
+            const z = (i === 0 ? mix(1.0, 1.08, p(t, 0.3, 1.4)) : mix(1.22, 1, p(t, STEPS[i], STEPS[i] + 0.9))) * (1 + 0.1 * sp);
             return <Pic key={i} src={src} x={17} y={10} w={354} h={252} r={4} scale={z} dy={10 * sp} style={{clipPath: `inset(${(1 - w) * 100}% 0 0 0)`}} />;
           })}
         </div>
         {/* caixa de texto sobreposta, em outra profundidade */}
-        <div style={{position: 'absolute', left: 83, top: 342, width: 320, height: 195, background: C.cineBox, opacity: box, transform: `translate(${(1 - box) * -40}px, ${-30 * sp}px)`}}>
+        <div style={{position: 'absolute', left: 83, top: 342, width: 320, height: 195, background: C.cineBox, opacity: box, transform: `translate(${(1 - box) * -40}px, ${-18 * sp}px)`}}>
           {TITLE.map((l, i) => {
             const k = p(t, STEPS[i] - 0.05, STEPS[i] + 0.55, EASE.out);
             return (
@@ -76,8 +77,8 @@ export const Cinema: React.FC<{t: number; chrome?: boolean}> = ({t, chrome = tru
 
 export const cinemaCamera: Key[] = [
   {t: 0, ...REST},
-  {t: 0.7, ...FULL, e: EASE.cine},
-  {t: 0.85, ...FULL},
-  {t: 2.45, s: 3.25, px: 470, py: 425, qx: 960, qy: 540, e: EASE.inOut},
-  {t: 2.9, ...REST, e: EASE.cine},
+  {t: 0.65, ...FULL, e: EASE.inOut},
+  {t: 0.75, ...FULL},
+  {t: 2.0, s: 2.75, px: 400, py: 425, qx: 960, qy: 540, e: EASE.inOut},
+  {t: 2.7, ...REST, e: EASE.inOut},
 ];

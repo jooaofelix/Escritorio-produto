@@ -41,7 +41,7 @@ export const Institucional: React.FC<{t: number; chrome?: boolean}> = ({t, chrom
   return (
     <Browser chrome={chrome} pageBg={C.instBg} clip={`inset(${(1 - wipe) * 100}% 0 0 0)`} scroll={scroll} thumb={p(t, 0.5, 0.7) * (1 - p(t, 1.7, 2.0))}
       header={<SiteHeader dark band={C.instBg} />}>
-      <div style={{position: 'absolute', left: 86, top: 289, width: 234, height: 26, clipPath: `inset(0 ${(1 - chip) * 100}% 0 0 round 13px)`}}>
+      <div style={{position: 'absolute', left: 86, top: 289, width: 264, height: 26, clipPath: `inset(0 ${(1 - chip) * 100}% 0 0 round 13px)`}}>
         <div style={{position: 'absolute', inset: 0, borderRadius: 13, background: 'rgba(255,255,255,.1)'}} />
         <T x={14} y={8.2} h={9} w={235.3} weight={700} color={C.white}>PRODUTOS PERSONALIZADOS PARA EMPRESAS</T>
       </div>
@@ -73,8 +73,8 @@ export const Institucional: React.FC<{t: number; chrome?: boolean}> = ({t, chrom
 
 export const institucionalCamera: Key[] = [
   {t: 0, ...REST},
-  {t: 1.35, ...REST},
+  {t: 1.2, ...REST},
   {t: 1.85, s: 2.45, px: 169, py: 566, qx: 320, qy: 925, e: EASE.inOut},
   {t: 2.35, s: 2.5, px: 169, py: 566, qx: 320, qy: 930, e: EASE.inOut},
-  {t: 2.8, ...REST, e: EASE.cine},
+  {t: 3.0, ...REST, e: EASE.inOut},
 ];

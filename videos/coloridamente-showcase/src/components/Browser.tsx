@@ -61,7 +61,7 @@ export const SiteHeader: React.FC<{dark?: boolean; band?: string | null; divider
   const e = (v: number) => 1 - Math.pow(1 - v, 3);
   return (
     <>
-      {band && <div style={{position: 'absolute', left: VIEW.x, top: VIEW.y, width: VIEW.w, height: 55, background: band}} />}
+      {band && <div style={{position: 'absolute', left: VIEW.x, top: VIEW.y - 4, width: VIEW.w, height: 59.5, background: band}} />}
       <T x={79} y={220.2} h={16} w={118.7} weight={900} color={ink} style={{opacity: e(k(0)), transform: `translateX(${(1 - e(k(0))) * -26}px)`}}>
         coloridamente.
       </T>

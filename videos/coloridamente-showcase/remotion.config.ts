@@ -6,5 +6,6 @@ Config.setJpegQuality(95);
 Config.setCodec('h264');
 Config.setCrf(16);
 Config.setPixelFormat('yuv420p');
+Config.setColorSpace('bt709');
 Config.setConcurrency(4);
 Config.setOverwriteOutput(true);

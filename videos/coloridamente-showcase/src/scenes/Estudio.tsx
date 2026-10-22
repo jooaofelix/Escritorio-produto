@@ -20,7 +20,7 @@ export const Estudio: React.FC<{t: number; chrome?: boolean}> = ({t, chrome = tr
   const reveal = p(t, 0.15, 0.9, EASE.cine);
   const exit = 1 - p(t, 4.5, 4.95, EASE.in); // formas recolhem quando entra o institucional
   // paralaxe durante o passeio de câmera
-  const drift = p(t, 0.9, 1.9, EASE.inOut) - p(t, 1.9, 2.8, EASE.inOut); // vai e volta: termina na posição do PDF
+  const drift = p(t, 0.9, 1.9, EASE.inOut) - p(t, 1.9, 2.6, EASE.inOut); // vai e volta: termina na posição do PDF
   const card = p(t, 0.85, 1.6, EASE.back);
   const img = p(t, 0.95, 2.7, EASE.out);
   const chip = p(t, 1.45, 2.0, EASE.back);
@@ -68,7 +68,7 @@ export const Estudio: React.FC<{t: number; chrome?: boolean}> = ({t, chrome = tr
 export const estudioCamera: Key[] = [
   {t: 0, ...REST},
   {t: 0.15, ...REST},
-  {t: 0.95, s: 2.35, px: 240, py: 400, qx: 900, qy: 540, e: EASE.inOut},
-  {t: 1.95, s: 2.2, px: 560, py: 420, qx: 980, qy: 540, e: EASE.inOut},
-  {t: 2.5, ...REST, e: EASE.cine},
+  {t: 0.95, s: 2.35, px: 355, py: 410, qx: 700, qy: 540, e: EASE.inOut},
+  {t: 1.95, s: 2.2, px: 385, py: 420, qx: 700, qy: 540, e: EASE.inOut},
+  {t: 2.6, ...REST, e: EASE.inOut},
 ];

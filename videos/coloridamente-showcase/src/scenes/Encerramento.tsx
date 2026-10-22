@@ -70,7 +70,7 @@ export const Encerramento: React.FC<{t: number}> = ({t}) => {
         5 propostas. Muitas possibilidades.
       </div>
       <div style={{position: 'absolute', left: 0, right: 0, top: 752, display: 'flex', justifyContent: 'center'}}>
-        <Logo t={t} t0={2.3} spread={0.38} dur={0.28} width={340} />
+        <Logo t={t} t0={2.1} spread={0.32} dur={0.25} width={340} />
       </div>
     </div>
   );

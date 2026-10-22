@@ -15,7 +15,7 @@ direções de site do PDF `Coloridamente_Propostas_de_Site.pdf` (páginas 3 a 7)
   do PDF. A sequência "frame a frame" do conceito 05 é **simulada** com fotos, máscaras, escala e paralaxe, sem 3D.
 - A segunda linha de cards do catálogo, revelada pela rolagem, usa produtos e nomes reais de `src/data/products.ts`.
 - **Trilha original** (eletrônica leve, 120 BPM) e efeitos sutis gerados por código em `scripts/music.py`:
-  sem samples nem música de terceiros, livre para uso. Normalizada em -18 LUFS para ficar discreta.
+  sem samples nem música de terceiros, livre para uso. Normalizada em -16 LUFS: discreta, mas audível no celular.
 
 ## Estrutura
 

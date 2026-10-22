@@ -9,8 +9,8 @@ cd "$(dirname "$0")/.."
 
 if [ -n "${PY:-}" ]; then
   "$PY" scripts/music.py
-  # trilha discreta: -18 LUFS, pico -1,5 dBTP
-  ffmpeg -y -hide_banner -loglevel error -i public/audio/trilha.wav -af loudnorm=I=-18:TP=-1.5:LRA=7 -ar 48000 -c:a libmp3lame -b:a 256k public/audio/trilha.mp3
+  # trilha discreta, mas audível no celular: -16 LUFS, pico -1,5 dBTP
+  ffmpeg -y -hide_banner -loglevel error -i public/audio/trilha.wav -af loudnorm=I=-16:TP=-1.5:LRA=7 -ar 48000 -c:a libmp3lame -b:a 256k public/audio/trilha.mp3
   rm -f public/audio/trilha.wav
 fi
 

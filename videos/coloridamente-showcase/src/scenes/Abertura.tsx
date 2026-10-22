@@ -27,12 +27,12 @@ const FORMAS = [
 ];
 
 export const Abertura: React.FC<{t: number}> = ({t}) => {
-  const sai = p(t, 1.38, 1.62, EASE.in);
+  const sai = p(t, 1.6, 1.8, EASE.in);
   return (
     <div style={{position: 'absolute', inset: 0, background: C.paper}}>
       {FORMAS.map((f, i) => {
         const k = p(t, i * 0.05, 0.75 + i * 0.05, EASE.out);
-        const grow = p(t, 1.45 + f.ordem * 0.045, 1.95 + f.ordem * 0.045, EASE.inOut);
+        const grow = p(t, 1.62 + f.ordem * 0.04, 2.05 + f.ordem * 0.04, EASE.inOut);
         const x = mix(f.fx, f.x, k) + Math.sin(t * 2.2 + i) * 4;
         const y = mix(f.fy, f.y, k) + Math.cos(t * 1.8 + i) * 4;
         return (
@@ -41,10 +41,10 @@ export const Abertura: React.FC<{t: number}> = ({t}) => {
         );
       })}
       <div style={{position: 'absolute', left: 0, right: 0, top: 318, display: 'flex', justifyContent: 'center', opacity: 1 - sai, transform: `scale(${1 - 0.06 * sai})`}}>
-        <Logo t={t} t0={0.3} width={700} />
+        <Logo t={t} t0={0.22} spread={0.36} dur={0.3} width={700} />
       </div>
       <div style={{position: 'absolute', left: 0, right: 0, top: 652, height: 40, overflow: 'hidden', textAlign: 'center', opacity: 1 - sai}}>
-        <div style={{fontFamily: FONT, fontWeight: 700, fontSize: 25, lineHeight: '40px', letterSpacing: '0.34em', paddingLeft: '0.34em', color: C.soft, transform: `translateY(${(1 - p(t, 0.95, 1.4)) * 40}px)`}}>
+        <div style={{fontFamily: FONT, fontWeight: 700, fontSize: 28, lineHeight: '40px', letterSpacing: '0.3em', paddingLeft: '0.3em', color: C.soft, transform: `translateY(${(1 - p(t, 0.55, 0.9)) * 40}px)`}}>
           5 POSSIBILIDADES. UMA IDENTIDADE.
         </div>
       </div>
