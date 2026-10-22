@@ -89,14 +89,14 @@ export function chapterOpacities(page: Page) {
   );
 }
 
-/** Assinatura do canvas: miniatura 48×27 em RGBA, para comparar frames. */
+/** Assinatura do canvas: miniatura 27×48 (9:16) em RGBA, para comparar frames. */
 export function canvasSignature(page: Page) {
   return page.evaluate(() => {
     const source = document.querySelector<HTMLCanvasElement>('#inicio canvas');
     if (!source) throw new Error('canvas ausente');
     const thumb = document.createElement('canvas');
-    thumb.width = 48;
-    thumb.height = 27;
+    thumb.width = 27;
+    thumb.height = 48;
     const ctx = thumb.getContext('2d', { willReadFrequently: true });
     if (!ctx) throw new Error('2d indisponível');
     ctx.drawImage(source, 0, 0, thumb.width, thumb.height);

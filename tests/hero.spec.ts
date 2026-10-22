@@ -8,6 +8,7 @@ import {
   openWithSequence,
   parseWhatsAppHref,
   scrollToTime,
+  scrollManifest,
   signatureDistance,
   TIMELINE_LENGTH,
   trackProblems,
@@ -49,13 +50,16 @@ test.describe('hero: sequência cinematográfica', () => {
       return previous;
     };
 
-    const mid = await settle(100);
+    // Meio do capítulo 2 (bloco de mesa) e do capítulo 3 (acessórios).
+    const midTime = (chapters[1]!.start + chapters[1]!.end) / 2;
+    const laterTime = (chapters[2]!.start + chapters[2]!.end) / 2;
+    const mid = await settle(midTime);
     expect(signatureDistance(atTop, mid)).toBeGreaterThan(8);
-    const later = await settle(200);
+    const later = await settle(laterTime);
     expect(signatureDistance(mid, later)).toBeGreaterThan(8);
 
     // Voltando: os mesmos pixels nos dois sentidos.
-    expect(signatureDistance(await settle(100), mid)).toBeLessThan(1);
+    expect(signatureDistance(await settle(midTime), mid)).toBeLessThan(1);
     expect(signatureDistance(await settle(0), atTop)).toBeLessThan(1);
   });
 
@@ -69,10 +73,25 @@ test.describe('hero: sequência cinematográfica', () => {
       const heading = page.locator('#inicio').getByRole('heading', { name: chapter.title });
       await expect(heading).toBeInViewport({ ratio: 1 });
     }
-    // Respiro entre os capítulos 3 e 4 (frames 179–205): nenhum texto.
-    const gap = (chapters[2]!.end + chapters[3]!.start) / 2;
-    await scrollToTime(page, gap);
-    await expect.poll(() => chapterOpacities(page)).toEqual([0, 0, 0, 0]);
+    // Transições entre cenas (fusões do vídeo) e respiro entre os capítulos 3 e 4: nenhum texto.
+    const gaps = [
+      ...scrollManifest.transitions.map((t) => (t.start + t.end) / 2),
+      (chapters[2]!.end + chapters[3]!.start) / 2,
+    ];
+    for (const gap of gaps) {
+      await scrollToTime(page, gap);
+      await expect.poll(() => chapterOpacities(page), { message: `frame ${gap}` }).toEqual([0, 0, 0, 0]);
+    }
+  });
+
+  test('cada texto entra depois de uma transição e sai antes da seguinte', () => {
+    // Fade de 6 frames que começa 2 antes do início (entrada) e termina 2 depois do fim (saída): ver sequence.ts.
+    for (const t of scrollManifest.transitions) {
+      const before = chapters.find((c) => c.id === t.from)!;
+      const after = chapters.find((c) => c.id === t.to)!;
+      expect(before.end + 2, `${before.id} sai antes da transição`).toBeLessThan(t.start);
+      expect(after.start - 2, `${after.id} entra depois da transição`).toBeGreaterThan(t.end);
+    }
   });
 
   test('CTA final: inativo antes do capítulo 4, clicável no fim do pin e abre o WhatsApp', async ({ page, context }) => {
@@ -133,8 +152,12 @@ test.describe('hero: versão estática', () => {
       const heading = hero.getByRole('heading', { name: chapter.title });
       await heading.scrollIntoViewIfNeeded();
       await expect(heading).toBeVisible();
-      await expect(hero.getByText(chapter.body)).toBeVisible();
+      if (chapter.body) await expect(hero.getByText(chapter.body)).toBeVisible();
+      if (chapter.logo) await expect(hero.getByRole('img', { name: 'Coloridamente', exact: true })).toBeVisible();
       const still = hero.getByRole('img', { name: chapter.stillAlt });
+      // Still vertical inteiro na tela (9:16 limitado pela altura).
+      await still.scrollIntoViewIfNeeded();
+      await expect(still).toBeInViewport({ ratio: 1 });
       await expect(still).toBeVisible();
       await expect.poll(() => still.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
     }

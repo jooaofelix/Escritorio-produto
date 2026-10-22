@@ -170,7 +170,7 @@ export function MotionSequence({ onFail }: MotionSequenceProps) {
             className={
               stacked
                 ? 'absolute inset-0'
-                : 'relative col-span-6 col-start-7 row-start-1 justify-self-end overflow-hidden rounded-xs'
+                : 'relative col-span-6 col-start-7 row-start-1 justify-self-center overflow-hidden rounded-xs'
             }
           >
             <img
