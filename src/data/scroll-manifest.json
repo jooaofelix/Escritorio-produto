@@ -1,0 +1,21 @@
+{
+  "version": "v3",
+  "source": "video/out/coloridamente-scroll-master.mp4",
+  "aspect": "9:16",
+  "fps": 12,
+  "count": 164,
+  "pad": 4,
+  "ext": "webp",
+  "desktop": { "path": "/frames/v3/d/", "width": 720, "height": 1280, "totalKB": 2604 },
+  "mobile": { "path": "/frames/v3/m/", "width": 540, "height": 960, "totalKB": 1876 },
+  "scenes": [
+    { "id": "papelaria", "start": 0, "end": 55 },
+    { "id": "bloco-de-mesa", "start": 56, "end": 107 },
+    { "id": "acessorios", "start": 108, "end": 163 }
+  ],
+  "transitions": [
+    { "from": "papelaria", "to": "bloco-de-mesa", "start": 52, "end": 61 },
+    { "from": "bloco-de-mesa", "to": "acessorios", "start": 103, "end": 112 }
+  ],
+  "stills": { "path": "/frames/v3/stills/", "frames": [43,92,122,163], "widths": [540, 1080] }
+}
