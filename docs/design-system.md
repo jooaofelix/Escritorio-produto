@@ -89,23 +89,24 @@ A seta "→" existe só nos dois CTAs fixados pelo briefing; nenhum outro link l
 **Footer** (`bg-paper pt-16 pb-10`): logo 56px | nav `aria-label="Rodapé"` (lista vertical, TextLink sem sublinhado em repouso) | TextLink de WhatsApp. Base `mt-12 pt-6 border-t border-line text-small text-ink-soft`. Ano via `new Date().getFullYear()`.
 
 ## 6. Seções (layout, wireframe, copy final)
-**Hero** (implementado pelo motion; documentado aqui). Canvas pinned ~400vh, 4 capítulos, fundo studio. Desktop: texto em cols 1–5, centrado na vertical, véu `linear-gradient(90deg, rgb(228 226 223/.9) 0, rgb(228 226 223/.65) 38%, transparent 62%)`. Cap. 4: texto centralizado no alto (`pt-header` + 8vh), véu `linear-gradient(180deg, rgb(228 226 223/.9) 0, transparent 45%)`. No hero todo texto é ink (o véu sobre objetos pretos derruba o ink-soft abaixo de AA). Progresso: 4 segmentos 40×3px (mobile 32×3), gap 6px, trilho ink/20%; cada segmento mostra sua fatia de uma barra contínua (`bg-size:400% 100%`, `bg-position-x: 0 / 33.33% / 66.67% / 100%`), revelada com `scaleX` origem à esquerda; `aria-hidden`. Mobile: canvas sticky no topo (58svh), texto abaixo sobre studio, progresso sob o canvas. Reduced motion: sem pin, os 4 capítulos legíveis em sequência sobre stills.
+**Hero** (implementado pelo motion; documentado aqui). Sequência vertical 9:16 dos três vídeos de produto (`src/data/scroll-manifest.json`, frames `public/frames/v3/`, pipeline em `video/`), pinned ~400vh (largo) / ~360vh (retrato), 4 capítulos com textos que só aparecem fora das transições.
+- Largo (desktop/paisagem): texto em cols 1–6, centrado na vertical, sobre `bg-studio`, com o indicador de progresso abaixo; canvas como painel 9:16 inteiro em cols 7–12 (altura = viewport − header − respiro, `rounded-xs`, sem corte nem fundo desfocado). Sem véu.
+- Retrato (mobile): canvas full-bleed em cover; texto no alto, cada capítulo com o próprio véu `bg-studio/70`; no cap. 4 o CTA fica na base (safe-area).
+- Progresso: 4 segmentos da barra de cor, `aria-hidden`. Reduced motion: sem pin, os 4 capítulos legíveis sobre stills 9:16.
 ```
-DESKTOP                                                MOBILE
-[logo]          O que criamos  Como funciona  … [Solicitar orçamento]   [logo]           [Menu]
-░░░░░░░░░░░░░░ véu                                     ┌───────────────────┐
-H1 display-xl (cols 1–5)        (frame do vídeo)       │  canvas 58svh     │
-lead                                                   └───────────────────┘
-▬ ▬ ▬ ▬  progresso                                     ▬ ▬ ▬ ▬   H1 + lead
+LARGO                                              RETRATO
+[logo]   O que criamos  Como funciona  …  [CTA]    [logo]          [Menu]
+H1 display-xl (cols 1–6)     ┌──────────┐          ▬ ▬ ▬ ▬  progresso
+lead                         │ painel   │          H1 + lead (véu studio)
+▬ ▬ ▬ ▬  progresso           │ 9:16     │          ░ canvas full-bleed ░
+                             └──────────┘          [CTA no cap. 4]
 ```
-| Cap. | Título (`text-display-xl`) | Apoio (`text-lead`) |
-|---|---|---|
-| 1 (`h1`) | Sua marca merece sair do comum. | Criamos produtos personalizados que transformam ideias em algo único. |
-| 2 | Cada detalhe carrega a sua identidade. | Agendas, cadernos e materiais feitos para representar sua empresa. |
-| 3 | Criatividade que ganha forma. | Design, funcionalidade e personalidade em cada criação. |
-| 4 | Sua ideia. Nossa criatividade. | Produtos personalizados para valorizar a sua marca. CTA primário: **Quero personalizar meus produtos →** |
-Copy dos capítulos fixada pelo briefing (literal, não alterar).
-Rótulo do canvas (`role="img"`): "Caderno de espiral com capa personalizada se abre e dá lugar a uma agenda e a objetos de mesa pretos."
+| Cap. | Frames | Título | Apoio |
+|---|---|---|---|
+| 1 (`h1`) papelaria | 0–49 | Cada detalhe carrega a sua identidade. | Agendas, cadernos e materiais feitos para representar sua empresa. |
+| 2 bloco de mesa | 64–100 | Sua marca presente no dia a dia. | Blocos de mesa personalizados com a identidade da sua empresa. |
+| 3 acessórios | 115–144 | Organização também é design. | Porta-canetas, suporte de celular, organizador para óculos e caneta e porta-clipes. |
+| 4 encerramento | 150–163 + hold | Logo oficial + "Sua ideia ganha forma aqui." | CTA primário: **Quero personalizar meus produtos →** |
 
 **A. O que criamos** (`#o-que-criamos`). `h2` + `text-lead` em cols 1–6. Grid lg: linha 1 = card largo cols 1–7 + card estreito cols 9–12 com `lg:mt-28`; linha 2 = estreito cols 1–5 + largo cols 7–12 com `lg:mt-28`; `gap-y-20`. md: 2 colunas, a da direita com `mt-16`. Mobile: 1 coluna, `gap-y-14`.
 ```
