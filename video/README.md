@@ -1,7 +1,7 @@
 # Vídeo institucional Coloridamente
 
-Pós-produção dos três vídeos de produto em uma apresentação 9:16 e na sequência de frames
-da landing page. Tudo é gerado por `video/scripts/build-video.sh` (ffmpeg) e pelas cenas de
+Pós-produção dos três vídeos de produto em uma apresentação 9:16 para redes sociais
+(os vídeos não são usados no site). Tudo é gerado por `video/scripts/build-video.sh` (ffmpeg) e pelas cenas de
 `video/motion/` (renderizadas quadro a quadro no Chromium do Playwright).
 
 ## Entregas
@@ -9,8 +9,7 @@ da landing page. Tudo é gerado por `video/scripts/build-video.sh` (ffmpeg) e pe
 | Arquivo | Uso | Formato |
 | --- | --- | --- |
 | `out/coloridamente-institucional.mp4` | Versão A: apresentações e redes sociais | 1080×1920, 30 fps CFR, H.264 High, ~18,7 s, áudio silencioso |
-| `out/coloridamente-scroll-master.mp4` | Versão B: base da animação do site | 1080×1920, 24 fps, H.264 High, ~13,6 s, sem áudio |
-| `public/frames/v3/` + `src/data/scroll-manifest.json` | Frames da landing page | WebP 12 fps: 164 frames desktop 720×1280 e mobile 540×960, stills AVIF/WebP |
+| `out/coloridamente-scroll-master.mp4` | Versão B: sequência só com os produtos | 1080×1920, 24 fps, H.264 High, ~13,6 s, sem áudio |
 
 ## Fontes
 
@@ -22,7 +21,7 @@ da landing page. Tudo é gerado por `video/scripts/build-video.sh` (ffmpeg) e pe
 ```bash
 bash video/scripts/build-video.sh normalize      # recorte 9:16 sem marca d'água, 1080x1920, cor
 bash video/scripts/build-video.sh master         # Versão B
-bash video/scripts/build-video.sh frames         # frames + manifest do site
+bash video/scripts/build-video.sh frames         # sequência de frames WebP (opcional; o site não usa)
 bash video/scripts/build-video.sh motion         # abertura e encerramento (Chromium)
 bash video/scripts/build-video.sh institucional  # Versão A
 bash video/scripts/build-video.sh all            # tudo, nessa ordem

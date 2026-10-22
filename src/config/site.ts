@@ -10,12 +10,11 @@ export const site = {
     number: whatsappNumber,
     defaultMessage: 'Olá! Conheci a Coloridamente pelo site e gostaria de solicitar um orçamento.',
   },
-  nav: [
-    { label: 'O que criamos', href: '#o-que-criamos' },
-    { label: 'Como funciona', href: '#como-funciona' },
-    { label: 'Produtos', href: '#produtos' },
-    { label: 'Orçamento', href: '#orcamento' },
-  ],
+  /** As duas páginas do site (propostas 04 e 05). */
+  pages: {
+    institucional: { label: 'Institucional', href: '/' },
+    cinematografico: { label: 'Experiência', href: '/cinematografico/' },
+  },
 } as const;
 
 export const hasWhatsAppNumber = whatsappNumber.length >= 10;

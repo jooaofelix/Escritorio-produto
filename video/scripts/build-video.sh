@@ -76,7 +76,7 @@ master() {
   echo "master: $(clip_duration "$OUT/coloridamente-scroll-master.mp4")s"
 }
 
-# Frames da landing page a partir do scroll-master (24 fps): 1 a cada 2 quadros = 12 fps,
+# Sequência de frames (opcional; o site não usa) a partir do scroll-master (24 fps): 1 a cada 2 quadros = 12 fps,
 # espaçamento uniforme. Desktop 720x1280 (resolução nativa dos vídeos), mobile 540x960.
 FRAMES_VERSION="v3"
 FRAME_STEP=2
@@ -84,7 +84,7 @@ STILL_TIMES=(3.6 7.7 10.2 13.6)   # segundos no master: um quadro representativo
 
 frames() {
   local master="$OUT/coloridamente-scroll-master.mp4"
-  local pub="$ROOT/public/frames/$FRAMES_VERSION"
+  local pub="$OUT/frames/$FRAMES_VERSION"
   rm -rf "$pub" && mkdir -p "$pub/d" "$pub/m" "$pub/stills"
   local sel="select='not(mod(n\,${FRAME_STEP}))'"
   ff -i "$master" -vf "$sel,scale=720:1280:flags=lanczos" -fps_mode vfr \
@@ -118,7 +118,7 @@ frames() {
   b2=$(awk -v a="$d1" -v b="$d2" -v x="$XF" -v f="$fps" 'BEGIN{print int((a+b-1.5*x)*f+0.5)}')
   local d_kb m_kb
   d_kb=$(du -sk "$pub/d" | cut -f1); m_kb=$(du -sk "$pub/m" | cut -f1)
-  cat > "$ROOT/src/data/scroll-manifest.json" <<JSON
+  cat > "$pub/manifest.json" <<JSON
 {
   "version": "$FRAMES_VERSION",
   "source": "video/out/coloridamente-scroll-master.mp4",

@@ -1,126 +1,114 @@
 /*
- * Coloridamente — design system (Tailwind v4).
- * Nomes de token são contrato com src/components/cinematic/** e com docs/design-system.md.
- * Cores da logo = preenchimento/codificação; texto só em ink, ink-soft, paper ou paper-soft.
+ * Coloridamente — tokens das propostas 04 (Institucional premium) e 05 (Scroll cinematográfico).
+ * Cores e tipografia (Lato) iguais às do showcase das propostas de site.
  */
 
-/* Fora do sistema: raios grandes e kit de sombras deixam de existir como utilitários. */
 @theme {
   --radius-*: initial;
   --shadow-*: initial;
 }
 
-/* static: as variáveis sempre existem em :root (o canvas/motion pode lê-las via var() ou getComputedStyle). */
 @theme static {
-  /* Base */
-  --color-paper: #faf9f6;
-  --color-ink: #242424;
-  --color-ink-soft: #5c5a55; /* AA: 6.5:1 em paper, 5.3:1 em studio */
-  --color-paper-soft: #c9c7c2; /* texto secundário sobre ink: 9.2:1 */
-  --color-line: rgb(36 36 36 / 0.12); /* fios e trilhos, nunca contorno de controle */
-  --color-studio: #e4e2df; /* fundo do vídeo / placas de still */
+  /* Base clara */
+  --color-paper: #faf9f5;
+  --color-ink: #262924;
+  --color-soft: #575b53; /* texto secundário sobre paper: 6.9:1 */
+  --color-line: #e4e4dd;
+  --color-card: #e9e8e2; /* moldura das fotos */
 
-  /* Logo (preenchimento) */
+  /* 04 — Institucional premium */
+  --color-forest: #30443b;
+  --color-forest-deep: #263730;
+  --color-mist: #e1e9e1; /* texto de apoio sobre forest: 8.4:1 */
+
+  /* 05 — Scroll cinematográfico */
+  --color-night: #202622;
+  --color-night-box: #252d29;
+  --color-haze: #d2ddd4; /* texto de apoio sobre night: 11.6:1 */
+  --color-mint-ink: #abdad0; /* contador sobre night */
+
+  /* Marca */
   --color-coral: #e98071;
+  --color-coral-btn: #e89481;
   --color-olive: #a7b571;
   --color-sun: #f9c848;
-  --color-sun-deep: #f0b92a; /* hover/active do CTA; ink sobre ele 8.6:1 */
+  --color-sun-soft: #f4cf6e;
   --color-mint: #a8dec9;
   --color-blush: #f6aaa7;
 
-  /* Tipo */
-  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
-  --font-sans: 'Figtree Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Lato', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  /* Movimento */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-back: cubic-bezier(0.34, 1.45, 0.64, 1);
+  --ease-cine: cubic-bezier(0.77, 0, 0.18, 1);
 
-  /* Raio: 2–6px apenas */
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 18px;
+  --radius-full: 9999px;
 
-  /* Espaço nomeado → h-header, pt-header, py-section, px-gutter… */
-  --spacing-header: 3.75rem; /* 60px; 72px a partir de lg (ver @layer base) */
-  --spacing-section: clamp(5rem, 2.5rem + 8vw, 10rem);
-  --spacing-gutter: clamp(1rem, 0.5rem + 2.5vw, 3rem);
+  --spacing-header: 4.25rem; /* 68px; 76px a partir de lg */
+  --spacing-section: clamp(5rem, 2.5rem + 7vw, 9rem);
+  --spacing-gutter: clamp(1rem, 0.4rem + 2.6vw, 3rem);
 }
 
-/* ——— Tipografia ——— Fraunces: SOFT alto ecoa as serifas macias da logo; opsz automático pelo tamanho. */
-@utility text-display-xl {
-  font-family: var(--font-display);
-  font-size: clamp(2.5rem, 1.75rem + 3.4vw, 4.5rem);
-  line-height: 1.02;
-  letter-spacing: -0.022em;
-  font-weight: 460;
-  font-variation-settings: 'SOFT' var(--fv-soft, 100), 'WONK' var(--fv-wonk, 0);
+/* ——— Tipografia (Lato 400/700/900) ——— */
+@utility text-display-1 {
+  font-size: clamp(2.5rem, 1.6rem + 3.9vw, 4.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  font-weight: 900;
   text-wrap: balance;
 }
-@utility text-display-lg {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 1.45rem + 2.4vw, 3.5rem);
-  line-height: 1.06;
-  letter-spacing: -0.018em;
-  font-weight: 480;
-  font-variation-settings: 'SOFT' var(--fv-soft, 100), 'WONK' var(--fv-wonk, 0);
-  text-wrap: balance;
-}
-@utility text-display-md {
-  font-family: var(--font-display);
-  font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
-  line-height: 1.18;
+@utility text-display-2 {
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+  line-height: 1.1;
   letter-spacing: -0.01em;
-  font-weight: 540;
-  font-variation-settings: 'SOFT' var(--fv-soft, 100), 'WONK' var(--fv-wonk, 0);
+  font-weight: 900;
+  text-wrap: balance;
+}
+@utility text-display-3 {
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+  line-height: 1.2;
+  font-weight: 900;
   text-wrap: balance;
 }
 @utility text-lead {
-  font-family: var(--font-sans);
-  font-size: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
-  line-height: 1.5;
-  letter-spacing: -0.003em;
+  font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
+  line-height: 1.55;
+  letter-spacing: 0.01em;
   text-wrap: pretty;
 }
 @utility text-body {
-  font-family: var(--font-sans);
-  font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  font-size: 1rem;
   line-height: 1.6;
+  letter-spacing: 0.01em;
   text-wrap: pretty;
 }
-@utility text-small {
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  line-height: 1.5;
-  letter-spacing: 0.004em;
+@utility text-label {
+  font-size: 0.75rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
-/* Medida de linha: ~65 caracteres. */
 @utility measure {
-  max-inline-size: 65ch;
+  max-inline-size: 60ch;
 }
 
 /* ——— Layout ——— */
 @utility container-page {
   inline-size: 100%;
-  max-inline-size: 85rem; /* 1360px */
+  max-inline-size: 82rem;
   margin-inline: auto;
-  padding-inline: var(--spacing-gutter); /* 16px no mobile → 48px */
+  padding-inline: var(--spacing-gutter);
 }
 
-/* Superfície escura (só a seção de conversão). */
-@utility surface-ink {
-  background-color: var(--color-ink);
-  color: var(--color-paper);
-  --focus-ring: var(--color-sun);
-}
-
-/* ——— Barra de cor ———
- * Faixa de controle de cor da gráfica: 5 patches iguais, cantos vivos, ordem fixa.
- * Altura vem de fora (h-[3px], h-1…). Vertical: [--bar-angle:180deg].
- */
+/* Barra de cor da marca (5 cores, ordem fixa). */
 @utility color-bar {
   background-image: linear-gradient(
-    var(--bar-angle, 90deg),
+    90deg,
     var(--color-coral) 0 20%,
     var(--color-olive) 0 40%,
     var(--color-sun) 0 60%,
@@ -128,35 +116,90 @@
     var(--color-blush) 0
   );
 }
-/* Preenchimento ligado ao scroll (etapas). Sem suporte ou com reduced-motion: barra cheia, estática.
- * Vertical: [--bar-from:inset(0_0_100%_0)]. */
-@utility color-bar-fill {
-  @media (prefers-reduced-motion: no-preference) {
-    @supports (animation-timeline: view()) {
-      animation: color-bar-fill linear both;
-      animation-duration: auto;
-      animation-timeline: view();
-      animation-range: cover 10% cover 50%;
-    }
-  }
-}
-@keyframes color-bar-fill {
+
+/* Entradas orquestradas no carregamento (hero). Sem movimento com reduced-motion. */
+@keyframes rise {
   from {
-    clip-path: var(--bar-from, inset(0 100% 0 0));
+    transform: translateY(105%);
   }
   to {
-    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
   }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes wipe-right {
+  from {
+    clip-path: inset(0 100% 0 0 round 999px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 999px);
+  }
+}
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@utility enter-rise {
+  animation: rise 0.8s var(--ease-out-soft) both;
+}
+@utility enter-fade {
+  animation: fade-up 0.6s var(--ease-out-soft) both;
+}
+@utility enter-wipe {
+  animation: wipe-right 0.5s var(--ease-out-soft) both;
+}
+@utility enter-settle {
+  animation: settle 1s var(--ease-out-soft) both;
+}
+@utility enter-pop {
+  animation: pop 0.55s var(--ease-back) both;
+}
+@utility enter-draw {
+  transform-origin: left;
+  animation: draw 0.7s var(--ease-in-out-soft) both;
 }
 
 /* ——— Base ——— */
 @layer base {
   :root {
-    --focus-ring: var(--color-ink);
+    --focus-ring: var(--color-sun);
   }
   @media (width >= 64rem) {
     :root {
-      --spacing-header: 4.5rem; /* 72px */
+      --spacing-header: 4.75rem;
     }
   }
   html {
@@ -173,7 +216,7 @@
     background-color: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+    font-size: 1rem;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -181,22 +224,19 @@
   }
   h1,
   h2,
-  h3,
-  h4 {
-    font-family: var(--font-display);
-    font-weight: 480;
-    font-variation-settings: 'SOFT' var(--fv-soft, 100), 'WONK' var(--fv-wonk, 0);
+  h3 {
+    font-weight: 900;
     text-wrap: balance;
-  }
-  p {
-    text-wrap: pretty;
   }
   :focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 3px;
   }
+  .on-light {
+    --focus-ring: var(--color-ink);
+  }
   ::selection {
-    background-color: var(--color-blush);
+    background-color: var(--color-sun);
     color: var(--color-ink);
   }
   @media (prefers-reduced-motion: reduce) {
@@ -204,6 +244,7 @@
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }

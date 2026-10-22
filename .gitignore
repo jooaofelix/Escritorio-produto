@@ -6,3 +6,4 @@ test-results
 playwright-report
 *.log
 video/build
+video/out/frames

@@ -22,16 +22,18 @@ function siteMeta(env: Record<string, string>): Plugin {
         this.warn(msg);
       }
     },
-    transformIndexHtml(html) {
+    transformIndexHtml(html, ctx) {
       if (!siteUrl) return html;
+      // Cada página (index.html, cinematografico/index.html) recebe a própria URL canônica.
+      const pagePath = ctx.path.replace(/index\.html$/, '');
       const tags: HtmlTagDescriptor[] = [
-        { tag: 'link', attrs: { rel: 'canonical', href: `${siteUrl}/` }, injectTo: 'head' },
-        { tag: 'meta', attrs: { property: 'og:url', content: `${siteUrl}/` }, injectTo: 'head' },
+        { tag: 'link', attrs: { rel: 'canonical', href: `${siteUrl}${pagePath}` }, injectTo: 'head' },
+        { tag: 'meta', attrs: { property: 'og:url', content: `${siteUrl}${pagePath}` }, injectTo: 'head' },
       ];
       // og:image e twitter:image precisam de URL absoluta para a maioria dos scrapers;
       // no JSON-LD, `logo` também deve ser absoluto e `url` identifica o site da Organization.
       const absolute = html
-        .replaceAll('content="/og-image.jpg"', `content="${siteUrl}/og-image.jpg"`)
+        .replace(/content="\/(og-[a-z-]+\.jpg)"/g, `content="${siteUrl}/$1"`)
         .replace(/"logo": "\//, `"url": "${siteUrl}/",\n        "logo": "${siteUrl}/`);
       return { html: absolute, tags };
     },
@@ -50,6 +52,7 @@ function siteMeta(env: Record<string, string>): Plugin {
           '<?xml version="1.0" encoding="UTF-8"?>\n' +
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
           `  <url><loc>${siteUrl}/</loc><lastmod>${today}</lastmod></url>\n` +
+          `  <url><loc>${siteUrl}/cinematografico/</loc><lastmod>${today}</lastmod></url>\n` +
           '</urlset>\n',
       });
     },
@@ -65,6 +68,13 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       target: 'es2022',
+      // Duas páginas: proposta 04 (/) e proposta 05 (/cinematografico/).
+      rollupOptions: {
+        input: {
+          institucional: fileURLToPath(new URL('./index.html', import.meta.url)),
+          cinematografico: fileURLToPath(new URL('./cinematografico/index.html', import.meta.url)),
+        },
+      },
       cssCodeSplit: false,
       assetsInlineLimit: 2048,
     },

@@ -5,51 +5,14 @@
 # da Cloudflare Pages não precisa dessas ferramentas.
 #
 # Uso: npm run assets            (tudo)
-#      npm run assets -- frames  (só a sequência de frames)
+#      npm run assets -- images  (só as fotos de produto)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$ROOT/assets-src"
 PUB="$ROOT/public"
 DATA="$ROOT/src/data"
-VIDEO="$SRC/video-coloridamente.mp4"
-FRAMES_VERSION="v2"
-
-# Recorte 16:9 que exclui a marca d'água do gerador de vídeo (canto inferior direito,
-# y >= 656 no quadro 1280x720): mantém o topo e corta só a faixa inferior.
-# Decisão do cliente; para um vídeo sem marca d'água, use CROP="" e aumente FRAMES_VERSION.
-CROP="${CROP-crop=1160:652:60:0,}"
-ONLY="${1:-all}"
-
 ff() { ffmpeg -hide_banner -loglevel error -y "$@"; }
-
-build_frames() {
-  # Só os quadros estáticos do vídeo horizontal (seção "O que criamos"). A animação do topo
-  # usa a sequência 9:16 gerada por video/scripts/build-video.sh.
-  local out="$PUB/frames/$FRAMES_VERSION"
-  rm -rf "$out" && mkdir -p "$out/stills"
-
-  # Índices 0-based do vídeo original.
-  local stills=(0 52 100 160 240)
-  for n in "${stills[@]}"; do
-    local name; name=$(printf '%04d' "$n")
-    for w in 768 1280; do
-      ff -i "$VIDEO" -an -vf "select='eq(n\,$n)',${CROP}scale=${w}:-2:flags=lanczos" -frames:v 1 \
-        -c:v libwebp -quality 78 "$out/stills/$name-$w.webp"
-      ff -i "$VIDEO" -an -vf "select='eq(n\,$n)',${CROP}scale=${w}:-2:flags=lanczos,format=yuv420p" -frames:v 1 \
-        -c:v libaom-av1 -still-picture 1 -crf 30 -b:v 0 -cpu-used 4 "$out/stills/$name-$w.avif"
-    done
-  done
-
-  mkdir -p "$DATA"
-  cat > "$DATA/frames-manifest.json" <<JSON
-{
-  "version": "$FRAMES_VERSION",
-  "stills": { "path": "/frames/$FRAMES_VERSION/stills/", "frames": [$(IFS=,; echo "${stills[*]}")], "widths": [768, 1280] }
-}
-JSON
-  echo "stills: ${#stills[@]} quadros em $out/stills"
-}
 
 build_images() {
   local out="$PUB/images/products"
@@ -93,18 +56,13 @@ build_brand() {
   cp "$tmp/icon-512.png" "$tmp/apple-touch-icon.png" "$tmp/favicon-32.png" "$PUB/"
   convert "$tmp/favicon-16.png" "$tmp/favicon-32.png" "$tmp/favicon-48.png" "$PUB/favicon.ico"
 
-  # Open Graph 1200x630: composição final do vídeo + logo.
-  ff -i "$VIDEO" -an -vf "select='eq(n\,240)',crop=1180:620:0:0,scale=1200:630:flags=lanczos" -frames:v 1 "$tmp/og-bg.png"
-  convert "$tmp/og-bg.png" \( "$tmp/logo-crop.png" -resize 420x \) -gravity north -geometry +0+34 -composite \
-    -quality 86 "$PUB/og-image.jpg"
   rm -rf "$tmp"
   echo "brand: $(du -h "$PUB/brand/logo-coloridamente.svg" | cut -f1) svg"
 }
 
 case "$ONLY" in
-  frames) build_frames ;;
   images) build_images ;;
   brand)  build_brand ;;
-  all)    build_frames; build_images; build_brand ;;
-  *) echo "alvo desconhecido: $ONLY (use frames|images|brand|all)"; exit 1 ;;
+  all)    build_images; build_brand ;;
+  *) echo "alvo desconhecido: $ONLY (use images|brand|all)"; exit 1 ;;
 esac
