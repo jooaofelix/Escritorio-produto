@@ -33,17 +33,22 @@ Os produtos da galeria ficam em `src/data/products.ts`. Para incluir um item:
 
 ## Sequência cinematográfica
 
-Os frames são extraídos do vídeo `assets-src/video-coloridamente.mp4` por
-`scripts/build-assets.sh` (ffmpeg): 241 frames 1280 px para desktop e 121 frames 960 px
-para mobile, em WebP, mais quadros estáticos AVIF/WebP usados no modo de movimento reduzido.
-O resultado é versionado em `public/frames/v2/` e descrito em `src/data/frames-manifest.json`.
+A animação do topo usa a sequência vertical (9:16) montada a partir dos três vídeos de produto
+(papelaria, bloco de mesa e acessórios). O pipeline completo, incluindo o vídeo institucional e o
+master da animação, está em [`video/`](video/README.md):
 
-Para trocar o vídeo: substitua o arquivo, aumente `FRAMES_VERSION` no script (invalida o cache
-imutável) e rode `npm run assets -- frames`. Os intervalos de cada capítulo ficam em
-`src/data/chapters.ts`.
+- Frames: `public/frames/v3/` (WebP 12 fps, desktop 720×1280 e mobile 540×960, stills AVIF/WebP).
+- Manifest: `src/data/scroll-manifest.json` (quantidade, caminhos e limites de cada cena).
+- Textos e intervalos de cada capítulo: `src/data/chapters.ts`.
 
-Ferramentas necessárias só para regenerar assets: ffmpeg (libwebp, libaom-av1), ImageMagick,
-poppler-utils, Python 3 e Chromium do Playwright (ícones). O build da Cloudflare não precisa delas.
+Para regenerar: `bash video/scripts/build-video.sh all` (aumente `FRAMES_VERSION` no script quando
+o conteúdo mudar, para invalidar o cache imutável).
+
+Os quadros estáticos da seção "O que criamos" vêm do vídeo horizontal anterior
+(`assets-src/video-coloridamente.mp4` → `public/frames/v2/stills/`, via `npm run assets -- frames`).
+
+Ferramentas necessárias só para regenerar assets: ffmpeg (libx264, libwebp, libaom-av1),
+ImageMagick, poppler-utils, Python 3 e Chromium do Playwright. O build da Cloudflare não precisa delas.
 
 ## Deploy na Cloudflare (Workers com assets estáticos)
 
