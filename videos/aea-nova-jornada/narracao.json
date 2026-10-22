@@ -1,0 +1,186 @@
+{
+  "voz": "pt_BR-faber-medium",
+  "velocidade": 1.08,
+  "abertura": 0.6,
+  "segmentos": [
+    {
+      "id": "s01",
+      "cena": "abertura",
+      "pausa": 0.25,
+      "legenda": "A jornada de trabalho no Brasil vai mudar.",
+      "fala": "A jornada de trabalho no Brasil vai mudar."
+    },
+    {
+      "id": "s02",
+      "cena": "abertura",
+      "pausa": 0.7,
+      "legenda": "E a sua empresa precisa estar pronta.",
+      "fala": "E a sua empresa precisa estar pronta."
+    },
+    {
+      "id": "s03",
+      "cena": "marca",
+      "pausa": 0.35,
+      "legenda": "Quem explica é a AEA Contabilidade Consultiva.",
+      "fala": "Quem explica é a {AEA} Contabilidade Consultiva."
+    },
+    {
+      "id": "s04",
+      "cena": "marca",
+      "pausa": 0.8,
+      "legenda": "Nova jornada de trabalho: redução gradual das horas e mais descanso.",
+      "fala": "Nova jornada de trabalho: redução gradual das horas, e mais descanso."
+    },
+    {
+      "id": "s05",
+      "cena": "linha-do-tempo",
+      "pausa": 0.45,
+      "legenda": "Hoje, o limite é de 44 horas por semana.",
+      "fala": "Hoje, o limite é de quarenta e quatro horas por semana."
+    },
+    {
+      "id": "s06",
+      "cena": "linha-do-tempo",
+      "pausa": 0.55,
+      "legenda": "A partir de 16/12/2026, ele cai para 42 horas semanais, com 2 dias de descanso remunerado.",
+      "fala": "A partir de dezesseis de dezembro de dois mil e vinte e seis, ele cai para quarenta e duas horas semanais, com dois dias de descanso remunerado."
+    },
+    {
+      "id": "s07",
+      "cena": "linha-do-tempo",
+      "pausa": 0.8,
+      "legenda": "E, a partir de 16/12/2027, chega a 40 horas semanais.",
+      "fala": "E, a partir de dezesseis de dezembro de dois mil e vinte e sete, chega a quarenta horas semanais."
+    },
+    {
+      "id": "s08",
+      "cena": "salario",
+      "pausa": 0.35,
+      "legenda": "A jornada diminui, mas o salário, não.",
+      "fala": "A jornada diminui. Mas o salário, não."
+    },
+    {
+      "id": "s09",
+      "cena": "salario",
+      "pausa": 0.8,
+      "legenda": "Sem redução salarial, inclusive nos contratos em andamento e nos pisos salariais.",
+      "fala": "Não há redução salarial, inclusive nos contratos em andamento e nos pisos salariais."
+    },
+    {
+      "id": "s10",
+      "cena": "folgas",
+      "pausa": 0.45,
+      "legenda": "E os dias de folga? Um dos dois dias de descanso será, preferencialmente, aos domingos.",
+      "fala": "E como ficam os dias de folga? Um dos dois dias de descanso será, preferencialmente, aos domingos."
+    },
+    {
+      "id": "s11",
+      "cena": "folgas",
+      "pausa": 0.8,
+      "legenda": "Compensações excepcionais dependem de acordo ou convenção coletiva: média de 2 descansos semanais no mês e ao menos 1 por semana.",
+      "fala": "Compensações excepcionais dependem de acordo ou convenção coletiva, com média de dois descansos semanais no mês, e pelo menos um por semana."
+    },
+    {
+      "id": "s12",
+      "cena": "quarenta",
+      "pausa": 0.3,
+      "legenda": "Sua equipe já trabalha 40 horas ou menos?",
+      "fala": "Sua equipe já trabalha quarenta horas, ou menos?"
+    },
+    {
+      "id": "s13",
+      "cena": "quarenta",
+      "pausa": 0.8,
+      "legenda": "Não há redução proporcional automática, mas os descansos deverão ser revisados.",
+      "fala": "Não há redução proporcional automática. Mas os descansos deverão ser revisados."
+    },
+    {
+      "id": "s14",
+      "cena": "atencao",
+      "pausa": 0.8,
+      "legenda": "Atenção: distribuir as 42 horas em 5 dias, ampliando a jornada diária, exige convenção ou acordo coletivo.",
+      "fala": "Atenção à distribuição das horas: para cumprir as quarenta e duas horas em apenas cinco dias, ampliando a jornada diária, é necessária convenção ou acordo coletivo."
+    },
+    {
+      "id": "s15",
+      "cena": "checklist",
+      "pausa": 0.35,
+      "legenda": "Empresário, é hora de revisar horários, escalas, ponto, horas extras, banco de horas e normas coletivas.",
+      "fala": "Empresário, é hora de revisar horários, escalas, ponto, horas extras, banco de horas e normas coletivas."
+    },
+    {
+      "id": "s16",
+      "cena": "checklist",
+      "pausa": 0.6,
+      "legenda": "Para fazer essa transição com segurança, siga 6 ações.",
+      "fala": "Para fazer essa transição com segurança, siga seis ações."
+    },
+    {
+      "id": "s17",
+      "cena": "acoes",
+      "pausa": 0.45,
+      "legenda": "1. Mapeie a rotina: jornadas, dias de folga e horários de pico.",
+      "fala": "Primeiro: mapeie a rotina. Levante jornadas, dias de folga e horários de pico."
+    },
+    {
+      "id": "s18",
+      "cena": "acoes",
+      "pausa": 0.45,
+      "legenda": "2. Simule novas escalas, com revezamentos e reforço na equipe.",
+      "fala": "Segundo: simule novas escalas, com revezamentos e reforço na equipe."
+    },
+    {
+      "id": "s19",
+      "cena": "acoes",
+      "pausa": 0.45,
+      "legenda": "3. Valide tudo com o nosso Departamento Pessoal antes de mudar.",
+      "fala": "Terceiro: valide tudo com o nosso Departamento Pessoal, antes de mudar."
+    },
+    {
+      "id": "s20",
+      "cena": "acoes",
+      "pausa": 0.45,
+      "legenda": "4. Revise os custos da folha, das horas extras e das contratações.",
+      "fala": "Quarto: revise os custos da folha, das horas extras e das contratações."
+    },
+    {
+      "id": "s21",
+      "cena": "acoes",
+      "pausa": 0.45,
+      "legenda": "5. Atualize o ponto e comunique a equipe.",
+      "fala": "Quinto: atualize o ponto, e comunique a equipe."
+    },
+    {
+      "id": "s22",
+      "cena": "acoes",
+      "pausa": 0.9,
+      "legenda": "6. Acompanhe a adaptação e ajuste a operação com o nosso apoio.",
+      "fala": "E por fim: acompanhe a adaptação, e ajuste a operação com o nosso apoio."
+    },
+    {
+      "id": "s23",
+      "cena": "cta",
+      "pausa": 0.5,
+      "legenda": "Comece agora: envie ao nosso Departamento Pessoal a escala atual, a relação de colaboradores e os horários de funcionamento.",
+      "fala": "Comece agora: envie ao nosso Departamento Pessoal a escala atual, a relação de colaboradores, e os horários de funcionamento."
+    },
+    {
+      "id": "s24",
+      "cena": "cta",
+      "pausa": 0.5,
+      "legenda": "Fale com a gente: (12) 3921-6009, telefone fixo e WhatsApp.",
+      "fala": "Fale com a gente: doze, três, nove, dois, um, seis, zero, zero, nove. Telefone fixo e {WhatsApp}."
+    },
+    {
+      "id": "s25",
+      "cena": "assinatura",
+      "pausa": 2.6,
+      "legenda": "Sua empresa pronta para a nova jornada. Conte com a AEA.",
+      "fala": "Sua empresa pronta para a nova jornada. Conte com a gente!"
+    }
+  ],
+  "pronuncia": {
+    "AEA": "A E A",
+    "WhatsApp": "uatsápi"
+  }
+}

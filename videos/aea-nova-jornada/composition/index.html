@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>AEA · Nova jornada de trabalho</title>
+<meta name="viewport" content="width=1080">
+<style>
+@font-face { font-family: "Montserrat"; font-weight: 600; src: url(fonts/montserrat-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Montserrat"; font-weight: 700; src: url(fonts/montserrat-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: "Montserrat"; font-weight: 800; src: url(fonts/montserrat-latin-800-normal.woff2) format("woff2"); }
+@font-face { font-family: "Montserrat"; font-weight: 900; src: url(fonts/montserrat-latin-900-normal.woff2) format("woff2"); }
+@font-face { font-family: "Nunito Sans"; font-weight: 400; src: url(fonts/nunito-sans-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Nunito Sans"; font-weight: 600; src: url(fonts/nunito-sans-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Nunito Sans"; font-weight: 700; src: url(fonts/nunito-sans-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: "Nunito Sans"; font-weight: 800; src: url(fonts/nunito-sans-latin-800-normal.woff2) format("woff2"); }
+
+:root {
+  --navy: #0A1F44;
+  --navy-2: #0B2D6B;
+  --blue: #1257C9;
+  --blue-2: #1E7BEA;
+  --sky: #4FB8FF;
+  --ice: #EAF5FF;
+  --ice-2: #D3EAFF;
+  --ink: #33496B;
+  --ink-soft: #6B7F9E;
+  --line: rgba(18, 87, 201, .16);
+  --grad: linear-gradient(135deg, #0B2D6B 0%, #1257C9 55%, #1E8BF0 100%);
+  --grad-sky: linear-gradient(135deg, #7FD3FF 0%, #2F8FF0 100%);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #050f22; }
+p { margin: 0; }
+body.preview { display: grid; place-items: start center; min-height: 100vh; }
+body.preview #stage { transform-origin: top center; }
+
+#stage {
+  position: relative; width: 1080px; height: 1920px; overflow: hidden;
+  background: #F6FAFF; color: var(--navy);
+  font-family: "Nunito Sans", sans-serif;
+  -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision;
+}
+.layer, .scene { position: absolute; inset: 0; }
+.scene { visibility: hidden; }
+.abs { position: absolute; }
+.cx { position: absolute; left: 0; right: 0; text-align: center; }
+.h { font-family: "Montserrat", sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -0.015em; line-height: 1; }
+.mask { display: block; overflow: hidden; padding: .16em 0 .12em; margin: -.16em 0 -.12em; }
+.mask > span { display: inline-block; white-space: nowrap; }
+.grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.sky-text { background: linear-gradient(135deg, #9BE0FF 0%, #4FB8FF 50%, #2F8FF0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+svg.ico { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 4.2; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+svg.ico .f { fill: currentColor; stroke: none; }
+
+/* ---------- fundo ---------- */
+#bg { background: linear-gradient(180deg, #FFFFFF 0%, #F1F8FF 55%, #E4F1FF 100%); }
+.blob { position: absolute; border-radius: 50%; }
+.b1 { width: 900px; height: 900px; left: -380px; top: -260px; background: radial-gradient(circle, rgba(79,184,255,.30) 0%, rgba(79,184,255,0) 68%); }
+.b2 { width: 1100px; height: 1100px; right: -520px; top: 620px; background: radial-gradient(circle, rgba(30,123,234,.20) 0%, rgba(30,123,234,0) 66%); }
+.b3 { width: 800px; height: 800px; left: -200px; bottom: -420px; background: radial-gradient(circle, rgba(127,211,255,.32) 0%, rgba(127,211,255,0) 66%); }
+#dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(18,87,201,.16) 2px, transparent 2.5px); background-size: 40px 40px;
+  -webkit-mask-image: radial-gradient(120% 60% at 50% 45%, rgba(0,0,0,.0) 30%, rgba(0,0,0,.55) 100%); }
+#waves { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+
+#bgDark { background: radial-gradient(120% 75% at 50% 28%, #1A4FA8 0%, #0B2D6B 42%, #061533 100%); clip-path: circle(0px at 540px 640px); }
+#bgDark .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(127,211,255,.07) 2px, transparent 2px), linear-gradient(90deg, rgba(127,211,255,.07) 2px, transparent 2px);
+  background-size: 90px 90px; -webkit-mask-image: radial-gradient(90% 60% at 50% 40%, #000 20%, transparent 100%); }
+#bgDark .glow { position: absolute; width: 1200px; height: 1200px; left: -60px; top: 160px; border-radius: 50%; background: radial-gradient(circle, rgba(79,184,255,.28), rgba(79,184,255,0) 60%); }
+
+/* ---------- cabeçalho e rodapé ---------- */
+#hdr { position: absolute; left: 70px; right: 70px; top: 112px; height: 84px; display: flex; align-items: center; gap: 22px; color: var(--navy); opacity: 0; }
+#hdr .mk { width: 78px; height: 78px; }
+#hdr .t1 { font-family: Montserrat; font-weight: 800; font-size: 27px; letter-spacing: .02em; line-height: 1.15; }
+#hdr .t2 { font-size: 24px; font-weight: 600; opacity: .8; line-height: 1.2; }
+#hdr .rule { width: 66px; height: 4px; border-radius: 2px; background: var(--sky); margin: 6px 0 5px; }
+#ftr { position: absolute; left: 70px; right: 70px; top: 1716px; opacity: 0; color: var(--ink-soft); }
+#ftr .bar { height: 6px; border-radius: 3px; background: rgba(18,87,201,.14); overflow: hidden; }
+#ftr .bar i { display: block; height: 100%; background: var(--grad); transform-origin: left center; transform: scaleX(0); border-radius: 3px; }
+#ftr p { margin: 18px 0 0; font-size: 23px; font-weight: 600; text-align: center; letter-spacing: .01em; }
+
+/* ---------- elementos comuns ---------- */
+.pill { display: inline-flex; align-items: center; gap: 16px; padding: 18px 34px; border-radius: 999px; background: var(--grad); color: #fff;
+  font-family: Montserrat; font-weight: 800; font-size: 30px; letter-spacing: .04em; box-shadow: 0 18px 40px rgba(18,87,201,.28); }
+.pill .ico { font-size: 40px; }
+.eyebrow { font-family: Montserrat; font-weight: 800; font-size: 30px; letter-spacing: .16em; color: var(--blue); text-transform: uppercase; }
+.card { position: absolute; left: 70px; right: 70px; background: rgba(255,255,255,.92); border: 2px solid var(--ice-2); border-radius: 40px;
+  box-shadow: 0 30px 70px rgba(10, 45, 107, .13); }
+.icirc { display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #F4FAFF 0%, #DDEEFF 100%); color: var(--blue); }
+.icirc.solid { background: var(--grad); color: #fff; box-shadow: 0 16px 36px rgba(18,87,201,.35); }
+.body { font-family: "Nunito Sans"; font-weight: 600; color: var(--ink); }
+b.hl { color: var(--blue); font-weight: 800; }
+
+/* ---------- cena 1: abertura ---------- */
+#s1-pill { top: 250px; }
+#clock { position: absolute; left: 220px; top: 320px; width: 640px; height: 640px; overflow: visible; }
+#s1-l1 { top: 1060px; font-size: 70px; color: #fff; }
+#s1-l2 { top: 1150px; font-size: 156px; letter-spacing: -0.03em; }
+#s1-l3 { top: 1400px; font-size: 46px; font-weight: 700; color: #CFE6FF; }
+
+/* ---------- cena 2: marca ---------- */
+#lockup { top: 480px; }
+#lockup .mk { width: 320px; height: 320px; display: block; margin: 0 auto; overflow: visible; }
+.wm-aea { font-family: Montserrat; font-weight: 900; font-size: 170px; line-height: .9; letter-spacing: .01em; color: var(--navy); margin-top: 26px; }
+.wm-aea span { display: inline-block; }
+.wm-cont { font-family: Montserrat; font-weight: 700; font-size: 62px; letter-spacing: .01em; color: var(--navy); margin-top: 14px; }
+.wm-cons { display: flex; align-items: center; justify-content: center; gap: 22px; font-family: Montserrat; font-weight: 700; font-size: 28px; letter-spacing: .42em; color: var(--navy); margin-top: 12px; }
+.wm-cons i { display: block; width: 70px; height: 4px; background: var(--navy); border-radius: 2px; }
+#s2-pill-wrap { top: 640px; }
+#s2-t1 { top: 770px; font-size: 128px; }
+#s2-t2 { top: 910px; font-size: 128px; }
+#s2-sub { top: 1090px; font-size: 54px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+#s2-sub em { font-style: normal; color: var(--blue); position: relative; white-space: nowrap; }
+#s2-sub em i { position: absolute; left: 0; right: 0; bottom: -10px; height: 10px; border-radius: 5px; background: var(--grad-sky); transform-origin: left; transform: scaleX(0); }
+
+/* ---------- cena 3: linha do tempo ---------- */
+#s3-eb { top: 290px; }
+#s3-tt { top: 345px; font-size: 64px; }
+#odo { top: 470px; display: flex; justify-content: center; align-items: flex-end; font-family: Montserrat; font-weight: 900; color: var(--navy); }
+#odo .dg { font-size: 330px; line-height: 1; height: 330px; overflow: hidden; letter-spacing: -0.03em; }
+#odo .strip { display: flex; flex-direction: column; }
+#odo .strip span { display: block; height: 330px; }
+#odo .hh { font-size: 150px; line-height: 1; padding-bottom: 34px; margin-left: 10px; }
+#odo-lbl { top: 815px; font-size: 42px; font-weight: 700; color: var(--ink); }
+.st-chip { position: absolute; left: 0; right: 0; top: 885px; text-align: center; }
+.st-chip span { display: inline-block; padding: 12px 30px; border-radius: 999px; background: var(--ice); border: 2px solid var(--ice-2); color: var(--blue);
+  font-family: Montserrat; font-weight: 800; font-size: 30px; letter-spacing: .06em; }
+#stepper { position: absolute; left: 70px; right: 70px; top: 990px; height: 170px; }
+#stepper .rail { position: absolute; left: 70px; right: 70px; top: 76px; height: 10px; border-radius: 5px; background: var(--ice-2); transform-origin: left; }
+#stepper .fill { position: absolute; left: 70px; width: 800px; top: 76px; height: 10px; border-radius: 5px; background: var(--grad); transform-origin: left; transform: scaleX(0); }
+.node { position: absolute; top: 0; width: 220px; margin-left: -110px; text-align: center; }
+.node .dt { font-family: Montserrat; font-weight: 800; font-size: 28px; color: var(--ink-soft); height: 50px; }
+.node .dot { width: 46px; height: 46px; margin: 4px auto 0; border-radius: 50%; background: #fff; border: 6px solid var(--ice-2); position: relative; }
+.node .dot i { position: absolute; inset: 4px; border-radius: 50%; background: var(--grad); transform: scale(0); }
+.node .vl { font-family: Montserrat; font-weight: 900; font-size: 46px; margin-top: 12px; color: var(--ink-soft); }
+.cardT { top: 1210px; height: 330px; padding: 40px 44px; display: flex; gap: 34px; align-items: center; }
+.cardT .icirc { width: 140px; height: 140px; flex: none; font-size: 80px; }
+.cardT .dchip { display: inline-block; padding: 10px 22px; border-radius: 14px; background: var(--ice); color: var(--blue); font-family: Montserrat; font-weight: 800; font-size: 26px; letter-spacing: .06em; }
+.cardT .big { font-family: Montserrat; font-weight: 900; font-size: 84px; line-height: 1; margin-top: 14px; color: var(--navy); white-space: nowrap; }
+.cardT .big small { font-size: 36px; font-weight: 800; color: var(--ink); text-transform: none; margin-left: 10px; letter-spacing: 0; }
+.cardT .plus { display: flex; align-items: center; gap: 16px; margin-top: 18px; font-size: 34px; font-weight: 700; color: var(--ink); }
+.cardT .plus b { display: grid; place-items: center; height: 56px; padding: 0 18px; border-radius: 16px; background: var(--grad); color: #fff; font-family: Montserrat; font-weight: 900; font-size: 34px; }
+
+/* ---------- cena 4: salário ---------- */
+#bars { position: absolute; left: 0; right: 0; top: 340px; height: 560px; display: flex; justify-content: center; gap: 150px; }
+.bcol { width: 230px; position: relative; height: 560px; }
+.bcol .bar { position: absolute; left: 25px; right: 25px; bottom: 120px; height: 420px; border-radius: 28px 28px 10px 10px; transform-origin: bottom; }
+#bc-j .bar { background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(207,230,255,.85)); }
+#bc-s .bar { background: linear-gradient(180deg, #9BE0FF 0%, #2F8FF0 100%); box-shadow: 0 0 0 0 rgba(79,184,255,.0); }
+.bcol .lbl { position: absolute; left: -40px; right: -40px; bottom: 60px; text-align: center; font-family: Montserrat; font-weight: 900; font-size: 40px; color: #fff; letter-spacing: .04em; }
+.bcol .val { position: absolute; left: -60px; right: -60px; bottom: 6px; text-align: center; font-family: Montserrat; font-weight: 800; font-size: 36px; color: #9BD3FF; }
+.bcol .val span { position: absolute; left: 0; right: 0; }
+.bcol .topv { position: absolute; left: -40px; right: -40px; text-align: center; font-family: Montserrat; font-weight: 900; font-size: 64px; color: #fff; }
+#bc-j .topv { bottom: 556px; }
+#bc-s .topv { bottom: 556px; }
+#tv-j { height: 70px; }
+#tv-j span { position: absolute; left: 0; right: 0; bottom: 0; }
+.day .bedi { position: absolute; left: 0; right: 0; bottom: 34px; display: flex; justify-content: center; font-size: 60px; color: #fff; }
+.day .ph { width: 40px; height: 40px; border-radius: 50%; border: 4px dashed var(--ice-2); }
+#lockico { position: absolute; left: 50%; bottom: 280px; width: 110px; height: 110px; margin-left: -55px; border-radius: 50%; background: #fff; color: var(--blue); display: grid; place-items: center; font-size: 64px; box-shadow: 0 16px 40px rgba(0,0,0,.25); }
+#arrowJ { position: absolute; left: 50%; bottom: 220px; width: 90px; height: 90px; margin-left: -45px; color: var(--blue); font-size: 80px; display: grid; place-items: center; }
+#stamp-wrap { position: absolute; left: 0; right: 0; top: 1010px; height: 300px; }
+#stamp { text-align: center; color: #fff; font-size: 112px; line-height: .98; text-shadow: 0 12px 40px rgba(0,0,0,.25); }
+#stamp .sky-text { text-shadow: none; }
+#shock { position: absolute; left: 50%; top: 50%; width: 900px; height: 900px; margin: -450px 0 0 -450px; border-radius: 50%; border: 6px solid rgba(127,211,255,.8); }
+#chips4 { position: absolute; left: 50px; right: 50px; top: 1350px; display: flex; flex-direction: column; gap: 22px; align-items: center; }
+.chipD { display: inline-flex; align-items: center; gap: 20px; padding: 22px 40px 22px 26px; border-radius: 999px; background: rgba(255,255,255,.10); border: 2px solid rgba(127,211,255,.45);
+  color: #fff; font-family: Montserrat; font-weight: 800; font-size: 34px; white-space: nowrap; }
+.chipD .ck { width: 58px; height: 58px; border-radius: 50%; background: var(--sky); color: var(--navy); display: grid; place-items: center; font-size: 40px; }
+
+/* ---------- cena 5: folgas ---------- */
+.trow { position: absolute; left: 70px; right: 70px; display: flex; align-items: center; gap: 34px; }
+.trow .icirc { width: 150px; height: 150px; flex: none; font-size: 84px; }
+#s5-tt { top: 330px; }
+#s5-tt .h { font-size: 82px; }
+#week { position: absolute; left: 79px; top: 790px; display: flex; gap: 16px; }
+.day { width: 118px; height: 210px; border-radius: 26px; background: #fff; border: 2px solid var(--ice-2); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 22px 0 20px;
+  box-shadow: 0 14px 30px rgba(10,45,107,.08); position: relative; overflow: hidden; }
+.day .dn { font-family: Montserrat; font-weight: 800; font-size: 30px; color: var(--navy); position: relative; }
+.day .ico { font-size: 56px; color: var(--blue); position: relative; }
+.day .ds { font-family: Montserrat; font-weight: 800; font-size: 15px; letter-spacing: .06em; color: var(--ink-soft); position: relative; }
+.day .on { position: absolute; inset: 0; background: linear-gradient(160deg, #6CCBFF 0%, #1E7BEA 100%); opacity: 0; }
+#dom-call { position: absolute; right: 70px; top: 660px; }
+#dom-call .bub { padding: 18px 30px; border-radius: 22px; background: var(--grad); color: #fff; font-family: Montserrat; font-weight: 800; font-size: 30px; letter-spacing: .03em; display: flex; align-items: center; gap: 14px; box-shadow: 0 16px 36px rgba(18,87,201,.3); }
+#dom-call .tail { position: absolute; right: 40px; bottom: -14px; width: 30px; height: 30px; background: #1E7BEA; transform: rotate(45deg); border-radius: 4px; }
+#brk { position: absolute; left: 79px; top: 1024px; width: 804px; }
+#s5-two { top: 1210px; display: flex; justify-content: center; }
+#s5-two .pill { font-size: 40px; padding: 26px 46px; gap: 20px; }
+#s5-two .pill .ico { font-size: 54px; }
+#brk svg { width: 804px; height: 40px; display: block; }
+#brk p { margin: 14px 0 0; text-align: center; font-family: Montserrat; font-weight: 800; font-size: 34px; color: var(--blue); }
+#s5b-eb { top: 290px; }
+#s5b-tt { top: 340px; font-size: 76px; }
+#s5b-card { top: 520px; padding: 36px 44px; display: flex; gap: 32px; align-items: center; }
+#s5b-card .icirc { width: 130px; height: 130px; flex: none; font-size: 72px; }
+#s5b-card p { margin: 0; font-size: 42px; line-height: 1.25; }
+#month { position: absolute; left: 70px; right: 70px; top: 760px; }
+.wk { display: flex; align-items: center; height: 72px; margin-bottom: 22px; position: relative; }
+.wk .wl { width: 150px; font-family: Montserrat; font-weight: 800; font-size: 26px; color: var(--ink-soft); letter-spacing: .04em; }
+.wk .dots { display: flex; gap: 14px; }
+.wk .dot { width: 64px; height: 64px; border-radius: 18px; background: #fff; border: 2px solid var(--ice-2); }
+.wk .dot.r { background: linear-gradient(160deg, #6CCBFF 0%, #1E7BEA 100%); border-color: transparent; display: grid; place-items: center; color: #fff; font-size: 36px; }
+.wk .cnt { margin-left: 26px; display: flex; align-items: baseline; gap: 10px; font-family: Montserrat; font-weight: 900; font-size: 50px; color: var(--navy); }
+.wk .cnt small { font-size: 24px; font-weight: 700; color: var(--ink-soft); }
+.wk .ring { position: absolute; left: -16px; right: -16px; top: -10px; bottom: -10px; border: 4px solid var(--blue-2); border-radius: 24px; }
+#month .note { font-size: 24px; font-weight: 600; color: var(--ink-soft); font-style: italic; margin-top: -4px; }
+#stats { position: absolute; left: 70px; right: 70px; top: 1240px; display: flex; gap: 24px; }
+.stat { flex: 1; border-radius: 32px; padding: 30px 30px; background: var(--grad); color: #fff; box-shadow: 0 20px 44px rgba(18,87,201,.28); }
+.stat.alt { background: #fff; color: var(--navy); border: 3px solid var(--blue-2); box-shadow: 0 20px 44px rgba(10,45,107,.12); }
+.stat .k { font-family: Montserrat; font-weight: 800; font-size: 24px; letter-spacing: .1em; opacity: .85; }
+.stat .v { font-family: Montserrat; font-weight: 900; font-size: 64px; line-height: 1.05; margin-top: 8px; }
+.stat .d { font-size: 28px; font-weight: 700; margin-top: 6px; line-height: 1.2; }
+
+/* ---------- cena 6: 40 horas ---------- */
+#s6-ic { top: 270px; display: flex; justify-content: center; }
+#s6-ic .icirc { width: 170px; height: 170px; font-size: 100px; }
+#s6-l1 { top: 490px; font-size: 92px; }
+#s6-l2 { top: 590px; font-size: 200px; letter-spacing: -0.03em; }
+#s6-l3 { top: 800px; font-size: 92px; }
+.ans { position: absolute; left: 70px; right: 70px; height: 190px; border-radius: 36px; display: flex; align-items: center; gap: 34px; padding: 0 44px; overflow: hidden; }
+.ans .icirc { width: 110px; height: 110px; font-size: 64px; flex: none; position: relative; }
+.ans p { margin: 0; font-size: 44px; line-height: 1.2; font-weight: 700; position: relative; }
+#ans1 { top: 1000px; background: #fff; border: 2px solid var(--ice-2); color: var(--ink); box-shadow: 0 20px 50px rgba(10,45,107,.10); }
+#ans1 .icirc { background: #F0F4FA; color: var(--ink-soft); }
+#ans2 { top: 1220px; background: var(--grad); color: #fff; box-shadow: 0 24px 50px rgba(18,87,201,.3); }
+#ans2 .icirc { background: rgba(255,255,255,.18); color: #fff; }
+#ans2 .sweep { position: absolute; top: 0; bottom: 0; width: 240px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.35), rgba(255,255,255,0)); left: -300px; }
+
+/* ---------- cena 7: atenção ---------- */
+#s7-top { top: 270px; }
+#s7-alert { width: 130px; height: 130px; margin: 0 auto; position: relative; }
+#s7-alert .icirc { width: 130px; height: 130px; font-size: 80px; position: relative; }
+#s7-alert .pulse { position: absolute; inset: 0; border-radius: 50%; border: 5px solid var(--blue-2); }
+#s7-tt { top: 430px; font-size: 70px; line-height: 1.04; }
+#eq { position: absolute; left: 0; right: 0; top: 640px; display: flex; justify-content: center; align-items: center; gap: 22px; }
+.eqc { padding: 18px 32px; border-radius: 26px; background: #fff; border: 3px solid var(--ice-2); font-family: Montserrat; font-weight: 900; font-size: 60px; color: var(--navy); box-shadow: 0 14px 30px rgba(10,45,107,.08); }
+.eqo { font-family: Montserrat; font-weight: 900; font-size: 60px; color: var(--blue); }
+#eqr { background: var(--grad); color: #fff; border-color: transparent; }
+#chart { position: absolute; left: 130px; width: 724px; top: 820px; height: 470px; }
+#chart .col { position: absolute; bottom: 60px; width: 116px; height: 380px; }
+#chart .colb { position: absolute; left: 0; right: 0; bottom: 0; height: 100%; border-radius: 20px 20px 8px 8px; overflow: hidden; transform-origin: bottom; }
+#chart .base { position: absolute; left: 0; right: 0; bottom: 0; height: 84.2%; background: linear-gradient(180deg, #2F7FE0 0%, #0B2D6B 100%); }
+#chart .ext { position: absolute; left: 0; right: 0; top: 0; height: 15.8%;
+  background: repeating-linear-gradient(135deg, #7FD3FF 0 12px, #4FB8FF 12px 24px); }
+#chart .cl { position: absolute; left: 0; right: 0; bottom: -52px; text-align: center; font-family: Montserrat; font-weight: 800; font-size: 28px; color: var(--ink); }
+#chart .cv { position: absolute; left: -20px; right: -20px; top: -58px; text-align: center; font-family: Montserrat; font-weight: 900; font-size: 36px; color: var(--navy); }
+#chart .brk { position: absolute; left: -8px; right: -8px; bottom: 34px; height: 26px; }
+#line8 { position: absolute; left: -24px; right: -24px; border-top: 5px dashed var(--navy); }
+#line8 span { position: absolute; left: -70px; top: -24px; font-family: Montserrat; font-weight: 900; font-size: 36px; color: var(--navy); }
+#ext-lbl { position: absolute; left: calc(100% + 18px); bottom: 4px; width: 130px; color: var(--blue); font-family: Montserrat; font-weight: 900; font-size: 40px; line-height: 1; padding-left: 22px; border-left: 6px solid var(--sky); }
+#ext-lbl small { display: block; font-size: 22px; font-weight: 800; margin-top: 6px; color: var(--ink); }
+#s7-res { top: 1340px; padding: 34px 40px; display: flex; gap: 30px; align-items: center; background: var(--grad); border: none; color: #fff; }
+#s7-res .icirc { width: 130px; height: 130px; font-size: 72px; flex: none; background: rgba(255,255,255,.16); color: #fff; }
+#s7-res p { margin: 0; font-size: 34px; font-weight: 700; line-height: 1.2; }
+#s7-res p b { display: block; font-family: Montserrat; font-weight: 900; font-size: 50px; line-height: 1.08; margin-top: 6px; text-transform: uppercase; }
+
+/* ---------- cena 8: checklist ---------- */
+#s8-l1 { top: 290px; font-size: 104px; }
+#s8-l2 { top: 410px; font-size: 76px; }
+#grid8 { position: absolute; left: 70px; right: 70px; top: 610px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.ck8 { height: 170px; border-radius: 34px; background: #fff; border: 2px solid var(--ice-2); box-shadow: 0 18px 40px rgba(10,45,107,.09); display: flex; align-items: center; gap: 24px; padding: 0 78px 0 28px; position: relative; }
+.ck8 .icirc { width: 104px; height: 104px; font-size: 60px; flex: none; }
+.ck8 span { font-family: Montserrat; font-weight: 800; font-size: 36px; color: var(--navy); line-height: 1.12; }
+.ck8 .tick { position: absolute; right: 22px; top: 22px; width: 48px; height: 48px; border-radius: 50%; background: var(--grad); color: #fff; display: grid; place-items: center; font-size: 32px; }
+#s8b-l1 { top: 560px; font-size: 132px; }
+#s8b-l2 { top: 700px; font-size: 132px; }
+#s8b-sub { top: 880px; font-size: 48px; font-weight: 700; color: var(--ink); padding: 0 80px; }
+#s8b-six { top: 1010px; display: flex; justify-content: center; gap: 16px; }
+#s8b-six span { width: 120px; height: 120px; border-radius: 50%; background: var(--grad); color: #fff; display: grid; place-items: center; font-family: Montserrat; font-weight: 900; font-size: 46px; box-shadow: 0 14px 30px rgba(18,87,201,.3); }
+
+/* ---------- cena 9: ações ---------- */
+#s9-eb { top: 270px; }
+#alist { position: absolute; left: 70px; right: 70px; top: 330px; }
+.arow { height: 82px; margin-bottom: 10px; border-radius: 41px; display: flex; align-items: center; gap: 22px; padding: 0 12px; position: relative; }
+.arow .hlb { position: absolute; inset: 0; border-radius: 41px; background: #fff; border: 2px solid var(--ice-2); box-shadow: 0 12px 30px rgba(10,45,107,.10); opacity: 0; }
+.arow .n { width: 62px; height: 62px; border-radius: 50%; background: var(--ice-2); color: var(--blue); display: grid; place-items: center; font-family: Montserrat; font-weight: 900; font-size: 28px; position: relative; flex: none; }
+.arow .n i { position: absolute; inset: 0; border-radius: 50%; background: var(--grad); }
+.arow .n b { position: relative; }
+.arow .n b.w { position: absolute; color: #fff; }
+.arow .tt { font-family: Montserrat; font-weight: 800; font-size: 34px; color: var(--navy); position: relative; flex: 1; }
+.arow .ok { width: 50px; height: 50px; border-radius: 50%; background: #1E9E6A; color: #fff; display: grid; place-items: center; font-size: 32px; position: relative; margin-right: 10px; }
+.acard { top: 940px; height: 600px; overflow: hidden; }
+.acard .num { position: absolute; left: 52px; top: 30px; font-family: Montserrat; font-weight: 900; font-size: 170px; line-height: 1; letter-spacing: -0.04em; }
+.acard .icirc { position: absolute; right: 52px; top: 46px; width: 180px; height: 180px; font-size: 104px; }
+.acard .abody { position: absolute; left: 56px; right: 56px; top: 236px; }
+.acard .at { font-family: Montserrat; font-weight: 900; font-size: 58px; line-height: 1.02; color: var(--navy); text-transform: uppercase; }
+.acard .ad { margin-top: 22px; font-size: 40px; line-height: 1.3; font-weight: 600; color: var(--ink); }
+.acard .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 12px; background: var(--grad); transform-origin: left; }
+
+/* ---------- cena 10: CTA ---------- */
+#s10-plane { position: absolute; left: 475px; top: 250px; width: 130px; height: 130px; color: #fff; font-size: 130px; }
+#s10-trail { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+#s10-tt { top: 420px; font-size: 118px; color: #fff; }
+#s10-sub { top: 570px; font-size: 44px; font-weight: 700; color: #9BD3FF; }
+#docs { position: absolute; left: 70px; right: 70px; top: 660px; }
+.drow { height: 112px; border-radius: 30px; margin-bottom: 18px; background: rgba(255,255,255,.08); border: 2px solid rgba(127,211,255,.32); display: flex; align-items: center; gap: 26px; padding: 0 26px; }
+.drow .icirc { width: 76px; height: 76px; font-size: 46px; flex: none; background: rgba(79,184,255,.2); color: #BFE6FF; }
+.drow span { font-family: Montserrat; font-weight: 800; font-size: 40px; color: #fff; flex: 1; }
+.drow .ck { width: 54px; height: 54px; border-radius: 50%; background: var(--sky); color: var(--navy); display: grid; place-items: center; font-size: 36px; }
+#phone { top: 1070px; height: 400px; padding: 40px 44px; background: #fff; border: none; box-shadow: 0 40px 90px rgba(0,0,0,.35); }
+#phone .top { display: flex; align-items: center; gap: 30px; }
+#phone .wa { width: 120px; height: 120px; position: relative; flex: none; }
+#phone .wa .icirc { width: 120px; height: 120px; font-size: 70px; position: relative; }
+#phone .wa .pulse { position: absolute; inset: 0; border-radius: 50%; border: 5px solid var(--sky); }
+#phone .k { font-family: Montserrat; font-weight: 900; font-size: 46px; color: var(--navy); text-transform: uppercase; }
+#phone .s { font-size: 34px; font-weight: 700; color: var(--blue); margin-top: 4px; }
+#phone .num { margin-top: 36px; text-align: center; font-family: Montserrat; font-weight: 900; font-size: 104px; color: var(--navy); letter-spacing: -0.01em; white-space: nowrap; }
+#phone .num span { display: inline-block; }
+
+/* ---------- cena 11: assinatura ---------- */
+#lock2 { top: 330px; }
+#lock2 .mk { width: 250px; height: 250px; display: block; margin: 0 auto; overflow: visible; }
+#lock2 .wm-aea { font-size: 132px; margin-top: 20px; }
+#lock2 .wm-cont { font-size: 48px; }
+#lock2 .wm-cons { font-size: 22px; }
+#lock2 .wm-cons i { width: 54px; height: 3px; }
+#s11-tag { top: 930px; font-size: 52px; line-height: 1.12; padding: 0 70px; }
+#s11-pill { top: 1100px; display: flex; justify-content: center; }
+#s11-pill .pill { font-size: 54px; padding: 22px 48px 22px 30px; gap: 22px; letter-spacing: 0; font-weight: 900; }
+#s11-pill .pill .ico { font-size: 66px; }
+#s11-pl2 { top: 1230px; font-size: 32px; font-weight: 700; color: var(--blue); }
+#s11-warn { top: 1330px; font-size: 34px; font-weight: 700; color: var(--ink); padding: 0 90px; line-height: 1.3; }
+#s11-legal { top: 1500px; font-size: 25px; font-weight: 600; color: var(--ink-soft); line-height: 1.5; padding: 0 80px; }
+#s11-legal hr { width: 300px; border: 0; border-top: 2px solid var(--ice-2); margin: 0 auto 22px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="gMark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8ADAFF"/>
+      <stop offset=".45" stop-color="#3D9BF2"/>
+      <stop offset="1" stop-color="#1A4FB8"/>
+    </linearGradient>
+    <linearGradient id="gFold" x1="0" y1="1" x2=".6" y2="0">
+      <stop offset="0" stop-color="#0D3590"/>
+      <stop offset=".6" stop-color="#1B5ACB"/>
+      <stop offset="1" stop-color="#2F86E6" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gSky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9BE0FF"/>
+      <stop offset="1" stop-color="#2F8FF0"/>
+    </linearGradient>
+    <linearGradient id="gWave1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#BFE6FF" stop-opacity=".0"/>
+      <stop offset="1" stop-color="#4FB8FF" stop-opacity=".55"/>
+    </linearGradient>
+    <linearGradient id="gWave2" x1="1" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#2F8FF0" stop-opacity=".75"/>
+      <stop offset="1" stop-color="#9BE0FF" stop-opacity=".0"/>
+    </linearGradient>
+    <clipPath id="ringClip"><path class="ring-d" clip-rule="evenodd"/></clipPath>
+    <symbol id="aeaMark" viewBox="0 0 200 200">
+      <path class="ring-d" fill="url(#gMark)" fill-rule="evenodd"/>
+      <g clip-path="url(#ringClip)">
+        <path d="M-10 96 L74 84 L118 212 L-10 212 Z" fill="url(#gFold)"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="stage">
+  <!-- fundo claro -->
+  <div id="bg" class="layer">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <div id="dots"></div>
+    <svg id="waves" viewBox="0 0 1080 1920">
+      <path id="wv1" d="M0 0 H330 C250 70 120 170 0 320 Z" fill="url(#gWave1)"/>
+      <path id="wv2" d="M0 0 H180 C120 50 60 110 0 190 Z" fill="url(#gWave1)" opacity=".7"/>
+      <path id="wv3" d="M1080 1380 C1010 1560 900 1740 700 1920 H1080 Z" fill="url(#gWave2)" opacity=".55"/>
+      <path id="wv4" d="M1080 1600 C1020 1720 960 1820 860 1920 H1080 Z" fill="url(#gWave2)"/>
+    </svg>
+  </div>
+  <!-- fundo escuro (abre e fecha em círculo) -->
+  <div id="bgDark" class="layer"><div class="grid"></div><div class="glow"></div></div>
+
+  <header id="hdr">
+    <svg class="mk"><use href="#aeaMark"/></svg>
+    <div>
+      <div class="t1">AEA CONTABILIDADE CONSULTIVA</div>
+      <div class="rule"></div>
+      <div class="t2">Departamento Pessoal</div>
+    </div>
+  </header>
+
+  <!-- 1. abertura -->
+  <section class="scene" id="sc1">
+    <div class="cx" id="s1-pill"><span class="pill"><i data-ico="megaphone"></i>COMUNICADO AOS CLIENTES</span></div>
+    <svg id="clock" viewBox="-320 -320 640 640">
+      <circle id="clk-glow" r="300" fill="rgba(79,184,255,.10)"/>
+      <circle id="clk-ring" r="300" fill="none" stroke="url(#gSky)" stroke-width="14"/>
+      <g id="ticks"></g>
+      <g id="clk-hands">
+        <line id="hHour" x1="0" y1="20" x2="0" y2="-150" stroke="#fff" stroke-width="22" stroke-linecap="round"/>
+        <line id="hMin" x1="0" y1="30" x2="0" y2="-230" stroke="#4FB8FF" stroke-width="14" stroke-linecap="round"/>
+        <circle r="22" fill="#fff"/>
+      </g>
+    </svg>
+    <div class="cx h fit" id="s1-l1"><span class="mask"><span>A jornada de trabalho</span></span></div>
+    <div class="cx h fit" id="s1-l2"><span class="mask"><span class="sky-text">vai mudar.</span></span></div>
+    <p class="cx" id="s1-l3">E a sua empresa precisa estar pronta.</p>
+  </section>
+
+  <!-- 2. marca + título -->
+  <section class="scene" id="sc2">
+    <div class="cx" id="lockup">
+      <svg class="mk" viewBox="0 0 200 200">
+        <use href="#aeaMark" id="mk-fill"/>
+        <path class="ring-d" id="mk-line" fill="none" stroke="#4FB8FF" stroke-width="3"/>
+      </svg>
+      <div class="wm-aea"><span>A</span><span>E</span><span>A</span></div>
+      <div class="wm-cont">CONTABILIDADE</div>
+      <div class="wm-cons"><i></i>CONSULTIVA<i></i></div>
+    </div>
+    <div class="cx" id="s2-pill-wrap"><span class="pill" id="s2-pill"><i data-ico="megaphone"></i>COMUNICADO AOS CLIENTES</span></div>
+    <div class="cx h fit" id="s2-t1"><span class="mask"><span>Nova jornada</span></span></div>
+    <div class="cx h fit" id="s2-t2"><span class="mask"><span class="grad-text">de trabalho</span></span></div>
+    <p class="cx" id="s2-sub">Redução gradual da jornada<br><em>e mais descanso<i></i></em></p>
+  </section>
+
+  <!-- 3. linha do tempo -->
+  <section class="scene" id="sc3">
+    <div class="cx eyebrow" id="s3-eb">O que muda</div>
+    <div class="cx h fit" id="s3-tt">Limite da jornada semanal</div>
+    <div class="cx" id="odo">
+      <div class="dg"><span>4</span></div>
+      <div class="dg"><div class="strip"><span>4</span><span>3</span><span>2</span><span>1</span><span>0</span></div></div>
+      <div class="hh grad-text">h</div>
+    </div>
+    <p class="cx body" id="odo-lbl">horas semanais</p>
+    <div class="st-chip" id="chip-hoje"><span>HOJE</span></div>
+    <div class="st-chip" id="chip-26"><span>A PARTIR DE 16/12/2026</span></div>
+    <div class="st-chip" id="chip-27"><span>A PARTIR DE 16/12/2027</span></div>
+    <div id="stepper">
+      <div class="rail"></div>
+      <div class="fill"></div>
+      <div class="node" id="nd0" style="left:70px"><div class="dt">HOJE</div><div class="dot"><i></i></div><div class="vl">44h</div></div>
+      <div class="node" id="nd1" style="left:470px"><div class="dt">16/12/2026</div><div class="dot"><i></i></div><div class="vl">42h</div></div>
+      <div class="node" id="nd2" style="left:870px"><div class="dt">16/12/2027</div><div class="dot"><i></i></div><div class="vl">40h</div></div>
+    </div>
+    <div class="card cardT" id="c26">
+      <div class="icirc solid"><i data-ico="calendar"></i></div>
+      <div>
+        <span class="dchip">A PARTIR DE 16/12/2026</span>
+        <div class="big">42 HORAS<small>semanais</small></div>
+        <div class="plus" id="c26-plus"><b>+2</b>dias de descanso remunerado</div>
+      </div>
+    </div>
+    <div class="card cardT" id="c27">
+      <div class="icirc solid"><i data-ico="calendar"></i></div>
+      <div>
+        <span class="dchip">A PARTIR DE 16/12/2027</span>
+        <div class="big">40 HORAS<small>semanais</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. salário -->
+  <section class="scene" id="sc4">
+    <div id="bars">
+      <div class="bcol" id="bc-j">
+        <div class="topv" id="tv-j"><span class="a">44h</span><span class="b">40h</span></div>
+        <div class="bar"></div>
+        <div id="arrowJ"><i data-ico="arrowDown"></i></div>
+        <div class="lbl">JORNADA</div>
+        <div class="val">diminui</div>
+      </div>
+      <div class="bcol" id="bc-s">
+        <div class="topv" id="tv-s">R$</div>
+        <div class="bar"></div>
+        <div id="lockico"><i data-ico="lock"></i></div>
+        <div class="lbl">SALÁRIO</div>
+        <div class="val">mantido</div>
+      </div>
+    </div>
+    <div id="stamp-wrap">
+      <div id="shock"></div>
+      <div class="h" id="stamp">Sem redução<br><span class="sky-text">salarial</span></div>
+    </div>
+    <div id="chips4">
+      <div class="chipD" id="chip4a"><span class="ck"><i data-ico="check"></i></span>Inclusive nos contratos em andamento</div>
+      <div class="chipD" id="chip4b"><span class="ck"><i data-ico="check"></i></span>E nos pisos salariais</div>
+    </div>
+  </section>
+
+  <!-- 5. folgas -->
+  <section class="scene" id="sc5">
+    <div class="trow" id="s5-tt">
+      <div class="icirc solid"><i data-ico="bed"></i></div>
+      <div class="h"><span class="mask"><span>Como ficam</span></span><span class="mask"><span class="grad-text">as folgas?</span></span></div>
+    </div>
+    <div id="dom-call"><div class="bub"><i data-ico="star"></i>PREFERENCIALMENTE AOS DOMINGOS</div><div class="tail"></div></div>
+    <div id="week"></div>
+    <div id="brk">
+      <svg viewBox="0 0 804 40"><path id="brk-path" d="M4 4 V20 Q4 30 14 30 H392 Q402 30 402 38 Q402 30 412 30 H790 Q800 30 800 20 V4" fill="none" stroke="#1E7BEA" stroke-width="5" stroke-linecap="round"/></svg>
+      <p>+ 1 folga em outro dia da semana</p>
+    </div>
+    <div class="abs" id="s5-two" style="left:0;right:0"><span class="pill"><i data-ico="bed"></i>2 DIAS DE DESCANSO POR SEMANA</span></div>
+    <div class="cx eyebrow" id="s5b-eb">Compensações excepcionais</div>
+    <div class="cx h" id="s5b-tt">Exigem negociação coletiva</div>
+    <div class="card" id="s5b-card">
+      <div class="icirc solid"><i data-ico="docpen"></i></div>
+      <p class="body">Dependem de <b class="hl">acordo</b> ou <b class="hl">convenção coletiva</b>.</p>
+    </div>
+    <div id="month"></div>
+    <div id="stats">
+      <div class="stat" id="st1"><div class="k">MÉDIA NO MÊS</div><div class="v">2</div><div class="d">descansos semanais</div></div>
+      <div class="stat alt" id="st2"><div class="k">MÍNIMO</div><div class="v">1</div><div class="d">descanso por semana</div></div>
+    </div>
+  </section>
+
+  <!-- 6. já trabalha 40h -->
+  <section class="scene" id="sc6">
+    <div class="abs" id="s6-ic" style="left:0;right:0"><div class="icirc solid"><i data-ico="clock"></i></div></div>
+    <div class="cx h" id="s6-l1"><span class="mask"><span>Já trabalha</span></span></div>
+    <div class="cx h fit" id="s6-l2"><span class="mask"><span class="grad-text">40 horas</span></span></div>
+    <div class="cx h" id="s6-l3"><span class="mask"><span>ou menos?</span></span></div>
+    <div class="ans" id="ans1"><div class="icirc"><i data-ico="x"></i></div><p>Não há redução proporcional <b style="color:var(--navy)">automática</b>.</p></div>
+    <div class="ans" id="ans2"><div class="sweep"></div><div class="icirc"><i data-ico="refresh"></i></div><p>Mas os <b>descansos deverão ser revisados</b>.</p></div>
+  </section>
+
+  <!-- 7. atenção à distribuição -->
+  <section class="scene" id="sc7">
+    <div class="abs" id="s7-top" style="left:0;right:0">
+      <div id="s7-alert"><div class="pulse"></div><div class="pulse"></div><div class="icirc solid"><i data-ico="alert"></i></div></div>
+    </div>
+    <div class="cx h" id="s7-tt"><span class="mask"><span>Atenção à distribuição</span></span><span class="mask"><span class="grad-text">das horas</span></span></div>
+    <div id="eq">
+      <div class="eqc" id="eq1">42h</div>
+      <div class="eqo" id="eqd">÷</div>
+      <div class="eqc" id="eq2">5 dias</div>
+      <div class="eqo" id="eqe">=</div>
+      <div class="eqc" id="eqr">8h24/dia</div>
+    </div>
+    <div id="chart"></div>
+    <div class="card" id="s7-res">
+      <div class="icirc"><i data-ico="docpen"></i></div>
+      <p>Ampliar a jornada diária para cumprir 42h em 5 dias exige<b>convenção ou acordo coletivo</b></p>
+    </div>
+  </section>
+
+  <!-- 8. checklist do empresário -->
+  <section class="scene" id="sc8">
+    <div class="cx h fit" id="s8-l1"><span class="mask"><span>Empresário,</span></span></div>
+    <div class="cx h fit" id="s8-l2"><span class="mask"><span class="grad-text">prepare sua empresa</span></span></div>
+    <div id="grid8"></div>
+    <div class="cx h fit" id="s8b-l1"><span class="mask"><span>Como preparar</span></span></div>
+    <div class="cx h fit" id="s8b-l2"><span class="mask"><span>sua empresa<span class="grad-text">?</span></span></span></div>
+    <p class="cx" id="s8b-sub"><b class="hl">6 ações</b> para a transição da jornada de trabalho</p>
+    <div class="abs" id="s8b-six" style="left:0;right:0"></div>
+  </section>
+
+  <!-- 9. seis ações -->
+  <section class="scene" id="sc9">
+    <div class="cx eyebrow" id="s9-eb">6 ações para a transição</div>
+    <div id="alist"></div>
+    <div id="acards"></div>
+  </section>
+
+  <!-- 10. CTA -->
+  <section class="scene" id="sc10">
+    <svg id="s10-trail" viewBox="0 0 1080 1920"><path id="trail" d="M-80 760 C 160 700 260 520 420 420 S 560 320 540 315" fill="none" stroke="rgba(155,224,255,.7)" stroke-width="5" stroke-dasharray="4 16" stroke-linecap="round"/></svg>
+    <div id="s10-plane"><i data-ico="plane"></i></div>
+    <div class="cx h fit" id="s10-tt"><span class="mask"><span>Comece agora</span></span></div>
+    <p class="cx" id="s10-sub">Envie ao nosso Departamento Pessoal:</p>
+    <div id="docs">
+      <div class="drow"><div class="icirc"><i data-ico="calendar"></i></div><span>A escala atual</span><div class="ck"><i data-ico="check"></i></div></div>
+      <div class="drow"><div class="icirc"><i data-ico="people"></i></div><span>A relação de colaboradores</span><div class="ck"><i data-ico="check"></i></div></div>
+      <div class="drow"><div class="icirc"><i data-ico="clock"></i></div><span>Os horários de funcionamento</span><div class="ck"><i data-ico="check"></i></div></div>
+    </div>
+    <div class="card" id="phone">
+      <div class="top">
+        <div class="wa"><div class="pulse"></div><div class="pulse"></div><div class="icirc solid"><i data-ico="whatsapp"></i></div></div>
+        <div><div class="k">Fale com a AEA</div><div class="s">Telefone fixo e WhatsApp</div></div>
+      </div>
+      <div class="num" id="pnum"></div>
+    </div>
+  </section>
+
+  <!-- 11. assinatura -->
+  <section class="scene" id="sc11">
+    <div class="cx" id="lock2">
+      <svg class="mk" viewBox="0 0 200 200"><use href="#aeaMark"/></svg>
+      <div class="wm-aea"><span>A</span><span>E</span><span>A</span></div>
+      <div class="wm-cont">CONTABILIDADE</div>
+      <div class="wm-cons"><i></i>CONSULTIVA<i></i></div>
+    </div>
+    <div class="cx h" id="s11-tag">Sua empresa pronta para <span class="grad-text">a nova jornada</span></div>
+    <div class="abs" id="s11-pill" style="left:0;right:0"><span class="pill"><i data-ico="whatsapp"></i>(12) 3921-6009</span></div>
+    <p class="cx" id="s11-pl2">Telefone fixo e WhatsApp</p>
+    <p class="cx" id="s11-warn">Antes de alterar as escalas, fale com o nosso Departamento Pessoal.</p>
+    <div class="cx" id="s11-legal"><hr>Orientações gerais. Regras específicas exigem análise individual.<br>Base legal: EC nº 141/2026 • Atualizado em 20/10/2026</div>
+  </section>
+
+  <footer id="ftr">
+    <div class="bar"><i></i></div>
+    <p>Base legal: EC nº 141/2026 • Atualizado em 20/10/2026</p>
+  </footer>
+</div>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="timing.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
