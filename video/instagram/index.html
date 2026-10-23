@@ -121,12 +121,12 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="30.4" data-width="1080" data-height="1920">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="37.5" data-width="1080" data-height="1920">
 
       <!-- 1. Gancho: produtos reais com a marca do cliente -->
-      <video id="hook-video" class="clip" data-start="0" data-duration="5.4" data-media-start="0" data-track-index="1"
+      <video id="hook-video" class="clip" data-start="0" data-duration="6.0" data-media-start="0" data-track-index="1"
         src="assets/video/produtos.mp4" muted playsinline></video>
-      <div id="s-hook" class="clip" data-start="0" data-duration="5.4" data-track-index="0">
+      <div id="s-hook" class="clip" data-start="0" data-duration="6.0" data-track-index="0">
         <div class="veil-top"></div>
         <div class="veil-bottom"></div>
         <p id="hook-kicker" class="kicker">Coloridamente · Linha Office</p>
@@ -141,7 +141,7 @@
       </div>
 
       <!-- 2 e 3. Navegação no site e contato pelo WhatsApp -->
-      <div id="s-phone" class="clip" data-start="4.9" data-duration="16.0" data-track-index="2">
+      <div id="s-phone" class="clip" data-start="5.4" data-duration="19.8" data-track-index="2">
         <div id="cap-1" class="caption"><p class="kicker">Pelo site</p><h2>Conheça a Linha Office<br />em poucos toques</h2></div>
         <div id="cap-2" class="caption"><p class="kicker">Para cada ocasião</p><h2>Boas-vindas, presentes,<br />eventos e dia a dia</h2></div>
         <div id="cap-3" class="caption"><p class="kicker">Monte a sua linha</p><h2>Escolha o produto e<br />peça o orçamento</h2></div>
@@ -195,7 +195,7 @@
       </div>
 
       <!-- 4. Como funciona -->
-      <div id="s-steps" class="clip" data-start="20.4" data-duration="5.0" data-track-index="3">
+      <div id="s-steps" class="clip" data-start="24.8" data-duration="6.8" data-track-index="3">
         <p id="steps-kicker" class="kicker">Como funciona</p>
         <h2 id="steps-title">Do primeiro contato ao produto pronto.</h2>
         <div class="step" style="top: 700px"><span class="n">01</span><div><h3>Sua ideia</h3><p>Você conta pelo WhatsApp o que precisa.</p></div></div>
@@ -205,7 +205,7 @@
       </div>
 
       <!-- 5. Chamada final -->
-      <div id="s-end" class="clip" data-start="24.9" data-duration="5.5" data-track-index="4">
+      <div id="s-end" class="clip" data-start="31.0" data-duration="6.5" data-track-index="4">
         <img id="end-logo" src="assets/brand/logo-coloridamente.svg" alt="Coloridamente" />
         <div id="end-stripe" class="stripe"><i></i><i></i><i></i><i></i><i></i></div>
         <h2 id="end-title">
@@ -219,9 +219,20 @@
         </div>
         <p id="end-wa">ou chame no WhatsApp <b>(12) 99133-8866</b></p>
       </div>
+
+      <!-- Trilha: música ambiente original (assets/audio/musica-ambiente.m4a) e narração (narracao.tsv) -->
+      <audio id="musica" data-start="0" data-duration="37.5" data-media-start="0" data-volume="1" data-fade-out="1.5" src="assets/audio/musica-ambiente.m4a"></audio>
+      <audio id="narracao-01" data-start="0.3" data-duration="5.79" data-media-start="0" data-volume="1" src="assets/audio/narracao-01.wav"></audio>
+      <audio id="narracao-02" data-start="6.4" data-duration="3.35" data-media-start="0" data-volume="1" src="assets/audio/narracao-02.wav"></audio>
+      <audio id="narracao-03" data-start="10.1" data-duration="3.87" data-media-start="0" data-volume="1" src="assets/audio/narracao-03.wav"></audio>
+      <audio id="narracao-04" data-start="14.4" data-duration="3.06" data-media-start="0" data-volume="1" src="assets/audio/narracao-04.wav"></audio>
+      <audio id="narracao-05" data-start="17.9" data-duration="5.76" data-media-start="0" data-volume="1" src="assets/audio/narracao-05.wav"></audio>
+      <audio id="narracao-06" data-start="25.2" data-duration="5.4" data-media-start="0" data-volume="1" src="assets/audio/narracao-06.wav"></audio>
+      <audio id="narracao-07" data-start="31.5" data-duration="4.76" data-media-start="0" data-volume="1" src="assets/audio/narracao-07.wav"></audio>
     </div>
 
     <script>
+      // Os tempos seguem a narração (assets/audio/narracao-*.wav).
       // Posições em px CSS do celular (capturadas do site com viewport 390 x 844).
       const SCROLL = { ocasioes: 970, produtos: 2430 };
       const BUTTON_Y = 3098; // "Quero orçamento deste: Agenda 2027"
@@ -229,78 +240,78 @@
 
       const tl = gsap.timeline({ paused: true });
 
-      // 1. Gancho (0 a 5,4 s)
-      tl.fromTo('#hook-video', { scale: 1.08 }, { scale: 1, duration: 5.4, ease: 'none' }, 0)
+      // 1. Gancho (0 a 6 s)
+      tl.fromTo('#hook-video', { scale: 1.08 }, { scale: 1, duration: 6.0, ease: 'none' }, 0)
         .from('#hook-kicker', { opacity: 0, y: 20, duration: 0.6, ease: out }, 0.15)
         .from('#hook-title .line span', { yPercent: 110, duration: 0.8, ease: out, stagger: 0.12 }, 0.25)
         .from('#hook-stripe i', { scaleX: 0, transformOrigin: '0 50%', duration: 0.35, ease: out, stagger: 0.06 }, 0.9)
-        .from('#hook-sub', { opacity: 0, y: 30, duration: 0.7, ease: out }, 1.3)
-        .fromTo('#hook-wipe', { yPercent: 100 }, { yPercent: 0, duration: 0.55, ease: 'power3.inOut' }, 4.85);
+        .from('#hook-sub', { opacity: 0, y: 30, duration: 0.7, ease: out }, 2.0)
+        .fromTo('#hook-wipe', { yPercent: 100 }, { yPercent: 0, duration: 0.55, ease: 'power3.inOut' }, 5.45);
 
-      // 2. Site no celular (5 a 13 s)
-      tl.from('#phone', { y: 380, opacity: 0, duration: 0.9, ease: out }, 5.0);
+      // 2. Site no celular (5,6 a 17,4 s)
+      tl.from('#phone', { y: 380, opacity: 0, duration: 0.9, ease: out }, 5.6);
 
       const caption = (id, start, end) => {
         tl.fromTo(id, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.45, ease: out }, start);
         tl.to(id, { opacity: 0, y: -16, duration: 0.3, ease: 'power2.in' }, end);
       };
-      caption('#cap-1', 5.2, 7.5);
-      caption('#cap-2', 7.8, 10.4);
-      caption('#cap-3', 10.7, 13.3);
-      caption('#cap-4', 13.6, 20.1);
+      caption('#cap-1', 5.8, 9.6);
+      caption('#cap-2', 9.9, 13.8);
+      caption('#cap-3', 14.1, 17.6);
+      caption('#cap-4', 17.9, 24.5);
 
-      tl.to('#site-page', { y: -SCROLL.ocasioes, duration: 1.0, ease: inOut }, 6.8)
-        .to('#site-cta', { opacity: 1, duration: 0.3 }, 7.3)
-        .to('#site-page', { y: -SCROLL.produtos, duration: 1.3, ease: inOut }, 10.1);
+      tl.to('#site-page', { y: -SCROLL.ocasioes, duration: 1.0, ease: inOut }, 9.4)
+        .to('#site-cta', { opacity: 1, duration: 0.3 }, 9.9)
+        .to('#site-page', { y: -SCROLL.produtos, duration: 1.3, ease: inOut }, 13.4);
 
-      // Toque em "Quero orçamento deste"
+      // Toque em "Quero orçamento deste" (junto com "toque em" da narração)
       tl.set('#press', { top: BUTTON_Y }, 0)
-        .fromTo('#tap-1', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: out, immediateRender: false }, 12.0)
-        .to('#tap-1', { scale: 0.82, duration: 0.12, ease: 'power2.in' }, 12.45)
-        .to('#press', { opacity: 0.22, duration: 0.1 }, 12.45)
-        .fromTo('#ripple-1', { opacity: 1, scale: 1 }, { opacity: 0, scale: 2.6, duration: 0.5, ease: 'power2.out', immediateRender: false }, 12.5)
-        .to('#tap-1', { opacity: 0, scale: 1, duration: 0.25 }, 12.7)
-        .to('#press', { opacity: 0, duration: 0.2 }, 12.8);
+        .fromTo('#tap-1', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: out, immediateRender: false }, 15.9)
+        .to('#tap-1', { scale: 0.82, duration: 0.12, ease: 'power2.in' }, 16.45)
+        .to('#press', { opacity: 0.22, duration: 0.1 }, 16.45)
+        .fromTo('#ripple-1', { opacity: 1, scale: 1 }, { opacity: 0, scale: 2.6, duration: 0.5, ease: 'power2.out', immediateRender: false }, 16.5)
+        .to('#tap-1', { opacity: 0, scale: 1, duration: 0.25 }, 16.7)
+        .to('#press', { opacity: 0, duration: 0.2 }, 16.8);
 
-      // 3. WhatsApp: a conversa abre com a mensagem do site já escrita (13 a 20 s)
-      tl.fromTo('#chat', { x: 390 }, { x: 0, duration: 0.55, ease: 'power3.inOut' }, 13.0)
-        .to('#site', { x: -120, duration: 0.55, ease: 'power3.inOut' }, 13.0)
-        .fromTo('#tap-2', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: out, immediateRender: false }, 15.0)
-        .to('#tap-2', { scale: 0.82, duration: 0.12, ease: 'power2.in' }, 15.45)
-        .fromTo('#ripple-2', { opacity: 1, scale: 1 }, { opacity: 0, scale: 2.6, duration: 0.5, ease: 'power2.out', immediateRender: false }, 15.5)
-        .to('#tap-2', { opacity: 0, scale: 1, duration: 0.25 }, 15.7)
-        .set('#draft', { display: 'none' }, 15.55)
-        .set('#placeholder', { opacity: 1 }, 15.55)
-        .fromTo('#msg-out', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 15.55);
+      // 3. WhatsApp: a conversa abre com a mensagem do site já escrita (17,4 a 24,6 s)
+      tl.fromTo('#chat', { x: 390 }, { x: 0, duration: 0.55, ease: 'power3.inOut' }, 17.4)
+        .to('#site', { x: -120, duration: 0.55, ease: 'power3.inOut' }, 17.4)
+        .fromTo('#tap-2', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: out, immediateRender: false }, 19.9)
+        .to('#tap-2', { scale: 0.82, duration: 0.12, ease: 'power2.in' }, 20.35)
+        .fromTo('#ripple-2', { opacity: 1, scale: 1 }, { opacity: 0, scale: 2.6, duration: 0.5, ease: 'power2.out', immediateRender: false }, 20.4)
+        .to('#tap-2', { opacity: 0, scale: 1, duration: 0.25 }, 20.6)
+        .set('#draft', { display: 'none' }, 20.45)
+        .set('#placeholder', { opacity: 1 }, 20.45)
+        .fromTo('#msg-out', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 20.45);
 
-      tl.fromTo('#msg-typing', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: out }, 16.3)
-        .to('#msg-typing', { opacity: 0, duration: 0.15 }, 17.4);
+      tl.fromTo('#msg-typing', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: out }, 21.3)
+        .to('#msg-typing', { opacity: 0, duration: 0.15 }, 22.4);
       [0, 1, 2].forEach((i) => {
         for (let k = 0; k < 3; k++) {
-          tl.to(`#msg-typing i:nth-child(${i + 1})`, { y: -4, duration: 0.18, ease: 'sine.out', yoyo: true, repeat: 1 }, 16.45 + k * 0.33 + i * 0.1);
+          tl.to(`#msg-typing i:nth-child(${i + 1})`, { y: -4, duration: 0.18, ease: 'sine.out', yoyo: true, repeat: 1 }, 21.45 + k * 0.33 + i * 0.1);
         }
       });
       // A conversa sobe para dar espaço à resposta.
-      tl.to('#msg-out, #msg-typing, #msg-in', { y: -150, duration: 0.5, ease: inOut }, 17.35)
-        .fromTo('#msg-in', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 17.45);
+      tl.to('#msg-out, #msg-typing, #msg-in', { y: -150, duration: 0.5, ease: inOut }, 22.35)
+        .fromTo('#msg-in', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 22.45);
 
-      // 4. Como funciona (20,4 a 25,4 s)
-      tl.to('#phone', { scale: 0.92, opacity: 0, duration: 0.5, ease: 'power2.in' }, 20.2)
-        .fromTo('#s-steps', { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: 'power3.inOut' }, 20.4)
-        .from('#steps-kicker', { opacity: 0, y: 20, duration: 0.5, ease: out }, 20.9)
-        .from('#steps-title', { opacity: 0, y: 40, duration: 0.6, ease: out }, 20.95)
-        .fromTo('.step', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.5, ease: out, stagger: 0.3 }, 21.3);
+      // 4. Como funciona (24,8 a 31,6 s); cada passo entra quando a narração o cita
+      tl.to('#phone', { scale: 0.92, opacity: 0, duration: 0.5, ease: 'power2.in' }, 24.6)
+        .fromTo('#s-steps', { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: 'power3.inOut' }, 24.8)
+        .from('#steps-kicker', { opacity: 0, y: 20, duration: 0.5, ease: out }, 25.2)
+        .from('#steps-title', { opacity: 0, y: 40, duration: 0.6, ease: out }, 25.25)
+        .fromTo('.step', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.5, ease: out, stagger: 0.75 }, 27.3);
 
-      // 5. Chamada final (24,9 a 30,4 s)
-      tl.fromTo('#s-end', { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: 'power3.inOut' }, 24.9)
-        .fromTo('#end-logo', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.7, ease: out }, 25.4)
-        .to('#end-stripe', { opacity: 1, duration: 0.01 }, 25.6)
-        .from('#end-stripe i', { scaleX: 0, transformOrigin: '0 50%', duration: 0.35, ease: out, stagger: 0.06 }, 25.6)
-        .from('#end-title .line span', { yPercent: 110, duration: 0.75, ease: out, stagger: 0.12 }, 25.65)
-        .to('#end-sub', { opacity: 1, duration: 0.5 }, 26.3)
-        .fromTo('#end-cta', { opacity: 0, y: 40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.5)' }, 26.7)
-        .to('#end-wa', { opacity: 1, duration: 0.5 }, 27.2)
-        .to('#end-cta', { scale: 1.04, duration: 0.35, ease: 'sine.inOut', yoyo: true, repeat: 3 }, 27.8);
+      // 5. Chamada final (31 a 37,5 s)
+      tl.fromTo('#s-end', { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: 'power3.inOut' }, 31.0)
+        .fromTo('#end-logo', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.7, ease: out }, 31.5)
+        .to('#end-stripe', { opacity: 1, duration: 0.01 }, 31.7)
+        .from('#end-stripe i', { scaleX: 0, transformOrigin: '0 50%', duration: 0.35, ease: out, stagger: 0.06 }, 31.7)
+        .from('#end-title .line span', { yPercent: 110, duration: 0.75, ease: out, stagger: 0.12 }, 31.75)
+        .to('#end-sub', { opacity: 1, duration: 0.5 }, 32.4)
+        .fromTo('#end-cta', { opacity: 0, y: 40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.5)' }, 32.0)
+        .to('#end-wa', { opacity: 1, duration: 0.5 }, 33.3)
+        .to('#end-cta', { scale: 1.04, duration: 0.35, ease: 'sine.inOut', yoyo: true, repeat: 3 }, 33.9);
 
       window.__timelines = window.__timelines || {};
       window.__timelines['main'] = tl;

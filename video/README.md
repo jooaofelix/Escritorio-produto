@@ -10,7 +10,8 @@ Pós-produção dos três vídeos de produto em uma apresentação 9:16 para red
 | --- | --- | --- |
 | `out/coloridamente-institucional.mp4` | Versão A: apresentações e redes sociais | 1080×1920, 30 fps CFR, H.264 High, ~18,7 s, áudio silencioso |
 | `out/coloridamente-scroll-master.mp4` | Versão B: sequência só com os produtos | 1080×1920, 24 fps, H.264 High, ~13,6 s, sem áudio |
-| `out/coloridamente-reels-demo-site.mp4` | Reels/Stories: demonstração do site e do pedido pelo WhatsApp | 1080×1920, 30 fps, H.264 High, 30,4 s, áudio silencioso |
+| `out/coloridamente-reels-demo-site.mp4` | Reels: demonstração do site e do pedido pelo WhatsApp, com narração e música ambiente | 1080×1920, 30 fps, H.264 High, 37,5 s, AAC estéreo (−16 LUFS) |
+| `out/coloridamente-reels-demo-site-mudo.mp4` | Versão anterior, sem narração (30,4 s), para usar com uma música do próprio Instagram | 1080×1920, 30 fps, H.264 High, áudio silencioso |
 
 ## Fontes
 
@@ -53,13 +54,28 @@ e rode as etapas `motion` e `institucional`. Para trocar um vídeo de produto, s
 `video/instagram/` é um projeto [HyperFrames](https://hyperframes.heygen.com) (HTML + GSAP renderizado
 em MP4). O roteiro leva quem vê o post até o site e do site até o WhatsApp:
 
-| Tempo | Cena |
-| --- | --- |
-| 0–5,4 s | Gancho sobre os produtos: "Sua marca na mesa de cada pessoa." |
-| 5–13 s | Celular navegando pelo site real (início → ocasiões → Agenda 2027) e toque em "Quero orçamento deste" |
-| 13–20 s | WhatsApp abre com a mensagem do site já escrita; envio e resposta |
-| 20,4–25 s | Como funciona, em 4 passos |
-| 25–30,4 s | Chamada final: "Toque no link da bio" e o número do WhatsApp |
+| Tempo | Cena | Narração |
+| --- | --- | --- |
+| 0–6 s | Gancho sobre os produtos | "Sua marca na mesa de cada pessoa. Agenda, cadernos e acessórios com a identidade da sua empresa." |
+| 5,6–17,4 s | Celular navegando pelo site real (início → ocasiões → Agenda 2027) | "No nosso site, você conhece a Linha Office em poucos toques." / "Escolha a ocasião: boas-vindas, presentes, eventos ou o dia a dia." / "Encontrou o produto? Toque em: quero orçamento deste." |
+| 17,4–24,6 s | WhatsApp abre com a mensagem do site já escrita; envio e resposta | "O WhatsApp já abre com a mensagem pronta. É só enviar, e a gente te ajuda a montar o seu orçamento." |
+| 24,8–31,6 s | Como funciona, em 4 passos | "Do primeiro contato ao produto pronto: a sua ideia, a personalização, a produção e o produto final." |
+| 31–37,5 s | Chamada final: "Toque no link da bio" e o WhatsApp | "Toque no link da bio e peça o seu orçamento. Coloridamente: sua ideia ganha forma aqui." |
+
+**Áudio** (`instagram/assets/audio/`): a narração é sintética, gerada localmente com
+`hyperframes tts` (Kokoro, voz `pf_dora`, pt-BR, velocidade 1,05), um arquivo por fala, normalizada
+a −16 LUFS. Os textos ficam em `narracao.tsv`. A música ambiente é original, gerada por
+`instagram/scripts/musica-ambiente.py` (pad em Fá maior, arpejo e baixo a 80 bpm; sem direitos de
+terceiros) e mixada cerca de 10 dB abaixo da voz. Para trocar uma fala, gere o arquivo de novo e
+ajuste o `data-start`/`data-duration` do `<audio>` e os tempos das animações em `index.html`:
+
+```bash
+npx hyperframes@0.8.190 tts "texto da fala" -v pf_dora -l pt-br -s 1.05 -o fala.wav
+ffmpeg -i fala.wav -af loudnorm=I=-16:TP=-1.5:LRA=7 -ar 48000 -ac 1 assets/audio/narracao-NN.wav
+python musica-ambiente.py raw.wav 38.5   # requer numpy e soundfile
+ffmpeg -i raw.wav -af "aecho=0.8:0.6:180|370|620:0.35|0.25|0.15,lowpass=f=7000,afade=t=in:d=1.5,afade=t=out:st=35.8:d=2.6,loudnorm=I=-26:TP=-3:LRA=11" \
+  -c:a aac -b:a 160k assets/audio/musica-ambiente.m4a
+```
 
 As telas do site em `instagram/assets/site/` são capturas do build (`npm run build && npm run preview`)
 em um celular de 390×844 px com escala 3×: a página inteira em faixas de 1000 px CSS, sem o cabeçalho
@@ -71,11 +87,8 @@ cd video/instagram
 npx hyperframes@0.8.190 check                    # lint, layout e contraste
 npx hyperframes@0.8.190 snapshot --at 6,12.5,17  # quadros de conferência
 npx hyperframes@0.8.190 render -q high -o render.mp4
-# entrega: H.264 High + faixa AAC silenciosa (o Instagram aceita melhor arquivos com áudio)
-ffmpeg -i render.mp4 -f lavfi -i anullsrc=r=48000:cl=stereo -shortest -map 0:v -map 1:a \
-  -c:v libx264 -preset slow -crf 18 -profile:v high -pix_fmt yuv420p -c:a aac -b:a 128k \
-  -movflags +faststart ../out/coloridamente-reels-demo-site.mp4
+ffmpeg -i render.mp4 -c:v libx264 -preset slow -crf 18 -profile:v high -level:v 4.2 -pix_fmt yuv420p \
+  -c:a aac -b:a 160k -movflags +faststart ../out/coloridamente-reels-demo-site.mp4
 ```
 
-O vídeo sai sem música de propósito: adicione uma música em alta no próprio Instagram, o que
-ajuda o alcance. Mantenha o link do site na bio, já que a cena final aponta para ele.
+Mantenha o link do site na bio, já que a cena final aponta para ele.
