@@ -10,8 +10,8 @@ Pós-produção dos três vídeos de produto em uma apresentação 9:16 para red
 | --- | --- | --- |
 | `out/coloridamente-institucional.mp4` | Versão A: apresentações e redes sociais | 1080×1920, 30 fps CFR, H.264 High, ~18,7 s, áudio silencioso |
 | `out/coloridamente-scroll-master.mp4` | Versão B: sequência só com os produtos | 1080×1920, 24 fps, H.264 High, ~13,6 s, sem áudio |
-| `out/coloridamente-reels-demo-site.mp4` | Reels: demonstração do site e do pedido pelo WhatsApp, com narração e música ambiente | 1080×1920, 30 fps, H.264 High, 37,5 s, AAC estéreo (−16 LUFS) |
-| `out/coloridamente-reels-demo-site-mudo.mp4` | Versão anterior, sem narração (30,4 s), para usar com uma música do próprio Instagram | 1080×1920, 30 fps, H.264 High, áudio silencioso |
+| `out/coloridamente-reels-demo-site.mp4` | Reels: demonstração do site e do pedido pelo WhatsApp, com narração e música ambiente | 1080×1920, 30 fps, H.264 High, 38 s, AAC estéreo (−16 LUFS) |
+| `out/coloridamente-reels-demo-site-so-musica.mp4` | Mesmo vídeo sem narração, só com a música ambiente | 1080×1920, 30 fps, H.264 High, 38 s, AAC estéreo |
 
 ## Fontes
 
@@ -60,7 +60,7 @@ em MP4). O roteiro leva quem vê o post até o site e do site até o WhatsApp:
 | 5,6–17,4 s | Celular navegando pelo site real (início → ocasiões → Agenda 2027) | "No nosso site, você conhece a Linha Office em poucos toques." / "Escolha a ocasião: boas-vindas, presentes, eventos ou o dia a dia." / "Encontrou o produto? Toque em: quero orçamento deste." |
 | 17,4–24,6 s | WhatsApp abre com a mensagem do site já escrita; envio e resposta | "O WhatsApp já abre com a mensagem pronta. É só enviar, e a gente te ajuda a montar o seu orçamento." |
 | 24,8–31,6 s | Como funciona, em 4 passos | "Do primeiro contato ao produto pronto: a sua ideia, a personalização, a produção e o produto final." |
-| 31–37,5 s | Chamada final: "Toque no link da bio" e o WhatsApp | "Toque no link da bio e peça o seu orçamento. Coloridamente: sua ideia ganha forma aqui." |
+| 31–38 s | Chamada final: "Acesse o site" (link na bio), sem número de contato | "Acesse o site pelo link da bio e peça o seu orçamento. Coloridamente: sua ideia ganha forma aqui." |
 
 **Áudio** (`instagram/assets/audio/`): a narração é sintética, gerada localmente com
 `hyperframes tts` (Kokoro, voz `pf_dora`, pt-BR, velocidade 1,05), um arquivo por fala, normalizada
@@ -79,7 +79,8 @@ ffmpeg -i raw.wav -af "aecho=0.8:0.6:180|370|620:0.35|0.25|0.15,lowpass=f=7000,a
 
 As telas do site em `instagram/assets/site/` são capturas do build (`npm run build && npm run preview`)
 em um celular de 390×844 px com escala 3×: a página inteira em faixas de 1000 px CSS, sem o cabeçalho
-e a barra de orçamento fixos, que entram como camadas separadas. Se o site mudar, refaça as capturas
+e a barra de orçamento fixos, que entram como camadas separadas. O número do WhatsApp do bloco inicial
+foi apagado da captura (`page-0.jpg`), para o vídeo não mostrar contato direto. Se o site mudar, refaça as capturas
 e confira as constantes `SCROLL` e `BUTTON_Y` no fim de `instagram/index.html`.
 
 ```bash

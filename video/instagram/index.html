@@ -121,7 +121,7 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="37.5" data-width="1080" data-height="1920">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="38.0" data-width="1080" data-height="1920">
 
       <!-- 1. Gancho: produtos reais com a marca do cliente -->
       <video id="hook-video" class="clip" data-start="0" data-duration="6.0" data-media-start="0" data-track-index="1"
@@ -205,7 +205,7 @@
       </div>
 
       <!-- 5. Chamada final -->
-      <div id="s-end" class="clip" data-start="31.0" data-duration="6.5" data-track-index="4">
+      <div id="s-end" class="clip" data-start="31.0" data-duration="7.0" data-track-index="4">
         <img id="end-logo" src="assets/brand/logo-coloridamente.svg" alt="Coloridamente" />
         <div id="end-stripe" class="stripe"><i></i><i></i><i></i><i></i><i></i></div>
         <h2 id="end-title">
@@ -213,22 +213,22 @@
           <span class="line"><span>Linha Office da</span></span>
           <span class="line"><span>sua empresa?</span></span>
         </h2>
-        <p id="end-sub">Conte o que você precisa e receba o orçamento pelo WhatsApp.</p>
-        <div id="end-cta">Toque no link da bio
+        <p id="end-sub">Veja a linha completa e peça o seu orçamento direto pelo site.</p>
+        <div id="end-cta">Acesse o site
           <svg width="40" height="40" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="#faf9f5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
         </div>
-        <p id="end-wa">ou chame no WhatsApp <b>(12) 99133-8866</b></p>
+        <p id="end-wa">O link está na <b>bio do perfil</b></p>
       </div>
 
       <!-- Trilha: música ambiente original (assets/audio/musica-ambiente.m4a) e narração (narracao.tsv) -->
-      <audio id="musica" data-start="0" data-duration="37.5" data-media-start="0" data-volume="1" data-fade-out="1.5" src="assets/audio/musica-ambiente.m4a"></audio>
+      <audio id="musica" data-start="0" data-duration="38.0" data-media-start="0" data-volume="1" data-fade-out="1.5" src="assets/audio/musica-ambiente.m4a"></audio>
       <audio id="narracao-01" data-start="0.3" data-duration="5.79" data-media-start="0" data-volume="1" src="assets/audio/narracao-01.wav"></audio>
       <audio id="narracao-02" data-start="6.4" data-duration="3.35" data-media-start="0" data-volume="1" src="assets/audio/narracao-02.wav"></audio>
       <audio id="narracao-03" data-start="10.1" data-duration="3.87" data-media-start="0" data-volume="1" src="assets/audio/narracao-03.wav"></audio>
       <audio id="narracao-04" data-start="14.4" data-duration="3.06" data-media-start="0" data-volume="1" src="assets/audio/narracao-04.wav"></audio>
       <audio id="narracao-05" data-start="17.9" data-duration="5.76" data-media-start="0" data-volume="1" src="assets/audio/narracao-05.wav"></audio>
       <audio id="narracao-06" data-start="25.2" data-duration="5.4" data-media-start="0" data-volume="1" src="assets/audio/narracao-06.wav"></audio>
-      <audio id="narracao-07" data-start="31.5" data-duration="4.76" data-media-start="0" data-volume="1" src="assets/audio/narracao-07.wav"></audio>
+      <audio id="narracao-07" data-start="31.5" data-duration="5.59" data-media-start="0" data-volume="1" src="assets/audio/narracao-07.wav"></audio>
     </div>
 
     <script>
@@ -302,7 +302,7 @@
         .from('#steps-title', { opacity: 0, y: 40, duration: 0.6, ease: out }, 25.25)
         .fromTo('.step', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.5, ease: out, stagger: 0.75 }, 27.3);
 
-      // 5. Chamada final (31 a 37,5 s)
+      // 5. Chamada final (31 a 38 s)
       tl.fromTo('#s-end', { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: 'power3.inOut' }, 31.0)
         .fromTo('#end-logo', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.7, ease: out }, 31.5)
         .to('#end-stripe', { opacity: 1, duration: 0.01 }, 31.7)
