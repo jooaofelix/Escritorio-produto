@@ -3,6 +3,7 @@ import { productMessage, whatsappUrl } from '@/config/site';
 import { getCategory } from '@/data/categories';
 import { products } from '@/data/products';
 import { gsap } from '@/lib/gsap';
+import { LineOffer } from '@/components/shared/LineOffer';
 import { Pill } from '@/components/shared/Pill';
 import { ProductPicture } from '@/components/shared/ProductPicture';
 
@@ -30,13 +31,13 @@ export function ProductReel() {
       <div className="container-page">
         <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            <p className="text-label text-mint-ink">Produtos</p>
+            <p className="text-label text-coral">Linha Office</p>
             <h2 id="produtos-titulo" className="mt-4 text-display-2">
-              Cada produto, um detalhe da sua marca.
+              Cada item, um detalhe da sua marca.
             </h2>
           </div>
           <p className="text-lead text-on-dark lg:col-span-4 lg:col-start-9">
-            Exemplos de produtos personalizados com a identidade visual de uma empresa.
+            Agenda, cadernos e acessórios para escritório com a identidade visual da sua empresa.
           </p>
         </div>
 
@@ -81,6 +82,7 @@ export function ProductReel() {
             );
           })}
         </ol>
+        <LineOffer tone="dark" className="mt-24 lg:mt-32" />
       </div>
     </section>
   );

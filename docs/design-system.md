@@ -1,4 +1,4 @@
-# Coloridamente: design system das propostas 04 e 05
+# Coloridamente: design system das propostas 04 e 05 (Linha Office)
 
 O site tem duas páginas, implementadas a partir das propostas 04 e 05 do showcase
 "5 possibilidades. Uma identidade." (`Coloridamente_Propostas_de_Site.pdf`):
@@ -31,6 +31,14 @@ domínio de verde ou amarelo.
 
 Tipografia: **Lato** 400/700/900 (`text-display-1/2/3`, `text-lead`, `text-body`, `text-label`).
 Cabeçalho claro com a **logo oficial** (`/brand/logo-coloridamente.svg`) nas duas páginas.
+
+## Produto: Linha Office
+
+O site vende a **Linha Office**: agenda, cadernos (com ou sem pauta) e acessórios para escritório
+personalizados com a identidade da empresa. O nome aparece na etiqueta do hero, na navegação, na
+seção de itens ("Monte a sua Linha Office."), no bloco "Linha Office completa" (`LineOffer`) e em
+todas as mensagens de WhatsApp ("Olá! Conheci a Linha Office da Coloridamente…"), para o
+atendimento saber de onde veio o contato. Nome configurável em `site.line` (`src/config/site.ts`).
 
 ## Funil (as duas páginas)
 

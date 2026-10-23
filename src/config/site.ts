@@ -6,9 +6,11 @@ const whatsappNumber = (import.meta.env.VITE_WHATSAPP_NUMBER ?? '').replace(/\D/
 
 export const site = {
   name: 'Coloridamente',
+  /** Produto vendido pelo site. */
+  line: 'Linha Office',
   whatsapp: {
     number: whatsappNumber,
-    defaultMessage: 'Olá! Conheci a Coloridamente pelo site e gostaria de solicitar um orçamento.',
+    defaultMessage: 'Olá! Conheci a Linha Office da Coloridamente pelo site e gostaria de solicitar um orçamento.',
   },
   /** As duas páginas do site (propostas 04 e 05). */
   pages: {
@@ -34,10 +36,10 @@ export function whatsappUrl(message: string = site.whatsapp.defaultMessage): str
 
 /** Mensagem para pedir orçamento de um item específico da galeria. */
 export function productMessage(productName: string): string {
-  return `Olá! Conheci a Coloridamente pelo site e gostaria de solicitar um orçamento de: ${productName}.`;
+  return `Olá! Conheci a Linha Office da Coloridamente pelo site e gostaria de solicitar um orçamento de: ${productName}.`;
 }
 
 /** Mensagem para pedir orçamento a partir de uma ocasião (ex.: "boas-vindas à equipe"). */
 export function occasionMessage(occasion: string): string {
-  return `Olá! Conheci a Coloridamente pelo site e gostaria de solicitar um orçamento para: ${occasion}.`;
+  return `Olá! Conheci a Linha Office da Coloridamente pelo site e gostaria de solicitar um orçamento para: ${occasion}.`;
 }

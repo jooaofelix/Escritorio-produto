@@ -9,11 +9,11 @@ export function QuoteBand() {
         <div className="lg:col-span-7">
           <div className="color-bar h-1 w-24" aria-hidden="true" />
           <h2 id="orcamento-titulo" className="mt-8 text-display-1">
-            Vamos criar algo com a sua marca?
+            Vamos montar a Linha Office da sua empresa?
           </h2>
         </div>
         <div className="lg:col-span-4 lg:col-start-9">
-          <p className="text-lead">Conte o que você precisa e vamos transformar sua ideia em um produto personalizado.</p>
+          <p className="text-lead">Conte quais itens você quer e para quantas pessoas. A gente responde com o orçamento pelo WhatsApp.</p>
           <Pill href={whatsappUrl()} whatsapp tone="ink" size="lg" arrow="upright" className="mt-8 w-full sm:w-auto">
             Solicitar orçamento
           </Pill>

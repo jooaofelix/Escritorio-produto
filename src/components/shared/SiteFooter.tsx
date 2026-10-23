@@ -20,7 +20,7 @@ export function SiteFooter({ nav, current }: FooterProps) {
               <img src="/brand/logo-coloridamente.svg" alt="Coloridamente" width={868} height={352} className="h-12 w-auto" />
             </a>
             <p className="mt-6 max-w-[34ch] text-body text-on-dark">
-              Produtos personalizados com a identidade da sua empresa.
+              Linha Office: agenda, cadernos e acessórios para escritório com a identidade da sua empresa.
             </p>
           </div>
           <nav aria-label="Rodapé" className="md:col-span-3">

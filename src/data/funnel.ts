@@ -31,14 +31,14 @@ export const occasions = [
 
 export const faq = [
   {
+    question: 'O que vem na Linha Office?',
+    answer:
+      'Agenda, cadernos (com ou sem pauta) e acessórios para escritório, como porta-canetas, suporte de celular, organizador para óculos e caneta e porta-clipes, todos com a identidade da sua empresa. Você pode pedir a linha completa ou só os itens que quiser.',
+  },
+  {
     question: 'Como faço para pedir um orçamento?',
     answer:
       'Toque em “Solicitar orçamento” e conte pelo WhatsApp qual produto você quer, a quantidade aproximada e como imagina a personalização.',
-  },
-  {
-    question: 'Quais produtos posso personalizar?',
-    answer:
-      'Agendas, cadernos (com ou sem pauta), papelaria corporativa, brindes e acessórios para escritório, como porta-canetas, suporte de celular e organizadores.',
   },
   {
     question: 'Posso usar a identidade visual da minha empresa?',

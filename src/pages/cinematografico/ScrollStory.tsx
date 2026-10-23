@@ -146,6 +146,7 @@ export function ScrollStory() {
                 className="enter-fade bg-night-box px-5 pt-6 pb-7 lg:px-0 lg:pt-7 lg:pr-8 lg:pb-9"
                 style={{ animationDelay: '0.45s' }}
               >
+              <p className="mb-4 text-label text-coral">Linha Office</p>
               <h1 id="historia-titulo" className="text-display-1">
                 {TITLE.map((line, i) => (
                   <span key={line} className="block overflow-hidden pb-[0.08em]">

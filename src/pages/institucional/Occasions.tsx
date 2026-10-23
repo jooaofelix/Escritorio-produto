@@ -12,11 +12,11 @@ export function Occasions() {
           <div className="lg:col-span-7">
             <p className="text-label text-soft">Para cada ocasião</p>
             <h2 id="ocasioes-titulo" className="mt-4 text-display-2">
-              Leve a sua marca para onde ela precisa estar.
+              A Linha Office para cada momento da empresa.
             </h2>
           </div>
           <p className="text-lead text-soft lg:col-span-4 lg:col-start-9">
-            Produtos personalizados funcionam como presente, ferramenta de trabalho e lembrança da sua empresa.
+            Os mesmos itens funcionam como presente, ferramenta de trabalho e lembrança da sua marca.
           </p>
         </div>
         <ul role="list" className="mt-14 grid gap-px overflow-hidden rounded-sm bg-line sm:grid-cols-2 lg:mt-20 lg:grid-cols-4">

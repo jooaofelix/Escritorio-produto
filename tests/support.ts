@@ -2,9 +2,9 @@ import { expect, type Page } from '@playwright/test';
 
 /** Número esperado nos links (o mesmo do `.env`); sobrescreva com E2E_WHATSAPP_NUMBER. */
 export const WHATSAPP_NUMBER = process.env.E2E_WHATSAPP_NUMBER ?? '5512991338866';
-export const DEFAULT_MESSAGE = 'Olá! Conheci a Coloridamente pelo site e gostaria de solicitar um orçamento.';
+export const DEFAULT_MESSAGE = 'Olá! Conheci a Linha Office da Coloridamente pelo site e gostaria de solicitar um orçamento.';
 export const productMessage = (name: string) =>
-  `Olá! Conheci a Coloridamente pelo site e gostaria de solicitar um orçamento de: ${name}.`;
+  `Olá! Conheci a Linha Office da Coloridamente pelo site e gostaria de solicitar um orçamento de: ${name}.`;
 
 export const PAGES = [
   { path: '/', name: 'institucional', h1: 'Uma marca forte também se vê nos detalhes.' },
@@ -21,7 +21,7 @@ export const PRODUCTS = [
 export const OCCASIONS = ['Boas-vindas à equipe', 'Presentes para clientes', 'Eventos e feiras', 'Dia a dia do escritório'];
 
 /** Toda mensagem de WhatsApp começa assim (padrão, por produto ou por ocasião). */
-export const MESSAGE_PREFIX = 'Olá! Conheci a Coloridamente pelo site e gostaria de solicitar um orçamento';
+export const MESSAGE_PREFIX = 'Olá! Conheci a Linha Office da Coloridamente pelo site e gostaria de solicitar um orçamento';
 
 /** Coleta erros de console, exceções e respostas com falha durante o teste. */
 export function trackProblems(page: Page) {

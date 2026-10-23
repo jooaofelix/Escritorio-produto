@@ -4,11 +4,11 @@ import { Pill } from '@/components/shared/Pill';
 import { ProductPicture, productById } from '@/components/shared/ProductPicture';
 
 const TITLE = ['Uma marca forte', 'também se vê', 'nos detalhes.'];
-const TAGS = ['Papelaria', 'Corporativo', 'Acessórios para escritório'];
+const TAGS = ['Agenda', 'Cadernos', 'Acessórios para escritório'];
 
 const delay = (s: number) => ({ animationDelay: `${s}s` });
 
-/** Hero da proposta 04 — promessa, prova visual e CTA de orçamento acima da dobra. */
+/** Hero da proposta 04 — apresenta a Linha Office com promessa, prova visual e CTA acima da dobra. */
 export function Hero() {
   const agenda = productById(products, 'agenda-2027');
   return (
@@ -19,7 +19,7 @@ export function Hero() {
             className="enter-wipe inline-flex rounded-full bg-card px-4 py-2 text-label max-sm:text-[0.6875rem] max-sm:tracking-[0.08em]"
             style={delay(0.3)}
           >
-            Produtos personalizados para empresas
+            Linha Office
           </p>
           <h1 id="hero-titulo" className="mt-7 text-display-1">
             {TITLE.map((line, i) => (
@@ -32,15 +32,15 @@ export function Hero() {
             ))}
           </h1>
           <p className="enter-fade mt-6 measure text-lead text-soft" style={delay(0.8)}>
-            Agendas, cadernos, brindes e acessórios para escritório com a identidade visual da sua empresa. Conte o que
-            você precisa e receba o seu orçamento pelo WhatsApp.
+            A Linha Office reúne agenda, cadernos e acessórios para escritório com a identidade visual da sua empresa.
+            Escolha os itens e receba o seu orçamento pelo WhatsApp.
           </p>
           <div className="enter-fade mt-10 flex flex-wrap items-center gap-3" style={delay(0.95)}>
             <Pill href={whatsappUrl()} whatsapp size="lg" arrow="upright">
-              Solicitar orçamento
+              Quero a Linha Office
             </Pill>
             <Pill href="#produtos" tone="outline" size="lg" arrow="down">
-              Ver produtos
+              Ver a linha
             </Pill>
           </div>
           {hasWhatsAppNumber && (

@@ -2,22 +2,23 @@ import { productMessage, whatsappUrl } from '@/config/site';
 import { getCategory } from '@/data/categories';
 import { products } from '@/data/products';
 import { Pill } from '@/components/shared/Pill';
+import { LineOffer } from '@/components/shared/LineOffer';
 import { ProductPicture } from '@/components/shared/ProductPicture';
 
-/** Desejo: cada produto com o próprio CTA de orçamento (mensagem já com o nome do item). */
+/** Desejo: os itens da Linha Office, cada um com o próprio CTA, e a oferta da linha completa. */
 export function Products() {
   return (
     <section id="produtos" aria-labelledby="produtos-titulo" className="border-t border-line bg-paper py-section">
       <div className="container-page">
         <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            <p className="text-label text-soft">Produtos</p>
+            <p className="text-label text-soft">Linha Office</p>
             <h2 id="produtos-titulo" className="mt-4 text-display-2">
-              Escolha o ponto de partida.
+              Monte a sua Linha Office.
             </h2>
           </div>
           <p className="text-lead text-soft lg:col-span-4 lg:col-start-9">
-            Exemplos de produtos personalizados com a identidade visual de uma empresa. Escolha um e peça o orçamento.
+            Cada item recebe a identidade visual da sua empresa. Peça a linha completa ou só os itens de que precisa.
           </p>
         </div>
         <ul role="list" className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:mt-20">
@@ -48,6 +49,7 @@ export function Products() {
             </li>
           ))}
         </ul>
+        <LineOffer tone="light" className="mt-16 lg:mt-24" />
       </div>
     </section>
   );

@@ -13,7 +13,7 @@ import { QuoteBand } from './QuoteBand';
 import '@/styles/index.css';
 
 const NAV = [
-  { label: 'Produtos', href: '#produtos' },
+  { label: 'Linha Office', href: '#produtos' },
   { label: 'Como funciona', href: '#como-funciona' },
   { label: 'Dúvidas', href: '#duvidas' },
 ];
