@@ -7,7 +7,7 @@ export const productMessage = (name: string) =>
   `Olá! Conheci a Linha Office da Coloridamente pelo site e gostaria de solicitar um orçamento de: ${name}.`;
 
 export const PAGES = [
-  { path: '/', name: 'institucional', h1: 'Uma marca forte também se vê nos detalhes.' },
+  { path: '/', name: 'institucional', h1: 'Linha Office' },
   { path: '/cinematografico/', name: 'cinematografico', h1: 'Quando a sua marca ganha forma.' },
 ] as const;
 

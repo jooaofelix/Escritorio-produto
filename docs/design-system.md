@@ -56,9 +56,11 @@ atendimento saber de onde veio o contato. Nome configurável em `site.line` (`sr
 
 ## Proposta 04 — Institucional premium (`/`)
 
-Hero claro com etiqueta, título "Uma marca forte / também se vê / nos detalhes.", foto da agenda
-em moldura `card`, barra de cor e "Papelaria / Corporativo / Acessórios para escritório";
-entrada orquestrada uma vez no carregamento.
+Abre com um **banner da Linha Office** em tela cheia no desktop (mais largo que as seções, alinhado ao
+cabeçalho): faixa da barra de cor no topo, "Coloridamente apresenta", o nome **"Linha Office"** como h1
+em Lato 900 gigante (60→224px), a frase "Uma marca forte também se vê nos detalhes." + texto de apoio,
+"Quero a Linha Office" e "Ver a linha", e a vitrine dos 4 itens (agenda, caderno, páginas com ou sem
+pauta, acessórios) com fundo branco contínuo. Entrada orquestrada uma vez no carregamento.
 
 ## Proposta 05 — Scroll cinematográfico (`/cinematografico/`)
 

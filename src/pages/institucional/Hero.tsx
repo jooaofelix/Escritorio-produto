@@ -1,81 +1,89 @@
-import { formatWhatsAppDisplay, hasWhatsAppNumber, whatsappUrl } from '@/config/site';
+import { formatWhatsAppDisplay, hasWhatsAppNumber, site, whatsappUrl } from '@/config/site';
 import { products } from '@/data/products';
 import { Pill } from '@/components/shared/Pill';
 import { ProductPicture, productById } from '@/components/shared/ProductPicture';
 
-const TITLE = ['Uma marca forte', 'também se vê', 'nos detalhes.'];
-const TAGS = ['Agenda', 'Cadernos', 'Acessórios para escritório'];
+/** Vitrine do banner: os itens da linha lado a lado (fotos com fundo branco, como o banner). */
+const LINEUP = [
+  { id: 'agenda-2027', label: 'Agenda' },
+  { id: 'caderno-espiral-capa', label: 'Caderno' },
+  { id: 'caderno-aberto-pautado', label: 'Páginas com ou sem pauta' },
+  { id: 'kit-acessorios-escritorio', label: 'Acessórios para escritório' },
+];
 
 const delay = (s: number) => ({ animationDelay: `${s}s` });
 
-/** Hero da proposta 04 — apresenta a Linha Office com promessa, prova visual e CTA acima da dobra. */
+/** Banner de abertura: o nome da Linha Office em destaque, os produtos e o CTA acima da dobra. */
 export function Hero() {
-  const agenda = productById(products, 'agenda-2027');
+  const [first, second] = site.line.split(' ');
   return (
     <section aria-labelledby="hero-titulo" className="bg-paper text-ink">
-      <div className="container-page grid gap-12 pt-10 pb-20 lg:grid-cols-12 lg:items-center lg:gap-10 lg:pt-16 lg:pb-28">
-        <div className="lg:col-span-6">
-          <p
-            className="enter-wipe inline-flex rounded-full bg-card px-4 py-2 text-label max-sm:text-[0.6875rem] max-sm:tracking-[0.08em]"
-            style={delay(0.3)}
+      {/* Banner mais largo que o conteúdo das seções e com a altura da primeira tela no desktop. */}
+      <div className="mx-auto w-full max-w-[120rem] px-gutter pt-3 pb-16 lg:pt-4 lg:pb-24">
+        <div className="relative flex flex-col overflow-hidden rounded-md border border-line bg-white px-5 pt-9 pb-7 sm:px-10 lg:min-h-[calc(100svh-var(--spacing-header)-1.25rem)] lg:px-16 lg:pt-12 lg:pb-10">
+          <div className="enter-draw color-bar absolute inset-x-0 top-0 h-1.5" style={delay(0.2)} aria-hidden="true" />
+
+          <p className="enter-fade text-label text-soft" style={delay(0.25)}>
+            Coloridamente apresenta
+          </p>
+          <h1
+            id="hero-titulo"
+            className="mt-3 text-[clamp(3.75rem,1.2rem+10.6vw,14rem)] leading-[0.92] font-black tracking-[-0.035em]"
           >
-            Linha Office
-          </p>
-          <h1 id="hero-titulo" className="mt-7 text-display-1">
-            {TITLE.map((line, i) => (
-              <span key={line} className="block overflow-hidden pb-[0.08em]">
-                <span className="enter-rise block" style={delay(0.4 + i * 0.1)}>
-                  {line}
-                </span>
-                {i < TITLE.length - 1 && ' '}
+            <span className="inline-block overflow-hidden pb-[0.06em] align-bottom">
+              <span className="enter-rise inline-block" style={delay(0.35)}>
+                {first}
               </span>
-            ))}
+            </span>{' '}
+            <span className="inline-block overflow-hidden pb-[0.06em] align-bottom">
+              <span className="enter-rise inline-block" style={delay(0.45)}>
+                {second}
+              </span>
+            </span>
           </h1>
-          <p className="enter-fade mt-6 measure text-lead text-soft" style={delay(0.8)}>
-            A Linha Office reúne agenda, cadernos e acessórios para escritório com a identidade visual da sua empresa.
-            Escolha os itens e receba o seu orçamento pelo WhatsApp.
-          </p>
-          <div className="enter-fade mt-10 flex flex-wrap items-center gap-3" style={delay(0.95)}>
-            <Pill href={whatsappUrl()} whatsapp size="lg" arrow="upright">
-              Quero a Linha Office
-            </Pill>
-            <Pill href="#produtos" tone="outline" size="lg" arrow="down">
-              Ver a linha
-            </Pill>
+
+          <div className="mt-6 grid gap-6 lg:mt-8 lg:grid-cols-12 lg:items-end">
+            <p className="enter-fade text-lead text-soft lg:col-span-6" style={delay(0.7)}>
+              <strong className="font-black text-ink">Uma marca forte também se vê nos detalhes.</strong> Agenda,
+              cadernos e acessórios para escritório com a identidade visual da sua empresa.
+            </p>
+            <div
+              className="enter-fade flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:col-span-6 lg:justify-end"
+              style={delay(0.85)}
+            >
+              <Pill href={whatsappUrl()} whatsapp size="lg" arrow="upright">
+                Quero a {site.line}
+              </Pill>
+              <Pill href="#produtos" tone="outline" size="lg" arrow="down">
+                Ver a linha
+              </Pill>
+            </div>
           </div>
+
+          <ul role="list" className="mt-10 grid grid-cols-2 gap-x-4 gap-y-6 lg:mt-auto lg:grid-cols-4 lg:gap-x-10 lg:pt-12">
+            {LINEUP.map((item, i) => {
+              const product = productById(products, item.id);
+              return (
+                <li key={item.id} className="enter-settle" style={delay(0.55 + i * 0.1)}>
+                  <ProductPicture
+                    product={product}
+                    sizes="(min-width: 1024px) 22vw, 45vw"
+                    loading="eager"
+                    className="block"
+                    imgClassName="aspect-[4/3] h-auto w-full object-contain brightness-[1.04] contrast-[1.04]"
+                  />
+                  <p className="mt-3 border-t border-line pt-3 text-label text-soft">{item.label}</p>
+                </li>
+              );
+            })}
+          </ul>
+
           {hasWhatsAppNumber && (
-            <p className="enter-fade mt-5 text-[0.875rem] text-soft" style={delay(1.05)}>
+            <p className="enter-fade mt-8 text-[0.875rem] text-soft" style={delay(1.1)}>
               Atendimento direto pelo WhatsApp: <span className="font-bold text-ink">{formatWhatsAppDisplay()}</span>
             </p>
           )}
         </div>
-
-        <figure className="lg:col-span-6 lg:col-start-7 xl:col-span-5 xl:col-start-8">
-          <div className="enter-settle rounded-md bg-card p-[3%]" style={delay(0.5)}>
-            <div className="overflow-hidden rounded-xs bg-white">
-              <ProductPicture
-                product={agenda}
-                sizes="(min-width: 1280px) 480px, (min-width: 1024px) 46vw, 100vw"
-                loading="eager"
-                className="block"
-                imgClassName="aspect-[301/246] h-auto w-full object-cover"
-              />
-            </div>
-          </div>
-          <div className="enter-draw color-bar mt-5 h-1" style={delay(0.9)} aria-hidden="true" />
-          <figcaption className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-label text-soft">
-            {TAGS.map((tag, i) => (
-              <span key={tag} className="enter-fade inline-flex gap-x-3" style={delay(1.0 + i * 0.06)}>
-                {i > 0 && (
-                  <span aria-hidden="true" className="text-ink/30">
-                    /
-                  </span>
-                )}
-                <span>{tag}</span>
-              </span>
-            ))}
-          </figcaption>
-        </figure>
       </div>
     </section>
   );

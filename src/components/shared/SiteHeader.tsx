@@ -21,7 +21,8 @@ export function SiteHeader({ nav }: { nav: readonly NavItem[] }) {
     <header
       className={`sticky top-0 z-50 h-header border-b bg-paper/95 text-ink backdrop-blur-sm transition-[border-color] duration-300 ${scrolled ? 'border-line' : 'border-transparent'}`}
     >
-      <div className="container-page flex h-full items-center justify-between gap-6">
+      {/* Mesma largura do banner de abertura. */}
+      <div className="mx-auto flex h-full w-full max-w-[120rem] items-center justify-between gap-6 px-gutter">
         <a href={site.pages.institucional.href} className="shrink-0">
           <img
             src="/brand/logo-coloridamente.svg"

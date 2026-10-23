@@ -2,20 +2,30 @@ import { expect, test } from '@playwright/test';
 import { OCCASIONS, PRODUCTS, WHATSAPP_NUMBER } from './support';
 
 test.describe('proposta 04 — institucional premium', () => {
-  test('hero com etiqueta, título, texto, CTA e categorias', async ({ page }) => {
+  test('banner com o nome da Linha Office, os produtos e o CTA', async ({ page }) => {
     await page.goto('/');
     const hero = page.locator('section').first();
-    await expect(hero.getByText('Linha Office', { exact: true })).toBeVisible();
-    await expect(hero.locator('h1')).toBeVisible();
-    await expect(hero.getByText(/A Linha Office reúne agenda, cadernos e acessórios/)).toBeVisible();
+    await expect(hero.locator('h1')).toHaveText('Linha Office');
+    await expect(hero.getByText('Coloridamente apresenta')).toBeVisible();
+    await expect(hero.getByText('Uma marca forte também se vê nos detalhes.')).toBeVisible();
     const cta = hero.getByRole('link', { name: /Quero a Linha Office/ });
     await expect(cta).toBeVisible();
     expect(await cta.getAttribute('href')).toContain(`wa.me/${WHATSAPP_NUMBER}`);
-    for (const tag of ['Agenda', 'Cadernos', 'Acessórios para escritório']) await expect(hero.getByText(tag, { exact: true })).toBeVisible();
-    const bg = await hero.evaluate((el) => getComputedStyle(el).backgroundColor);
-    expect(bg).toBe('rgb(250, 249, 245)'); // paper #FAF9F5
     await expect(hero.getByRole('link', { name: /Ver a linha/ })).toHaveAttribute('href', '#produtos');
+    for (const item of ['Agenda', 'Caderno', 'Páginas com ou sem pauta', 'Acessórios para escritório']) {
+      await expect(hero.getByText(item, { exact: true })).toBeVisible();
+    }
+    await expect(hero.locator('img')).toHaveCount(4);
     await expect(page.locator('header img[alt="Coloridamente"]')).toBeVisible();
+  });
+
+  test('no desktop, nome, CTA e produtos cabem na primeira tela', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'no celular os produtos ficam logo abaixo do CTA');
+    await page.goto('/');
+    const hero = page.locator('section').first();
+    await expect(hero.locator('h1')).toBeInViewport({ ratio: 1 });
+    await expect(hero.getByRole('link', { name: /Quero a Linha Office/ })).toBeInViewport({ ratio: 1 });
+    for (const img of await hero.locator('img').all()) await expect(img).toBeInViewport({ ratio: 1 });
   });
 
   test('ocasiões, produtos (um caderno só, com opção sem pauta) e etapas', async ({ page }) => {
