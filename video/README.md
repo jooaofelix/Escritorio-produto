@@ -10,6 +10,7 @@ Pós-produção dos três vídeos de produto em uma apresentação 9:16 para red
 | --- | --- | --- |
 | `out/coloridamente-institucional.mp4` | Versão A: apresentações e redes sociais | 1080×1920, 30 fps CFR, H.264 High, ~18,7 s, áudio silencioso |
 | `out/coloridamente-scroll-master.mp4` | Versão B: sequência só com os produtos | 1080×1920, 24 fps, H.264 High, ~13,6 s, sem áudio |
+| `out/coloridamente-reels-demo-site.mp4` | Reels/Stories: demonstração do site e do pedido pelo WhatsApp | 1080×1920, 30 fps, H.264 High, 30,4 s, áudio silencioso |
 
 ## Fontes
 
@@ -46,3 +47,35 @@ projeto (`npm install`) e o Chromium do Playwright.
 Para alterar textos, tempos ou a composição da abertura/encerramento, edite `video/motion/*.html`
 e rode as etapas `motion` e `institucional`. Para trocar um vídeo de produto, substitua o arquivo em
 `src/`, aumente `FRAMES_VERSION` no script e rode `all`.
+
+## Reels de demonstração do site (HyperFrames)
+
+`video/instagram/` é um projeto [HyperFrames](https://hyperframes.heygen.com) (HTML + GSAP renderizado
+em MP4). O roteiro leva quem vê o post até o site e do site até o WhatsApp:
+
+| Tempo | Cena |
+| --- | --- |
+| 0–5,4 s | Gancho sobre os produtos: "Sua marca na mesa de cada pessoa." |
+| 5–13 s | Celular navegando pelo site real (início → ocasiões → Agenda 2027) e toque em "Quero orçamento deste" |
+| 13–20 s | WhatsApp abre com a mensagem do site já escrita; envio e resposta |
+| 20,4–25 s | Como funciona, em 4 passos |
+| 25–30,4 s | Chamada final: "Toque no link da bio" e o número do WhatsApp |
+
+As telas do site em `instagram/assets/site/` são capturas do build (`npm run build && npm run preview`)
+em um celular de 390×844 px com escala 3×: a página inteira em faixas de 1000 px CSS, sem o cabeçalho
+e a barra de orçamento fixos, que entram como camadas separadas. Se o site mudar, refaça as capturas
+e confira as constantes `SCROLL` e `BUTTON_Y` no fim de `instagram/index.html`.
+
+```bash
+cd video/instagram
+npx hyperframes@0.8.190 check                    # lint, layout e contraste
+npx hyperframes@0.8.190 snapshot --at 6,12.5,17  # quadros de conferência
+npx hyperframes@0.8.190 render -q high -o render.mp4
+# entrega: H.264 High + faixa AAC silenciosa (o Instagram aceita melhor arquivos com áudio)
+ffmpeg -i render.mp4 -f lavfi -i anullsrc=r=48000:cl=stereo -shortest -map 0:v -map 1:a \
+  -c:v libx264 -preset slow -crf 18 -profile:v high -pix_fmt yuv420p -c:a aac -b:a 128k \
+  -movflags +faststart ../out/coloridamente-reels-demo-site.mp4
+```
+
+O vídeo sai sem música de propósito: adicione uma música em alta no próprio Instagram, o que
+ajuda o alcance. Mantenha o link do site na bio, já que a cena final aponta para ele.

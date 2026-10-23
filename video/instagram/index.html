@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/js/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: 'Lato'; src: url('assets/fonts/lato-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: block; }
+      @font-face { font-family: 'Lato'; src: url('assets/fonts/lato-latin-700-normal.woff2') format('woff2'); font-weight: 700; font-display: block; }
+      @font-face { font-family: 'Lato'; src: url('assets/fonts/lato-latin-900-normal.woff2') format('woff2'); font-weight: 900; font-display: block; }
+
+      /* Paleta do site (src/styles/theme.css). */
+      :root {
+        --paper: #faf9f5;
+        --ink: #262624;
+        --soft: #5c5b57;
+        --line: #e6e3dc;
+        --graphite: #2a2927;
+        --graphite-deep: #1f1e1c;
+        --on-dark: #e6e3dc;
+        --blush-soft: #fbe6e2;
+        --coral: #e98071;
+        --olive: #a7b571;
+        --sun: #f9c848;
+        --mint: #a8dec9;
+        --blush: #f6aaa7;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Lato', sans-serif; color: var(--ink); }
+      .clip { position: absolute; inset: 0; }
+      .stripe { display: flex; height: 10px; width: 250px; }
+      .stripe i { flex: 1; }
+      .stripe i:nth-child(1) { background: var(--coral); }
+      .stripe i:nth-child(2) { background: var(--olive); }
+      .stripe i:nth-child(3) { background: var(--sun); }
+      .stripe i:nth-child(4) { background: var(--mint); }
+      .stripe i:nth-child(5) { background: var(--blush); }
+      .kicker { font-size: 30px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+
+      /* 1. Gancho sobre os produtos */
+      #s-hook { background: transparent; }
+      #hook-video { position: absolute; inset: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      .veil-top { position: absolute; left: 0; top: 0; width: 1080px; height: 900px;
+        background: linear-gradient(180deg, rgba(250,249,245,.97) 0%, rgba(250,249,245,.93) 45%, rgba(250,249,245,.6) 70%, rgba(250,249,245,0) 100%); }
+      .veil-bottom { position: absolute; left: 0; bottom: 0; width: 1080px; height: 760px;
+        background: linear-gradient(0deg, rgba(250,249,245,.96) 0%, rgba(250,249,245,.9) 40%, rgba(250,249,245,0) 100%); }
+      #hook-kicker { position: absolute; left: 90px; top: 250px; color: var(--soft); }
+      #hook-title { position: absolute; left: 90px; top: 310px; width: 920px; font-size: 104px; line-height: 1.02; font-weight: 900; letter-spacing: -0.02em; }
+      #hook-title .line { display: block; overflow: hidden; padding-bottom: 8px; }
+      #hook-title .line span { display: inline-block; }
+      #hook-stripe { position: absolute; left: 90px; top: 690px; }
+      #hook-sub { position: absolute; left: 90px; bottom: 360px; width: 900px; font-size: 46px; line-height: 1.3; color: var(--ink); }
+      #hook-sub b { font-weight: 900; }
+      #hook-wipe { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: var(--paper); }
+
+      /* 2 e 3. Site e WhatsApp no celular */
+      #s-phone { background: var(--paper); }
+      .caption { position: absolute; left: 70px; top: 170px; width: 940px; text-align: center; opacity: 0; }
+      .caption .kicker { color: #b4513f; font-size: 28px; }
+      .caption h2 { margin-top: 14px; font-size: 62px; line-height: 1.08; font-weight: 900; letter-spacing: -0.015em; }
+      #phone { position: absolute; left: 238px; top: 410px; width: 605px; height: 1272px; border-radius: 86px; background: var(--graphite-deep);
+        padding: 16px; box-shadow: 0 50px 90px rgba(38,38,36,.22), 0 12px 30px rgba(38,38,36,.16); }
+      #screen { position: relative; width: 573px; height: 1240px; border-radius: 70px; overflow: hidden; background: var(--paper); }
+      /* Dentro da tela tudo é desenhado em px CSS do celular (390 x 844) e ampliado 573/390. */
+      .scaler { position: absolute; left: 0; top: 0; width: 390px; height: 844px; transform-origin: 0 0; transform: scale(1.46923); }
+      .vp { position: absolute; left: 0; top: 0; width: 390px; height: 844px; overflow: hidden; }
+      #site-page { position: absolute; left: 0; top: 0; width: 390px; }
+      #site-page img { display: block; width: 390px; height: 1000px; }
+      #site-header { position: absolute; left: 0; top: 0; width: 390px; height: 68px; }
+      #site-cta { position: absolute; left: 0; top: 771px; width: 390px; height: 73px; opacity: 0; }
+      #press { position: absolute; left: 16.5px; top: 0; width: 233px; height: 48px; border-radius: 24px; background: #000; opacity: 0; }
+      .tap { position: absolute; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%;
+        background: rgba(255,255,255,.55); border: 3px solid rgba(38,38,36,.75); opacity: 0; }
+      .ripple { position: absolute; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%; border: 3px solid var(--coral); opacity: 0; }
+
+      /* Conversa */
+      #chat { background: #efeae2; }
+      .chat-head { position: absolute; left: 0; top: 0; width: 390px; height: 92px; background: #f0f2f5; border-bottom: 1px solid #dcd7cf;
+        display: flex; align-items: flex-end; gap: 10px; padding: 0 14px 12px; }
+      .chat-head svg { flex: none; margin-bottom: 9px; }
+      .avatar { width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+      .avatar img { width: 34px; }
+      .who b { display: block; font-size: 16px; font-weight: 700; color: #111b21; }
+      .who span { font-size: 12px; color: #54656f; }
+      .day { position: absolute; left: 0; top: 110px; width: 390px; text-align: center; }
+      .day span { display: inline-block; background: #fff; color: #54656f; font-size: 11px; padding: 5px 10px; border-radius: 8px; box-shadow: 0 1px 1px rgba(0,0,0,.06); }
+      .bubble { position: absolute; max-width: 290px; font-size: 14px; line-height: 1.38; color: #111b21; padding: 7px 9px 18px; border-radius: 10px;
+        box-shadow: 0 1px 1px rgba(0,0,0,.08); opacity: 0; }
+      .bubble .meta { position: absolute; right: 8px; bottom: 4px; font-size: 10px; color: #54656f; display: flex; gap: 3px; align-items: center; }
+      #msg-out { right: 12px; top: 560px; background: #d9fdd3; border-top-right-radius: 2px; transform-origin: 100% 100%; }
+      #msg-typing { left: 12px; top: 677px; padding: 12px 14px; display: flex; gap: 5px; background: #fff; border-top-left-radius: 2px; transform-origin: 0 100%; }
+      #msg-typing i { width: 8px; height: 8px; border-radius: 50%; background: #8696a0; }
+      #msg-in { left: 12px; top: 677px; background: #fff; border-top-left-radius: 2px; transform-origin: 0 100%; }
+      .composer { position: absolute; left: 0; bottom: 0; width: 390px; padding: 8px 8px 22px; display: flex; align-items: flex-end; gap: 6px; background: #f0f2f5; }
+      .field { position: relative; flex: 1; min-height: 42px; background: #fff; border-radius: 21px; padding: 10px 14px; font-size: 14px; line-height: 1.38; color: #111b21; }
+      .field .ph { color: #8696a0; position: absolute; left: 14px; top: 11px; opacity: 0; }
+      .send { flex: none; width: 42px; height: 42px; border-radius: 50%; background: #1b9e5a; display: flex; align-items: center; justify-content: center; }
+
+      /* 4. Como funciona */
+      #s-steps { background: var(--graphite); color: var(--paper); }
+      #steps-kicker { position: absolute; left: 90px; top: 250px; color: var(--on-dark); }
+      #steps-title { position: absolute; left: 90px; top: 310px; width: 900px; font-size: 92px; line-height: 1.04; font-weight: 900; letter-spacing: -0.02em; }
+      .step { position: absolute; left: 90px; width: 900px; padding-top: 34px; border-top: 2px solid rgba(230,227,220,.18); display: flex; gap: 40px; opacity: 0; }
+      .step .n { font-size: 84px; font-weight: 900; color: var(--coral); line-height: 1; width: 130px; flex: none; }
+      .step h3 { font-size: 52px; font-weight: 900; line-height: 1.1; }
+      .step p { margin-top: 8px; font-size: 34px; line-height: 1.35; color: var(--on-dark); }
+
+      /* 5. Encerramento */
+      #s-end { background: var(--blush-soft); }
+      #end-logo { position: absolute; left: 290px; top: 250px; width: 500px; height: auto; opacity: 0; }
+      #end-stripe { position: absolute; left: 415px; top: 530px; opacity: 0; }
+      #end-title { position: absolute; left: 80px; top: 620px; width: 920px; text-align: center; font-size: 96px; line-height: 1.04; font-weight: 900; letter-spacing: -0.02em; }
+      #end-title .line { display: block; overflow: hidden; padding-bottom: 8px; }
+      #end-title .line span { display: inline-block; }
+      #end-sub { position: absolute; left: 120px; top: 1010px; width: 840px; text-align: center; font-size: 42px; line-height: 1.32; color: var(--soft); opacity: 0; }
+      #end-cta { position: absolute; left: 160px; top: 1200px; width: 760px; height: 132px; border-radius: 66px; background: var(--ink); color: var(--paper);
+        display: flex; align-items: center; justify-content: center; gap: 22px; font-size: 50px; font-weight: 900; opacity: 0; }
+      #end-wa { position: absolute; left: 0; top: 1380px; width: 1080px; text-align: center; font-size: 38px; color: var(--ink); opacity: 0; }
+      #end-wa b { font-weight: 900; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="30.4" data-width="1080" data-height="1920">
+
+      <!-- 1. Gancho: produtos reais com a marca do cliente -->
+      <video id="hook-video" class="clip" data-start="0" data-duration="5.4" data-media-start="0" data-track-index="1"
+        src="assets/video/produtos.mp4" muted playsinline></video>
+      <div id="s-hook" class="clip" data-start="0" data-duration="5.4" data-track-index="0">
+        <div class="veil-top"></div>
+        <div class="veil-bottom"></div>
+        <p id="hook-kicker" class="kicker">Coloridamente · Linha Office</p>
+        <h1 id="hook-title">
+          <span class="line"><span>Sua marca na</span></span>
+          <span class="line"><span>mesa de cada</span></span>
+          <span class="line"><span>pessoa.</span></span>
+        </h1>
+        <div id="hook-stripe" class="stripe"><i></i><i></i><i></i><i></i><i></i></div>
+        <p id="hook-sub"><b>Agenda, cadernos e acessórios</b> para escritório com a identidade visual da sua empresa.</p>
+        <div id="hook-wipe"></div>
+      </div>
+
+      <!-- 2 e 3. Navegação no site e contato pelo WhatsApp -->
+      <div id="s-phone" class="clip" data-start="4.9" data-duration="16.0" data-track-index="2">
+        <div id="cap-1" class="caption"><p class="kicker">Pelo site</p><h2>Conheça a Linha Office<br />em poucos toques</h2></div>
+        <div id="cap-2" class="caption"><p class="kicker">Para cada ocasião</p><h2>Boas-vindas, presentes,<br />eventos e dia a dia</h2></div>
+        <div id="cap-3" class="caption"><p class="kicker">Monte a sua linha</p><h2>Escolha o produto e<br />peça o orçamento</h2></div>
+        <div id="cap-4" class="caption"><p class="kicker">Direto no WhatsApp</p><h2>A mensagem já vai pronta.<br />É só enviar.</h2></div>
+
+        <div id="phone">
+          <div id="screen">
+            <div class="scaler">
+            <div id="site" class="vp">
+              <div id="site-page">
+                <img src="assets/site/page-0.jpg" alt="" />
+                <img src="assets/site/page-1.jpg" alt="" />
+                <img src="assets/site/page-2.jpg" alt="" />
+                <img src="assets/site/page-3.jpg" alt="" />
+                <img src="assets/site/page-4.jpg" alt="" />
+                <img src="assets/site/page-5.jpg" alt="" />
+                <div id="press"></div>
+              </div>
+              <img id="site-header" src="assets/site/header.png" alt="" />
+              <img id="site-cta" src="assets/site/sticky-cta.png" alt="" />
+              <div id="tap-1" class="tap" style="left: 133px; top: 692px"></div>
+              <div id="ripple-1" class="ripple" style="left: 133px; top: 692px"></div>
+            </div>
+
+            <div id="chat" class="vp">
+              <div class="chat-head">
+                <svg width="12" height="20" viewBox="0 0 12 20"><path d="M10 2 2 10l8 8" fill="none" stroke="#54656f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <div class="avatar"><img src="assets/brand/logo-coloridamente.svg" alt="" /></div>
+                <div class="who"><b>Coloridamente</b><span>online</span></div>
+              </div>
+              <div class="day"><span>HOJE</span></div>
+              <div id="msg-out" class="bubble">Olá! Conheci a Linha Office da Coloridamente pelo site e gostaria de solicitar um orçamento de: Agenda 2027.
+                <span class="meta">10:24
+                  <svg width="16" height="10" viewBox="0 0 16 10"><path d="M1 5.5 4 8.5 10.5 1.5M6.5 8.5 13.5 1.5" fill="none" stroke="#53bdeb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </span>
+              </div>
+              <div id="msg-typing" class="bubble"><i></i><i></i><i></i></div>
+              <div id="msg-in" class="bubble">Oi! Que bom que você veio pelo site. Me conta a quantidade e como imagina a personalização que a gente prepara o seu orçamento.
+                <span class="meta">10:25</span>
+              </div>
+              <div class="composer">
+                <div class="field"><span id="draft">Olá! Conheci a Linha Office da Coloridamente pelo site e gostaria de solicitar um orçamento de: Agenda 2027.</span><span id="placeholder" class="ph">Mensagem</span></div>
+                <div class="send"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M3 20.5 21 12 3 3.5l.01 6.6L15 12 3.01 13.9z" fill="#fff" /></svg></div>
+              </div>
+              <div id="tap-2" class="tap" style="left: 361px; top: 801px"></div>
+              <div id="ripple-2" class="ripple" style="left: 361px; top: 801px"></div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Como funciona -->
+      <div id="s-steps" class="clip" data-start="20.4" data-duration="5.0" data-track-index="3">
+        <p id="steps-kicker" class="kicker">Como funciona</p>
+        <h2 id="steps-title">Do primeiro contato ao produto pronto.</h2>
+        <div class="step" style="top: 700px"><span class="n">01</span><div><h3>Sua ideia</h3><p>Você conta pelo WhatsApp o que precisa.</p></div></div>
+        <div class="step" style="top: 940px"><span class="n">02</span><div><h3>Personalização</h3><p>Sua marca na capa, nas páginas e nas cores.</p></div></div>
+        <div class="step" style="top: 1180px"><span class="n">03</span><div><h3>Produção</h3><p>Com tudo definido, o pedido vai para a produção.</p></div></div>
+        <div class="step" style="top: 1420px"><span class="n">04</span><div><h3>Produto final</h3><p>Pronto para usar no dia a dia ou presentear.</p></div></div>
+      </div>
+
+      <!-- 5. Chamada final -->
+      <div id="s-end" class="clip" data-start="24.9" data-duration="5.5" data-track-index="4">
+        <img id="end-logo" src="assets/brand/logo-coloridamente.svg" alt="Coloridamente" />
+        <div id="end-stripe" class="stripe"><i></i><i></i><i></i><i></i><i></i></div>
+        <h2 id="end-title">
+          <span class="line"><span>Vamos montar a</span></span>
+          <span class="line"><span>Linha Office da</span></span>
+          <span class="line"><span>sua empresa?</span></span>
+        </h2>
+        <p id="end-sub">Conte o que você precisa e receba o orçamento pelo WhatsApp.</p>
+        <div id="end-cta">Toque no link da bio
+          <svg width="40" height="40" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="#faf9f5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </div>
+        <p id="end-wa">ou chame no WhatsApp <b>(12) 99133-8866</b></p>
+      </div>
+    </div>
+
+    <script>
+      // Posições em px CSS do celular (capturadas do site com viewport 390 x 844).
+      const SCROLL = { ocasioes: 970, produtos: 2430 };
+      const BUTTON_Y = 3098; // "Quero orçamento deste: Agenda 2027"
+      const out = 'power3.out', inOut = 'power2.inOut';
+
+      const tl = gsap.timeline({ paused: true });
+
+      // 1. Gancho (0 a 5,4 s)
+      tl.fromTo('#hook-video', { scale: 1.08 }, { scale: 1, duration: 5.4, ease: 'none' }, 0)
+        .from('#hook-kicker', { opacity: 0, y: 20, duration: 0.6, ease: out }, 0.15)
+        .from('#hook-title .line span', { yPercent: 110, duration: 0.8, ease: out, stagger: 0.12 }, 0.25)
+        .from('#hook-stripe i', { scaleX: 0, transformOrigin: '0 50%', duration: 0.35, ease: out, stagger: 0.06 }, 0.9)
+        .from('#hook-sub', { opacity: 0, y: 30, duration: 0.7, ease: out }, 1.3)
+        .fromTo('#hook-wipe', { yPercent: 100 }, { yPercent: 0, duration: 0.55, ease: 'power3.inOut' }, 4.85);
+
+      // 2. Site no celular (5 a 13 s)
+      tl.from('#phone', { y: 380, opacity: 0, duration: 0.9, ease: out }, 5.0);
+
+      const caption = (id, start, end) => {
+        tl.fromTo(id, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.45, ease: out }, start);
+        tl.to(id, { opacity: 0, y: -16, duration: 0.3, ease: 'power2.in' }, end);
+      };
+      caption('#cap-1', 5.2, 7.5);
+      caption('#cap-2', 7.8, 10.4);
+      caption('#cap-3', 10.7, 13.3);
+      caption('#cap-4', 13.6, 20.1);
+
+      tl.to('#site-page', { y: -SCROLL.ocasioes, duration: 1.0, ease: inOut }, 6.8)
+        .to('#site-cta', { opacity: 1, duration: 0.3 }, 7.3)
+        .to('#site-page', { y: -SCROLL.produtos, duration: 1.3, ease: inOut }, 10.1);
+
+      // Toque em "Quero orçamento deste"
+      tl.set('#press', { top: BUTTON_Y }, 0)
+        .fromTo('#tap-1', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: out, immediateRender: false }, 12.0)
+        .to('#tap-1', { scale: 0.82, duration: 0.12, ease: 'power2.in' }, 12.45)
+        .to('#press', { opacity: 0.22, duration: 0.1 }, 12.45)
+        .fromTo('#ripple-1', { opacity: 1, scale: 1 }, { opacity: 0, scale: 2.6, duration: 0.5, ease: 'power2.out', immediateRender: false }, 12.5)
+        .to('#tap-1', { opacity: 0, scale: 1, duration: 0.25 }, 12.7)
+        .to('#press', { opacity: 0, duration: 0.2 }, 12.8);
+
+      // 3. WhatsApp: a conversa abre com a mensagem do site já escrita (13 a 20 s)
+      tl.fromTo('#chat', { x: 390 }, { x: 0, duration: 0.55, ease: 'power3.inOut' }, 13.0)
+        .to('#site', { x: -120, duration: 0.55, ease: 'power3.inOut' }, 13.0)
+        .fromTo('#tap-2', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: out, immediateRender: false }, 15.0)
+        .to('#tap-2', { scale: 0.82, duration: 0.12, ease: 'power2.in' }, 15.45)
+        .fromTo('#ripple-2', { opacity: 1, scale: 1 }, { opacity: 0, scale: 2.6, duration: 0.5, ease: 'power2.out', immediateRender: false }, 15.5)
+        .to('#tap-2', { opacity: 0, scale: 1, duration: 0.25 }, 15.7)
+        .set('#draft', { display: 'none' }, 15.55)
+        .set('#placeholder', { opacity: 1 }, 15.55)
+        .fromTo('#msg-out', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 15.55);
+
+      tl.fromTo('#msg-typing', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: out }, 16.3)
+        .to('#msg-typing', { opacity: 0, duration: 0.15 }, 17.4);
+      [0, 1, 2].forEach((i) => {
+        for (let k = 0; k < 3; k++) {
+          tl.to(`#msg-typing i:nth-child(${i + 1})`, { y: -4, duration: 0.18, ease: 'sine.out', yoyo: true, repeat: 1 }, 16.45 + k * 0.33 + i * 0.1);
+        }
+      });
+      // A conversa sobe para dar espaço à resposta.
+      tl.to('#msg-out, #msg-typing, #msg-in', { y: -150, duration: 0.5, ease: inOut }, 17.35)
+        .fromTo('#msg-in', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 17.45);
+
+      // 4. Como funciona (20,4 a 25,4 s)
+      tl.to('#phone', { scale: 0.92, opacity: 0, duration: 0.5, ease: 'power2.in' }, 20.2)
+        .fromTo('#s-steps', { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: 'power3.inOut' }, 20.4)
+        .from('#steps-kicker', { opacity: 0, y: 20, duration: 0.5, ease: out }, 20.9)
+        .from('#steps-title', { opacity: 0, y: 40, duration: 0.6, ease: out }, 20.95)
+        .fromTo('.step', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.5, ease: out, stagger: 0.3 }, 21.3);
+
+      // 5. Chamada final (24,9 a 30,4 s)
+      tl.fromTo('#s-end', { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: 'power3.inOut' }, 24.9)
+        .fromTo('#end-logo', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.7, ease: out }, 25.4)
+        .to('#end-stripe', { opacity: 1, duration: 0.01 }, 25.6)
+        .from('#end-stripe i', { scaleX: 0, transformOrigin: '0 50%', duration: 0.35, ease: out, stagger: 0.06 }, 25.6)
+        .from('#end-title .line span', { yPercent: 110, duration: 0.75, ease: out, stagger: 0.12 }, 25.65)
+        .to('#end-sub', { opacity: 1, duration: 0.5 }, 26.3)
+        .fromTo('#end-cta', { opacity: 0, y: 40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.5)' }, 26.7)
+        .to('#end-wa', { opacity: 1, duration: 0.5 }, 27.2)
+        .to('#end-cta', { scale: 1.04, duration: 0.35, ease: 'sine.inOut', yoyo: true, repeat: 3 }, 27.8);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
