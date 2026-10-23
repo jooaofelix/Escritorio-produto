@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 
 /** Número esperado nos links (o mesmo do `.env`); sobrescreva com E2E_WHATSAPP_NUMBER. */
-export const WHATSAPP_NUMBER = process.env.E2E_WHATSAPP_NUMBER ?? '5512991338866';
+export const WHATSAPP_NUMBER = process.env.E2E_WHATSAPP_NUMBER ?? '5512992241150';
 export const DEFAULT_MESSAGE = 'Olá! Conheci a Linha Office da Coloridamente pelo site e gostaria de solicitar um orçamento.';
 export const productMessage = (name: string) =>
   `Olá! Conheci a Linha Office da Coloridamente pelo site e gostaria de solicitar um orçamento de: ${name}.`;
