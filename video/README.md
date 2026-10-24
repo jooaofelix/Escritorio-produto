@@ -97,8 +97,8 @@ cd video/instagram
 npx hyperframes@0.8.190 check                    # lint, layout e contraste
 npx hyperframes@0.8.190 snapshot --at 6,12.5,17  # quadros de conferência
 npx hyperframes@0.8.190 render -q high -o render.mp4
-ffmpeg -i render.mp4 -af volume=8dB -c:v libx264  # sem narração, a música sobe 8 dB
-# com narração, tire o -af volume -preset slow -crf 18 -profile:v high -level:v 4.2 -pix_fmt yuv420p \
+# sem narração a música sobe 8 dB; com narração, tire o -af volume=8dB
+ffmpeg -i render.mp4 -af volume=8dB -c:v libx264 -preset slow -crf 18 -profile:v high -level:v 4.2 -pix_fmt yuv420p \
   -c:a aac -b:a 160k -movflags +faststart ../out/coloridamente-reels-demo-site.mp4
 ```
 
