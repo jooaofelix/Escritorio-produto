@@ -10,7 +10,7 @@ Pós-produção dos três vídeos de produto em uma apresentação 9:16 para red
 | --- | --- | --- |
 | `out/coloridamente-institucional.mp4` | Versão A: apresentações e redes sociais | 1080×1920, 30 fps CFR, H.264 High, ~18,7 s, áudio silencioso |
 | `out/coloridamente-scroll-master.mp4` | Versão B: sequência só com os produtos | 1080×1920, 24 fps, H.264 High, ~13,6 s, sem áudio |
-| `out/coloridamente-reels-demo-site.mp4` | Reels: demonstração do site para empresas, com música ambiente (narração pendente: ver abaixo) | 1080×1920, 30 fps, H.264 High, 38 s, AAC estéreo |
+| `out/coloridamente-reels-demo-site.mp4` | Reels: demonstração do site para empresas, com narração e música ambiente | 1080×1920, 30 fps, H.264 High, 38 s, AAC estéreo (−15 LUFS) |
 
 ## Fontes
 
@@ -64,18 +64,24 @@ equipe, os clientes e os eventos (não é um serviço de produção sob encomend
 | 24,8–31,6 s | "Pronto com a sua marca": escolha os itens, envie a sua logo, receba tudo pronto | "Você escolhe os itens, envia a sua logo e recebe tudo pronto, com a cara da sua empresa." |
 | 31–38 s | Chamada final: "Acesse o site" (link na bio), sem número de contato | "Acesse o site pelo link da bio e garanta a Linha Office da sua empresa." |
 
-**Narração (pendente).** A voz local (Kokoro) soou robótica e foi retirada. A narração será gerada
-com a voz do Gemini pela skill `media-use` do HyperFrames, a partir de `instagram/audio_request.json`.
-Requer a variável de ambiente `GEMINI_API_KEY`:
+**Narração.** Gerada localmente, como na versão anterior, com `hyperframes tts` (Kokoro, voz
+`pf_dora`, pt-BR, velocidade 1,0; a fala 03 a 1,1 para caber na cena), uma fala por arquivo em
+`assets/audio/narracao-NN.wav`, com tratamento leve para soar menos seca:
 
 ```bash
-cd video/instagram
+npx hyperframes@0.8.190 tts "texto da fala" -v pf_dora -l pt-br -s 1.0 -o fala.wav
+ffmpeg -i fala.wav -af "highpass=f=80,equalizer=f=220:t=q:w=1:g=2,equalizer=f=3500:t=q:w=1.2:g=2,acompressor=threshold=-20dB:ratio=2.5:attack=8:release=120,aecho=0.9:0.5:28|46:0.12|0.08,loudnorm=I=-16:TP=-1.5:LRA=7" \
+  -ar 48000 -ac 1 assets/audio/narracao-NN.wav
+```
+
+Ao trocar uma fala, ajuste o `data-start`/`data-duration` do `<audio>` e os tempos das animações em
+`index.html`. Para uma voz mais natural, `instagram/audio_request.json` já tem o pedido para a voz do
+Gemini (skill `media-use` do HyperFrames; requer `GEMINI_API_KEY`):
+
+```bash
 node ~/.claude/skills/media-use/audio/scripts/audio.mjs \
   --request ./audio_request.json --hyperframes . --out ./audio_meta.json --only tts
 ```
-
-Depois, coloque um `<audio>` por fala em `index.html` nos tempos da tabela e ajuste as animações à
-duração real de cada fala.
 
 **Música.** A música ambiente é original, gerada por `instagram/scripts/musica-ambiente.py` (pad em Fá
 maior, arpejo e baixo a 80 bpm; sem direitos de terceiros):
@@ -97,8 +103,7 @@ cd video/instagram
 npx hyperframes@0.8.190 check                    # lint, layout e contraste
 npx hyperframes@0.8.190 snapshot --at 6,12.5,17  # quadros de conferência
 npx hyperframes@0.8.190 render -q high -o render.mp4
-# sem narração a música sobe 8 dB; com narração, tire o -af volume=8dB
-ffmpeg -i render.mp4 -af volume=8dB -c:v libx264 -preset slow -crf 18 -profile:v high -level:v 4.2 -pix_fmt yuv420p \
+ffmpeg -i render.mp4 -c:v libx264 -preset slow -crf 18 -profile:v high -level:v 4.2 -pix_fmt yuv420p \
   -c:a aac -b:a 160k -movflags +faststart ../out/coloridamente-reels-demo-site.mp4
 ```
 
