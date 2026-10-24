@@ -21,7 +21,7 @@ export const site = {
 
 export const hasWhatsAppNumber = whatsappNumber.length >= 10;
 
-/** Número para exibição: 5512991338866 → (12) 99133-8866. */
+/** Número para exibição: 5512992241150 → (12) 99224-1150. */
 export function formatWhatsAppDisplay(number: string = whatsappNumber): string {
   const local = number.startsWith('55') && number.length >= 12 ? number.slice(2) : number;
   const match = /^(\d{2})(\d{4,5})(\d{4})$/.exec(local);
