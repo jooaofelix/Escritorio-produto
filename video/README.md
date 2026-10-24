@@ -10,7 +10,8 @@ Pós-produção dos três vídeos de produto em uma apresentação 9:16 para red
 | --- | --- | --- |
 | `out/coloridamente-institucional.mp4` | Versão A: apresentações e redes sociais | 1080×1920, 30 fps CFR, H.264 High, ~18,7 s, áudio silencioso |
 | `out/coloridamente-scroll-master.mp4` | Versão B: sequência só com os produtos | 1080×1920, 24 fps, H.264 High, ~13,6 s, sem áudio |
-| `out/coloridamente-reels-demo-site.mp4` | Reels: demonstração do site para empresas, com narração e música ambiente | 1080×1920, 30 fps, H.264 High, 38 s, AAC estéreo (−13 LUFS) |
+| `out/coloridamente-reels-demo-site.mp4` | Reels: demonstração do site para empresas, com narração e música ambiente | 1080×1920, 30 fps, H.264 High, 38 s, AAC estéreo (−14 LUFS) |
+| `out/coloridamente-reels-demo-site-voz-laura.mp4` | O mesmo Reels com a voz alternativa "Laura" | idem |
 
 ## Fontes
 
@@ -64,12 +65,17 @@ equipe, os clientes e os eventos (não é um serviço de produção sob encomend
 | 24,8–31,6 s | "Pronto com a sua marca": escolha os itens, envie a sua logo, receba tudo pronto | "Você escolhe os itens, envia a sua logo e recebe tudo pronto, com a cara da sua empresa." |
 | 31–38 s | Chamada final: "Acesse o site" (link na bio), sem número de contato | "Acesse o site pelo link da bio e garanta a Linha Office da sua empresa." |
 
-**Narração.** Voz "Sarah" da ElevenLabs (multilíngue), gerada pelo conector vidIQ
-(`vidiq_voiceover_generate`, voz `EXAVITQu4vr4xnSDxMaL`, 14 créditos) com as sete falas de
-`assets/audio/narracao.tsv` em um único texto, separadas por parágrafo. O MP3 foi cortado nas pausas
-(`silencedetect`), acelerado 8% sem mudar o tom (`atempo=1.08`) e normalizado a −16 LUFS, um arquivo
-por fala em `assets/audio/narracao-NN.wav`. Ao trocar uma fala, ajuste o `data-start`/`data-duration`
-do `<audio>` e os tempos das animações em `index.html`.
+**Narração.** Voz "Jessica" da ElevenLabs (alegre e calorosa), gerada pelo conector vidIQ
+(`vidiq_voiceover_generate`, voz `cgSgspJ2msm6clMCkdW9`, 14 créditos) com as sete falas de
+`assets/audio/narracao.tsv` em um único texto, separadas por parágrafo, e exclamações para uma
+entonação mais animada. O MP3 foi cortado nas pausas (`silencedetect`); cada fala ficou no espaço da
+sua cena, acelerada no máximo 9% só quando passava dele, e normalizada a −16 LUFS
+(`assets/audio/narracao-NN.wav`). Ao trocar uma fala, ajuste o `data-start`/`data-duration` do
+`<audio>` e os tempos das animações em `index.html`.
+
+A voz "Laura" (entusiasmada, `FGY2WhTYpPnrIDTdsKH5`) ficou como alternativa: falas em
+`assets/audio/laura/` e vídeo em `out/coloridamente-reels-demo-site-voz-laura.mp4`. Para usá-la,
+troque os `src` dos `<audio>` de narração para essa pasta.
 
 Alternativas: a voz do Gemini pela skill `media-use` do HyperFrames (`instagram/audio_request.json`,
 requer `GEMINI_API_KEY`) ou a voz local Kokoro (`npx hyperframes tts ... -v pf_dora -l pt-br`), que
