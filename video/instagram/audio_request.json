@@ -1,0 +1,40 @@
+{
+  "provider": "gemini",
+  "tts_model": "gemini-3.8-flash-tts",
+  "voice": "Kore",
+  "lang": "pt",
+  "style": "Português do Brasil, voz feminina calorosa e confiante, tom de conversa de vendas para empresas, natural e sem exageros; ritmo ágil de Reels, com pausas curtas entre frases.",
+  "lines": [
+    {
+      "id": "narracao-01",
+      "text": "Agenda, cadernos e acessórios de escritório, já com a marca da sua empresa."
+    },
+    {
+      "id": "narracao-02",
+      "text": "No site, você vê a Linha Office completa."
+    },
+    {
+      "id": "narracao-03",
+      "text": "Tem item para receber a equipe, presentear clientes, levar a eventos e usar no dia a dia."
+    },
+    {
+      "id": "narracao-04",
+      "text": "Gostou de um produto? Toque em: quero orçamento deste."
+    },
+    {
+      "id": "narracao-05",
+      "text": "A mensagem já vai pronta. Você envia e recebe o orçamento com a sua marca."
+    },
+    {
+      "id": "narracao-06",
+      "text": "Você escolhe os itens, envia a sua logo e recebe tudo pronto, com a cara da sua empresa."
+    },
+    {
+      "id": "narracao-07",
+      "text": "Acesse o site pelo link da bio e garanta a Linha Office da sua empresa."
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  }
+}
