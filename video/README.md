@@ -10,7 +10,7 @@ Pós-produção dos três vídeos de produto em uma apresentação 9:16 para red
 | --- | --- | --- |
 | `out/coloridamente-institucional.mp4` | Versão A: apresentações e redes sociais | 1080×1920, 30 fps CFR, H.264 High, ~18,7 s, áudio silencioso |
 | `out/coloridamente-scroll-master.mp4` | Versão B: sequência só com os produtos | 1080×1920, 24 fps, H.264 High, ~13,6 s, sem áudio |
-| `out/coloridamente-reels-demo-site.mp4` | Reels: demonstração do site para empresas, com narração e música ambiente | 1080×1920, 30 fps, H.264 High, 38 s, AAC estéreo (−15 LUFS) |
+| `out/coloridamente-reels-demo-site.mp4` | Reels: demonstração do site para empresas, com narração e música ambiente | 1080×1920, 30 fps, H.264 High, 38 s, AAC estéreo (−13 LUFS) |
 
 ## Fontes
 
@@ -64,24 +64,16 @@ equipe, os clientes e os eventos (não é um serviço de produção sob encomend
 | 24,8–31,6 s | "Pronto com a sua marca": escolha os itens, envie a sua logo, receba tudo pronto | "Você escolhe os itens, envia a sua logo e recebe tudo pronto, com a cara da sua empresa." |
 | 31–38 s | Chamada final: "Acesse o site" (link na bio), sem número de contato | "Acesse o site pelo link da bio e garanta a Linha Office da sua empresa." |
 
-**Narração.** Gerada localmente, como na versão anterior, com `hyperframes tts` (Kokoro, voz
-`pf_dora`, pt-BR, velocidade 1,0; a fala 03 a 1,1 para caber na cena), uma fala por arquivo em
-`assets/audio/narracao-NN.wav`, com tratamento leve para soar menos seca:
+**Narração.** Voz "Sarah" da ElevenLabs (multilíngue), gerada pelo conector vidIQ
+(`vidiq_voiceover_generate`, voz `EXAVITQu4vr4xnSDxMaL`, 14 créditos) com as sete falas de
+`assets/audio/narracao.tsv` em um único texto, separadas por parágrafo. O MP3 foi cortado nas pausas
+(`silencedetect`), acelerado 8% sem mudar o tom (`atempo=1.08`) e normalizado a −16 LUFS, um arquivo
+por fala em `assets/audio/narracao-NN.wav`. Ao trocar uma fala, ajuste o `data-start`/`data-duration`
+do `<audio>` e os tempos das animações em `index.html`.
 
-```bash
-npx hyperframes@0.8.190 tts "texto da fala" -v pf_dora -l pt-br -s 1.0 -o fala.wav
-ffmpeg -i fala.wav -af "highpass=f=80,equalizer=f=220:t=q:w=1:g=2,equalizer=f=3500:t=q:w=1.2:g=2,acompressor=threshold=-20dB:ratio=2.5:attack=8:release=120,aecho=0.9:0.5:28|46:0.12|0.08,loudnorm=I=-16:TP=-1.5:LRA=7" \
-  -ar 48000 -ac 1 assets/audio/narracao-NN.wav
-```
-
-Ao trocar uma fala, ajuste o `data-start`/`data-duration` do `<audio>` e os tempos das animações em
-`index.html`. Para uma voz mais natural, `instagram/audio_request.json` já tem o pedido para a voz do
-Gemini (skill `media-use` do HyperFrames; requer `GEMINI_API_KEY`):
-
-```bash
-node ~/.claude/skills/media-use/audio/scripts/audio.mjs \
-  --request ./audio_request.json --hyperframes . --out ./audio_meta.json --only tts
-```
+Alternativas: a voz do Gemini pela skill `media-use` do HyperFrames (`instagram/audio_request.json`,
+requer `GEMINI_API_KEY`) ou a voz local Kokoro (`npx hyperframes tts ... -v pf_dora -l pt-br`), que
+soa robótica.
 
 **Música.** A música ambiente é original, gerada por `instagram/scripts/musica-ambiente.py` (pad em Fá
 maior, arpejo e baixo a 80 bpm; sem direitos de terceiros):

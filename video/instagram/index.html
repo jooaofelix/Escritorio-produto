@@ -195,7 +195,7 @@
       </div>
 
       <!-- 4. Como funciona -->
-      <div id="s-steps" class="clip" data-start="24.8" data-duration="7.2" data-track-index="3">
+      <div id="s-steps" class="clip" data-start="24.8" data-duration="7.5" data-track-index="3">
         <p id="steps-kicker" class="kicker">Simples assim</p>
         <h2 id="steps-title">Pronto com a sua marca.</h2>
         <div class="step" style="top: 720px"><span class="n">01</span><div><h3>Escolha os itens</h3><p>Agenda, cadernos e acessórios da Linha Office.</p></div></div>
@@ -204,7 +204,7 @@
       </div>
 
       <!-- 5. Chamada final -->
-      <div id="s-end" class="clip" data-start="31.3" data-duration="6.7" data-track-index="4">
+      <div id="s-end" class="clip" data-start="31.7" data-duration="6.3" data-track-index="4">
         <img id="end-logo" src="assets/brand/logo-coloridamente.svg" alt="Coloridamente" />
         <div id="end-stripe" class="stripe"><i></i><i></i><i></i><i></i><i></i></div>
         <h2 id="end-title">
@@ -221,13 +221,13 @@
 
       <!-- Trilha: música ambiente original (assets/audio/musica-ambiente.m4a) e narração (narracao.tsv) -->
       <audio id="musica" data-start="0" data-duration="38.0" data-media-start="0" data-volume="1" data-fade-out="1.5" src="assets/audio/musica-ambiente.m4a"></audio>
-      <audio id="narracao-01" data-start="0.3" data-duration="4.61" data-media-start="0" data-volume="1" src="assets/audio/narracao-01.wav"></audio>
-      <audio id="narracao-02" data-start="6.4" data-duration="2.61" data-media-start="0" data-volume="1" src="assets/audio/narracao-02.wav"></audio>
-      <audio id="narracao-03" data-start="9.7" data-duration="5.25" data-media-start="0" data-volume="1" src="assets/audio/narracao-03.wav"></audio>
-      <audio id="narracao-04" data-start="15.1" data-duration="3.25" data-media-start="0" data-volume="1" src="assets/audio/narracao-04.wav"></audio>
-      <audio id="narracao-05" data-start="18.6" data-duration="4.70" data-media-start="0" data-volume="1" src="assets/audio/narracao-05.wav"></audio>
-      <audio id="narracao-06" data-start="25.9" data-duration="5.17" data-media-start="0" data-volume="1" src="assets/audio/narracao-06.wav"></audio>
-      <audio id="narracao-07" data-start="31.8" data-duration="4.08" data-media-start="0" data-volume="1" src="assets/audio/narracao-07.wav"></audio>
+      <audio id="narracao-01" data-start="0.3" data-duration="4.79" data-media-start="0" data-volume="1" src="assets/audio/narracao-01.wav"></audio>
+      <audio id="narracao-02" data-start="6.3" data-duration="2.60" data-media-start="0" data-volume="1" src="assets/audio/narracao-02.wav"></audio>
+      <audio id="narracao-03" data-start="9.6" data-duration="5.55" data-media-start="0" data-volume="1" src="assets/audio/narracao-03.wav"></audio>
+      <audio id="narracao-04" data-start="15.3" data-duration="3.50" data-media-start="0" data-volume="1" src="assets/audio/narracao-04.wav"></audio>
+      <audio id="narracao-05" data-start="19.0" data-duration="4.60" data-media-start="0" data-volume="1" src="assets/audio/narracao-05.wav"></audio>
+      <audio id="narracao-06" data-start="25.9" data-duration="5.66" data-media-start="0" data-volume="1" src="assets/audio/narracao-06.wav"></audio>
+      <audio id="narracao-07" data-start="32.2" data-duration="4.22" data-media-start="0" data-volume="1" src="assets/audio/narracao-07.wav"></audio>
     </div>
 
     <script>
@@ -255,9 +255,9 @@
         tl.to(id, { opacity: 0, y: -16, duration: 0.3, ease: 'power2.in' }, end);
       };
       caption('#cap-1', 5.8, 9.6);
-      caption('#cap-2', 9.8, 14.7);
-      caption('#cap-3', 15.0, 18.1);
-      caption('#cap-4', 18.5, 24.5);
+      caption('#cap-2', 9.8, 15.0);
+      caption('#cap-3', 15.2, 18.6);
+      caption('#cap-4', 18.9, 24.5);
 
       tl.to('#site-page', { y: -SCROLL.ocasioes, duration: 1.0, ease: inOut }, 9.4)
         .to('#site-cta', { opacity: 1, duration: 0.3 }, 9.9)
@@ -265,52 +265,52 @@
 
       // Toque em "Quero orçamento deste" (junto com "toque em" da narração)
       tl.set('#press', { top: BUTTON_Y }, 0)
-        .fromTo('#tap-1', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: out, immediateRender: false }, 16.3)
-        .to('#tap-1', { scale: 0.82, duration: 0.12, ease: 'power2.in' }, 16.85)
-        .to('#press', { opacity: 0.22, duration: 0.1 }, 16.85)
-        .fromTo('#ripple-1', { opacity: 1, scale: 1 }, { opacity: 0, scale: 2.6, duration: 0.5, ease: 'power2.out', immediateRender: false }, 16.9)
-        .to('#tap-1', { opacity: 0, scale: 1, duration: 0.25 }, 17.1)
-        .to('#press', { opacity: 0, duration: 0.2 }, 17.2);
+        .fromTo('#tap-1', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: out, immediateRender: false }, 16.05)
+        .to('#tap-1', { scale: 0.82, duration: 0.12, ease: 'power2.in' }, 16.6)
+        .to('#press', { opacity: 0.22, duration: 0.1 }, 16.6)
+        .fromTo('#ripple-1', { opacity: 1, scale: 1 }, { opacity: 0, scale: 2.6, duration: 0.5, ease: 'power2.out', immediateRender: false }, 16.65)
+        .to('#tap-1', { opacity: 0, scale: 1, duration: 0.25 }, 16.85)
+        .to('#press', { opacity: 0, duration: 0.2 }, 16.95);
 
       // 3. WhatsApp: a conversa abre com a mensagem do site já escrita (17,4 a 24,6 s)
-      tl.fromTo('#chat', { x: 390 }, { x: 0, duration: 0.55, ease: 'power3.inOut' }, 18.1)
-        .to('#site', { x: -120, duration: 0.55, ease: 'power3.inOut' }, 18.1)
-        .fromTo('#tap-2', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: out, immediateRender: false }, 19.9)
-        .to('#tap-2', { scale: 0.82, duration: 0.12, ease: 'power2.in' }, 20.35)
-        .fromTo('#ripple-2', { opacity: 1, scale: 1 }, { opacity: 0, scale: 2.6, duration: 0.5, ease: 'power2.out', immediateRender: false }, 20.4)
-        .to('#tap-2', { opacity: 0, scale: 1, duration: 0.25 }, 20.6)
-        .set('#draft', { display: 'none' }, 20.45)
-        .set('#placeholder', { opacity: 1 }, 20.45)
-        .fromTo('#msg-out', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 20.45);
+      tl.fromTo('#chat', { x: 390 }, { x: 0, duration: 0.55, ease: 'power3.inOut' }, 18.6)
+        .to('#site', { x: -120, duration: 0.55, ease: 'power3.inOut' }, 18.6)
+        .fromTo('#tap-2', { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: out, immediateRender: false }, 20.2)
+        .to('#tap-2', { scale: 0.82, duration: 0.12, ease: 'power2.in' }, 20.65)
+        .fromTo('#ripple-2', { opacity: 1, scale: 1 }, { opacity: 0, scale: 2.6, duration: 0.5, ease: 'power2.out', immediateRender: false }, 20.7)
+        .to('#tap-2', { opacity: 0, scale: 1, duration: 0.25 }, 20.9)
+        .set('#draft', { display: 'none' }, 20.75)
+        .set('#placeholder', { opacity: 1 }, 20.75)
+        .fromTo('#msg-out', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 20.75);
 
-      tl.fromTo('#msg-typing', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: out }, 21.3)
-        .to('#msg-typing', { opacity: 0, duration: 0.15 }, 22.4);
+      tl.fromTo('#msg-typing', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: out }, 21.6)
+        .to('#msg-typing', { opacity: 0, duration: 0.15 }, 22.7);
       [0, 1, 2].forEach((i) => {
         for (let k = 0; k < 3; k++) {
-          tl.to(`#msg-typing i:nth-child(${i + 1})`, { y: -4, duration: 0.18, ease: 'sine.out', yoyo: true, repeat: 1 }, 21.45 + k * 0.33 + i * 0.1);
+          tl.to(`#msg-typing i:nth-child(${i + 1})`, { y: -4, duration: 0.18, ease: 'sine.out', yoyo: true, repeat: 1 }, 21.75 + k * 0.33 + i * 0.1);
         }
       });
       // A conversa sobe para dar espaço à resposta.
-      tl.to('#msg-out, #msg-typing, #msg-in', { y: -150, duration: 0.5, ease: inOut }, 22.35)
-        .fromTo('#msg-in', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 22.45);
+      tl.to('#msg-out, #msg-typing, #msg-in', { y: -150, duration: 0.5, ease: inOut }, 22.65)
+        .fromTo('#msg-in', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 22.75);
 
       // 4. Como funciona (24,8 a 31,6 s); cada passo entra quando a narração o cita
       tl.to('#phone', { scale: 0.92, opacity: 0, duration: 0.5, ease: 'power2.in' }, 24.6)
         .fromTo('#s-steps', { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: 'power3.inOut' }, 24.8)
         .from('#steps-kicker', { opacity: 0, y: 20, duration: 0.5, ease: out }, 25.2)
         .from('#steps-title', { opacity: 0, y: 40, duration: 0.6, ease: out }, 25.25)
-        .fromTo('.step', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.5, ease: out, stagger: 1.45 }, 26.0);
+        .fromTo('.step', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.5, ease: out, stagger: 1.25 }, 26.0);
 
       // 5. Chamada final (31 a 38 s)
-      tl.fromTo('#s-end', { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: 'power3.inOut' }, 31.3)
-        .fromTo('#end-logo', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.7, ease: out }, 31.8)
-        .to('#end-stripe', { opacity: 1, duration: 0.01 }, 32.0)
-        .from('#end-stripe i', { scaleX: 0, transformOrigin: '0 50%', duration: 0.35, ease: out, stagger: 0.06 }, 32.0)
-        .from('#end-title .line span', { yPercent: 110, duration: 0.75, ease: out, stagger: 0.12 }, 32.05)
-        .to('#end-sub', { opacity: 1, duration: 0.5 }, 32.7)
-        .fromTo('#end-cta', { opacity: 0, y: 40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.5)' }, 32.3)
-        .to('#end-wa', { opacity: 1, duration: 0.5 }, 33.6)
-        .to('#end-cta', { scale: 1.04, duration: 0.35, ease: 'sine.inOut', yoyo: true, repeat: 3 }, 34.2);
+      tl.fromTo('#s-end', { yPercent: 100 }, { yPercent: 0, duration: 0.6, ease: 'power3.inOut' }, 31.7)
+        .fromTo('#end-logo', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.7, ease: out }, 32.2)
+        .to('#end-stripe', { opacity: 1, duration: 0.01 }, 32.4)
+        .from('#end-stripe i', { scaleX: 0, transformOrigin: '0 50%', duration: 0.35, ease: out, stagger: 0.06 }, 32.4)
+        .from('#end-title .line span', { yPercent: 110, duration: 0.75, ease: out, stagger: 0.12 }, 32.45)
+        .to('#end-sub', { opacity: 1, duration: 0.5 }, 33.1)
+        .fromTo('#end-cta', { opacity: 0, y: 40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.5)' }, 32.7)
+        .to('#end-wa', { opacity: 1, duration: 0.5 }, 34.0)
+        .to('#end-cta', { scale: 1.04, duration: 0.35, ease: 'sine.inOut', yoyo: true, repeat: 3 }, 34.6);
 
       window.__timelines = window.__timelines || {};
       window.__timelines['main'] = tl;
