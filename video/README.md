@@ -10,8 +10,7 @@ Pós-produção dos três vídeos de produto em uma apresentação 9:16 para red
 | --- | --- | --- |
 | `out/coloridamente-institucional.mp4` | Versão A: apresentações e redes sociais | 1080×1920, 30 fps CFR, H.264 High, ~18,7 s, áudio silencioso |
 | `out/coloridamente-scroll-master.mp4` | Versão B: sequência só com os produtos | 1080×1920, 24 fps, H.264 High, ~13,6 s, sem áudio |
-| `out/coloridamente-reels-demo-site.mp4` | Reels: demonstração do site para empresas, com narração e música ambiente | 1080×1920, 30 fps, H.264 High, 38 s, AAC estéreo (−14 LUFS) |
-| `out/coloridamente-reels-demo-site-voz-laura.mp4` | O mesmo Reels com a voz alternativa "Laura" | idem |
+| `out/coloridamente-reels-demo-site.mp4` | Reels: demonstração do site para empresas, com narração e música ambiente | 1080×1920, 30 fps, H.264 High, 41,2 s, AAC estéreo (−14 LUFS) |
 
 ## Fontes
 
@@ -59,25 +58,22 @@ equipe, os clientes e os eventos (não é um serviço de produção sob encomend
 
 | Tempo | Cena | Narração (`assets/audio/narracao.tsv`) |
 | --- | --- | --- |
-| 0–6 s | Gancho sobre os produtos | "Agenda, cadernos e acessórios de escritório, já com a marca da sua empresa." |
-| 5,6–17,4 s | Celular navegando pelo site real (início → ocasiões → Agenda 2027) | "No site, você vê a Linha Office completa." / "Tem item para receber a equipe, presentear clientes, levar a eventos e usar no dia a dia." / "Gostou de um produto? Toque em: quero orçamento deste." |
-| 17,4–24,6 s | WhatsApp abre com a mensagem do site já escrita; envio e resposta | "A mensagem já vai pronta. Você envia e recebe o orçamento com a sua marca." |
-| 24,8–31,6 s | "Pronto com a sua marca": escolha os itens, envie a sua logo, receba tudo pronto | "Você escolhe os itens, envia a sua logo e recebe tudo pronto, com a cara da sua empresa." |
-| 31–38 s | Chamada final: "Acesse o site" (link na bio), sem número de contato | "Acesse o site pelo link da bio e garanta a Linha Office da sua empresa." |
+| 0–8,2 s | Gancho sobre os produtos | "Linha Office Coloridamente: agenda, cadernos e acessórios de escritório, já com a marca da sua empresa!" |
+| 7,8–21,8 s | Celular navegando pelo site real (início → ocasiões → Agenda 2027) | "No site, você vê a Linha Office Coloridamente completa!" / "Tem item para receber a equipe, presentear clientes, levar a eventos e usar no dia a dia." / "Gostou de um produto? Toque em: quero orçamento deste." |
+| 21,8–27,8 s | WhatsApp abre com a mensagem do site já escrita; envio e resposta | "A mensagem já vai pronta. Você envia e recebe o orçamento com a sua marca." |
+| 28–35,5 s | "Pronto com a sua marca": escolha os itens, envie a sua logo, receba tudo pronto | "Você escolhe os itens, envia a sua logo e recebe tudo pronto, com a cara da sua empresa." |
+| 34,9–41,2 s | Chamada final: "Acesse o site" (link na bio), sem número de contato | "Acesse o site pelo link da bio e garanta a Linha Office Coloridamente da sua empresa!" |
 
 **Narração.** Voz "Jessica" da ElevenLabs (alegre e calorosa), gerada pelo conector vidIQ
-(`vidiq_voiceover_generate`, voz `cgSgspJ2msm6clMCkdW9`, 14 créditos) com as sete falas de
-`assets/audio/narracao.tsv` em um único texto, separadas por parágrafo, e exclamações para uma
+(`vidiq_voiceover_generate`, voz `cgSgspJ2msm6clMCkdW9`, 14 créditos) com as falas de
+`assets/audio/narracao.tsv` (a 01, a 02 e a 07 regeneradas depois com "Linha Office Coloridamente"), separadas por parágrafo, e exclamações para uma
 entonação mais animada. O MP3 foi cortado nas pausas (`silencedetect`); cada fala ficou no espaço da
 sua cena, acelerada no máximo 9% só quando passava dele, e normalizada a −16 LUFS
 (`assets/audio/narracao-NN.wav`). Ao trocar uma fala, ajuste o `data-start`/`data-duration` do
 `<audio>` e os tempos das animações em `index.html`.
 
-A voz "Laura" (entusiasmada, `FGY2WhTYpPnrIDTdsKH5`) ficou como alternativa: falas em
-`assets/audio/laura/` e vídeo em `out/coloridamente-reels-demo-site-voz-laura.mp4`. Para usá-la,
-troque os `src` dos `<audio>` de narração para essa pasta.
-
-Alternativas: a voz do Gemini pela skill `media-use` do HyperFrames (`instagram/audio_request.json`,
+Outras vozes do vidIQ testadas: "Sarah" (`EXAVITQu4vr4xnSDxMaL`) e "Laura" (`FGY2WhTYpPnrIDTdsKH5`).
+Alternativas fora do vidIQ: a voz do Gemini pela skill `media-use` do HyperFrames (`instagram/audio_request.json`,
 requer `GEMINI_API_KEY`) ou a voz local Kokoro (`npx hyperframes tts ... -v pf_dora -l pt-br`), que
 soa robótica.
 
@@ -85,9 +81,9 @@ soa robótica.
 maior, arpejo e baixo a 80 bpm; sem direitos de terceiros):
 
 ```bash
-python musica-ambiente.py raw.wav 38.5   # requer numpy e soundfile
-ffmpeg -i raw.wav -af "aecho=0.8:0.6:180|370|620:0.35|0.25|0.15,lowpass=f=7000,afade=t=in:d=1.5,afade=t=out:st=35.8:d=2.6,loudnorm=I=-26:TP=-3:LRA=11" \
-  -c:a aac -b:a 160k assets/audio/musica-ambiente.m4a
+python musica-ambiente.py raw.wav 41.5   # requer numpy e soundfile
+ffmpeg -i raw.wav -af "aecho=0.8:0.6:180|370|620:0.35|0.25|0.15,lowpass=f=7000,afade=t=in:d=1.5,afade=t=out:st=39.6:d=1.9,loudnorm=I=-26:TP=-3:LRA=11" \
+  -t 41.5 -c:a aac -b:a 160k assets/audio/musica-ambiente.m4a
 ```
 
 As telas do site em `instagram/assets/site/` são capturas do build (`npm run build && npm run preview`)
